@@ -16,17 +16,19 @@ using namespace std;
 // Structue for a vending machine 
 struct myVend
 {
-    string name; /// name of the location 
-    int bot_coke, bot_ale, bot_sprite; /// bottles of drinks (coca cola, ginger ale, sprite)
-    int choco_bar, gummy_bag, chips, fruit_bag; /// food items 
-    double usable_bal, gain_val, ini_val; /// usable balance, how much money earned, initial value
+    string name;                                              // name of the location 
+    int bot_coke, bot_ale, bot_sprite;                        // bottles of drinks (coca cola, ginger ale, sprite)
+    int re_coke, re_ale, re_sprite;                           // restock value for drinks
+    int choco_bar, gummy_bag, chips, fruit_bag;               // food items 
+    int re_choc, re_gumy, re_chip, re_fruit;                  // restock value for food 
+    double usable_bal, gain_val, ini_val;                     // usable balance, how much money earned, initial value
 };
 
 void school_vend(struct myVend the_school);                   // create a vending machine for use in a school
 void work_vend(struct myVend the_office);                     // create a vending machine for use in a work office
 void admin_control(struct myVend macArray, int admin_choice); // Entering Admin Control 
 void user_control(struct myVend& machine);                    // Entering User Input Mode
-void initializesystem();                                      // nothing yet lel
+void initializesystem();                                      // Limits the decimal values
 void screenclear();                                           // clear screen for easier UI
 void simulatedelay();                                         // allow user to see response before clearing screen
 
@@ -70,33 +72,55 @@ int main(){
                                             cout << "What is the name of the company?" << endl;
                                             cin.ignore();
                                             getline(cin,madeMac.name);
-                                            madeMac.bot_coke = 12;
-                                            madeMac.bot_ale = 12;
-                                            madeMac.choco_bar = 12;
-                                            madeMac.gummy_bag = 12;
-                                            madeMac.chips = 12;
+
+                                            // drinks
+                                            madeMac.re_coke = 12;
+                                            madeMac.re_ale  = 12;
+                                            madeMac.bot_coke = madeMac.re_coke;
+                                            madeMac.bot_ale  = madeMac.re_ale;
+                                            // food 
+                                            madeMac.re_choc = 12;
+                                            madeMac.re_gumy = 12;
+                                            madeMac.re_chip = 12;
+                                            madeMac.choco_bar = madeMac.re_choc;
+                                            madeMac.gummy_bag = madeMac.re_gumy;
+                                            madeMac.chips     = madeMac.re_chip;
+                                            // money
                                             madeMac.ini_val = 12;
                                             madeMac.usable_bal = madeMac.ini_val;
                                             madeMac.gain_val = 0;
+
                                             cout << "The preset drink can quantities are:\nCola: " << madeMac.bot_coke << ", Ginger Ale: " << madeMac.bot_ale << ", Sprite: " \
                                             << madeMac.bot_sprite << "."<< endl;
                                             cout << "The present snack quantities are:\nChocolate Bars: " << madeMac.choco_bar << ", Gummy Snacks: " << madeMac.gummy_bag << \
                                             ", Chip bags: " << madeMac.chips << "." << endl; 
+
                                             break;
                                         case 2:
                                             // school_vend(macArray);
                                             cout << "What is the name of the school?" << endl;
                                             cin.ignore();
                                             getline(cin,madeMac.name);
-                                            madeMac.bot_coke = 6;
-                                            madeMac.bot_ale = 6;
-                                            madeMac.bot_sprite = 6;
-                                            madeMac.choco_bar = 12;
-                                            madeMac.gummy_bag = 6;
-                                            madeMac.fruit_bag = 12;
-                                            madeMac.ini_val = 8;
+
+                                            // drinks
+                                            madeMac.re_coke   = 6;
+                                            madeMac.re_ale    = 6;
+                                            madeMac.re_sprite = 6;
+                                            madeMac.bot_coke   = madeMac.re_coke;
+                                            madeMac.bot_ale    = madeMac.re_ale;
+                                            madeMac.bot_sprite = madeMac.re_sprite;
+                                            // food
+                                            madeMac.re_choc  = 12;
+                                            madeMac.re_gumy  =  6;
+                                            madeMac.re_fruit = 12;
+                                            madeMac.choco_bar = madeMac.re_choc;
+                                            madeMac.gummy_bag = madeMac.re_gumy;
+                                            madeMac.fruit_bag = madeMac.re_fruit;
+                                            // money
+                                            madeMac.ini_val  = 8;
                                             madeMac.usable_bal = madeMac.ini_val;
                                             madeMac.gain_val = 0;
+
                                             cout << "The preset drink can quantities are:\nCola: " << madeMac.bot_coke << ", Ginger Ale: " << madeMac.bot_ale << ", Sprite: " \
                                             << madeMac.bot_sprite << "."<< endl;
                                             cout << "The present snack quantities are:\nChocolate Bars: " << madeMac.choco_bar << ", Gummy Snacks: " << madeMac.gummy_bag << \
@@ -111,8 +135,44 @@ int main(){
                                 }
                                 break;
                             case 2: // Edit Machines 
+                                while(choicehere != 3){
+                                    cout << "What would you like to edit?\n1. Drinks.\n2. Food.\n3. Cancel." << endl;
+                                    cin >> choicehere;
+                                    switch (choicehere){
+                                    case 1: // drink edit
+                                        cout << "Number of coke cans\n",
+                                        cin >> madeMac.re_coke; 
+                                        cout << "\nNumber of ginger ale cans\n";
+                                        cin >> madeMac.re_ale;
+                                        cout << "\nNumber of sprite cans\n";
+                                        cin >> madeMac.re_sprite;
+                                        break;
+                                    case 2: // food edit
+                                        cout << "\nNumber of chocolate bars\n";
+                                        cin >> madeMac.re_choc;
+                                        cout << "\nNumber of gummy bears\n";
+                                        cin >> madeMac.re_gumy;
+                                        cout << "\nNumber of chips\n";
+                                        cin >> madeMac.re_chip;
+                                        cout << "\nNumber of fruit bags\n";
+                                        cin >> madeMac.re_fruit;
+                                        break;
+                                    case 3:
+                                        break;
+                                    default:
+                                        break;
+                                    }
+                                }
                                 break; 
                             case 3: // Restock Machines 
+                                cout << "Restocking machine. Deducting costs and resetting wallet." << endl;
+                                madeMac.bot_coke = madeMac.re_coke;
+                                madeMac.bot_ale  = madeMac.re_ale;
+                                madeMac.bot_sprite = madeMac.re_sprite;
+                                madeMac.choco_bar = madeMac.re_choc;
+                                madeMac.chips = madeMac.re_chip;
+                                madeMac.gummy_bag = madeMac.re_gumy;
+                                madeMac.fruit_bag = madeMac.re_fruit;
                                 break;
                             case 4: // Remove Machines
                                 break;
