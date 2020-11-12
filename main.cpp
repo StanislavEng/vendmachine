@@ -36,10 +36,11 @@ void simulatedelay();                                         // allow user to s
 int main(){
 
     int num_of_mac = 0; // for determing how many machines exist
-    int mm_input = 0; // main menu input control
-    int admin_input = 0, user_input = 0, choicehere =0; 
+    int mm_input = 0;   // main menu input control
+    int admin_input = 0, user_input = 0, choicehere =0, macsel = 0; 
     char user_exit = 'N';
     static struct myVend madeMac;
+    struct myVend mahrray[100];
     
     do {  // Admin Control Screen
         cout << "\nWelcome to the Vending Machine Control Hub\n";
@@ -68,6 +69,8 @@ int main(){
                                     screenclear();
                                     switch (choicehere){
                                         case 1:
+                                            if (num_of_mac != 0)
+                                                num_of_mac++;                                                                                    
                                             // work_vend(macArray);
                                             cout << "What is the name of the company?" << endl;
                                             cin.ignore();
@@ -86,14 +89,16 @@ int main(){
                                             madeMac.gummy_bag = madeMac.re_gumy;
                                             madeMac.chips     = madeMac.re_chip;
                                             // money
-                                            madeMac.ini_val = 12;
+                                            madeMac.ini_val    = 12;
                                             madeMac.usable_bal = madeMac.ini_val;
-                                            madeMac.gain_val = 0;
-
+                                            madeMac.gain_val   = 0;
+                                            cout << "The name you wrote is " << madeMac.name << endl;
                                             cout << "The preset drink can quantities are:\nCola: " << madeMac.bot_coke << ", Ginger Ale: " << madeMac.bot_ale << ", Sprite: " \
                                             << madeMac.bot_sprite << "."<< endl;
                                             cout << "The present snack quantities are:\nChocolate Bars: " << madeMac.choco_bar << ", Gummy Snacks: " << madeMac.gummy_bag << \
                                             ", Chip bags: " << madeMac.chips << "." << endl; 
+                                            mahrray[num_of_mac] = madeMac;
+                                            num_of_mac++;   
 
                                             break;
                                         case 2:
@@ -125,6 +130,7 @@ int main(){
                                             << madeMac.bot_sprite << "."<< endl;
                                             cout << "The present snack quantities are:\nChocolate Bars: " << madeMac.choco_bar << ", Gummy Snacks: " << madeMac.gummy_bag << \
                                             ", Fruit Bags: " << madeMac.fruit_bag << "." << endl; 
+                                            mahrray[num_of_mac] = madeMac;
                                             break;
                                         case 3:
                                             break;
@@ -135,34 +141,48 @@ int main(){
                                 }
                                 break;
                             case 2: // Edit Machines 
-                                while(choicehere != 3){
-                                    cout << "What would you like to edit?\n1. Drinks.\n2. Food.\n3. Cancel." << endl;
-                                    cin >> choicehere;
-                                    switch (choicehere){
-                                    case 1: // drink edit
-                                        cout << "Number of coke cans\n",
-                                        cin >> madeMac.re_coke; 
-                                        cout << "\nNumber of ginger ale cans\n";
-                                        cin >> madeMac.re_ale;
-                                        cout << "\nNumber of sprite cans\n";
-                                        cin >> madeMac.re_sprite;
-                                        break;
-                                    case 2: // food edit
-                                        cout << "\nNumber of chocolate bars\n";
-                                        cin >> madeMac.re_choc;
-                                        cout << "\nNumber of gummy bears\n";
-                                        cin >> madeMac.re_gumy;
-                                        cout << "\nNumber of chips\n";
-                                        cin >> madeMac.re_chip;
-                                        cout << "\nNumber of fruit bags\n";
-                                        cin >> madeMac.re_fruit;
-                                        break;
-                                    case 3:
-                                        break;
-                                    default:
-                                        break;
+                                    while(user_input != 4){
+                                        if (user_input == 0 || user_input == 3){
+                                            cout << "Please enter the location name" << endl;
+                                            cin >> macsel;
+                                            while (macsel > num_of_mac){
+                                                screenclear();
+                                                cout << macsel << " is not a valid entry. Please try again." << endl;
+                                                cin >> macsel;
+                                            }
+                                            madeMac = mahrray[macsel];
+                                        }
+                                        cout << "What would you like to change for " << madeMac.name << "?\n1. Drinks.\n2. Food.\n3. Change Machine.\n4. Back." << endl;
+                                        cin >> user_input;
+                                        switch (user_input){
+                                        case 1: // drink edit
+                                            cout << "Number of coke cans\n",
+                                            cin >> madeMac.re_coke; 
+                                            cout << "\nNumber of ginger ale cans\n";
+                                            cin >> madeMac.re_ale;
+                                            cout << "\nNumber of sprite cans\n";
+                                            cin >> madeMac.re_sprite;
+                                            break;
+                                        case 2: // food edit
+                                            cout << "\nNumber of chocolate bars\n";
+                                            cin >> madeMac.re_choc;
+                                            cout << "\nNumber of gummy bears\n";
+                                            cin >> madeMac.re_gumy;
+                                            cout << "\nNumber of chips\n";
+                                            cin >> madeMac.re_chip;
+                                            cout << "\nNumber of fruit bags\n";
+                                            cin >> madeMac.re_fruit;
+                                            break;
+                                        case 3:
+                                            break;
+                                        case 4:
+                                            break;
+                                        default:
+                                            cout << "That is not a valid entry. Please try again." << endl;
+                                            break;
+                                        }
                                     }
-                                }
+                                    user_input = 0;
                                 break; 
                             case 3: // Restock Machines 
                                 cout << "Restocking machine. Deducting costs and resetting wallet." << endl;
@@ -261,6 +281,6 @@ void screenclear(){
 }
 
 void simulatedelay(){
-    cout << "\nPress any key to continue..." << endl;
+    cout << "\nPress enter key to continue..." << endl;
     cin.get();
 }
