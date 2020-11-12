@@ -22,6 +22,7 @@ struct myVend
     int choco_bar, gummy_bag, chips, fruit_bag;               // food items 
     int re_choc, re_gumy, re_chip, re_fruit;                  // restock value for food 
     double usable_bal, gain_val, ini_val;                     // usable balance, how much money earned, initial value
+    string tag;
 };
 
 void school_vend(struct myVend the_school);                   // create a vending machine for use in a school
@@ -39,6 +40,7 @@ int main(){
     int mm_input = 0;   // main menu input control
     int admin_input = 0, user_input = 0, choicehere =0, macsel = 0; 
     char user_exit = 'N';
+    string tempname;
     static struct myVend madeMac;
     struct myVend mahrray[100];
     
@@ -62,6 +64,7 @@ int main(){
                     if (admin_input != 5){
                         switch(admin_input){
                             case 1: // Create Machines 
+                                madeMac = myVend();
                                 while(choicehere != 3 ){
                                     cout << "Is this machine for a school or an office environement?" << endl;
                                     cout << "1. Office\n2. School\n3. Back\n" << endl;
@@ -74,8 +77,24 @@ int main(){
                                             // work_vend(macArray);
                                             cout << "What is the name of the company?" << endl;
                                             cin.ignore();
-                                            getline(cin,madeMac.name);
-
+                                            /////// working old version /////
+                                            // getline(cin,madeMac.name);
+                                            ////////////////////////////////
+                                            getline(cin,tempname);
+                                            for (int i = 0; i < tempname.length(); i++){
+                                                if (i == 0) {
+                                                    tempname[i] = toupper(tempname[i]);
+                                                    madeMac.tag += tempname[i];
+                                                }
+                                                else if (tempname[i] == ' ') {
+                                                    tempname[i+1] = toupper(tempname[i+1]);
+                                                    madeMac.tag += tempname[i+1];
+                                                    i++;
+                                                }
+                                                else 
+                                                    tempname[i] = tolower(tempname[i]);
+                                            }
+                                            madeMac.name = tempname;
                                             // drinks
                                             madeMac.re_coke = 12;
                                             madeMac.re_ale  = 12;
@@ -92,7 +111,7 @@ int main(){
                                             madeMac.ini_val    = 12;
                                             madeMac.usable_bal = madeMac.ini_val;
                                             madeMac.gain_val   = 0;
-                                            cout << "The name you wrote is " << madeMac.name << endl;
+                                            cout << "The name you wrote is " << madeMac.name << ". It has the tag: " << madeMac.tag <<  endl;
                                             cout << "The preset drink can quantities are:\nCola: " << madeMac.bot_coke << ", Ginger Ale: " << madeMac.bot_ale << ", Sprite: " \
                                             << madeMac.bot_sprite << "."<< endl;
                                             cout << "The present snack quantities are:\nChocolate Bars: " << madeMac.choco_bar << ", Gummy Snacks: " << madeMac.gummy_bag << \
@@ -277,7 +296,7 @@ void admin_control(struct myVend macArray, int admin_choice){
 */
 
 void screenclear(){
-    cout << "\n\n\n\n\n\n\n\n\n\n";
+    cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 }
 
 void simulatedelay(){
