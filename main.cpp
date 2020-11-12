@@ -35,10 +35,13 @@ void simulatedelay();                                         // allow user to s
 
 
 int main(){
-
+    screenclear();
     int num_of_mac = 0; // for determing how many machines exist
     int mm_input = 0;   // main menu input control
-    int admin_input = 0, user_input = 0, choicehere =0, macsel = 0; 
+    int admin_input = 0, user_input = 0, choicehere =0;
+    int macsel = 0; 
+    int ii = 0;
+    //string macsel;
     char user_exit = 'N';
     string tempname;
     static struct myVend madeMac;
@@ -71,29 +74,50 @@ int main(){
                                     cin >> choicehere;
                                     screenclear();
                                     switch (choicehere){
-                                        case 1:
-                                            if (num_of_mac != 0)
-                                                num_of_mac++;                                                                                    
+                                        case 1:                                                                                   
                                             // work_vend(macArray);
-                                            cout << "What is the name of the company?" << endl;
-                                            cin.ignore();
-                                            /////// working old version /////
-                                            // getline(cin,madeMac.name);
-                                            ////////////////////////////////
-                                            getline(cin,tempname);
-                                            for (int i = 0; i < tempname.length(); i++){
-                                                if (i == 0) {
-                                                    tempname[i] = toupper(tempname[i]);
-                                                    madeMac.tag += tempname[i];
+                                            while (user_exit == 'N' || user_exit == 'n') {
+                                                madeMac = myVend();
+                                                cout << "What is the name of the company?" << endl;
+                                                cin.ignore();
+                                                /////// working old version /////
+                                                // getline(cin,madeMac.name);
+                                                ////////////////////////////////
+                                                getline(cin,tempname);
+                                                while (ii <= tempname.length()) {
+                                                    if (ii == 0) {
+                                                        while (tempname[ii] == ' ') {
+                                                            tempname.erase(ii,1);
+                                                        }                                                        
+                                                        tempname[ii] = toupper(tempname[ii]);
+                                                        madeMac.tag += tempname[ii];
+                                                        ii++;
+                                                    }
+                                                    else if ((tempname[ii] == ' ' && tempname[ii+1] == ' ')) {
+                                                        while (tempname[ii+1] == ' ')
+                                                            tempname.erase(ii+1,1);
+                                                    }
+                                                    else if ((tempname[ii-1] == ' ') && !((tempname[ii] == 'o' || tempname[ii] == 'O') && (tempname[ii+1] == 'f' || tempname[ii+1] == 'F'))) {
+                                                        tempname[ii] = toupper(tempname[ii]);
+                                                        madeMac.tag += tempname[ii];
+                                                        ii++;
+                                                    }
+                                                    else 
+                                                        tempname[ii] = tolower(tempname[ii]);
+                                                    ii++;
                                                 }
-                                                else if (tempname[i] == ' ') {
-                                                    tempname[i+1] = toupper(tempname[i+1]);
-                                                    madeMac.tag += tempname[i+1];
-                                                    i++;
-                                                }
-                                                else 
-                                                    tempname[i] = tolower(tempname[i]);
+                                                screenclear();
+                                                cout << "Is " << tempname << " the name you wanted?   Y / N " << endl;
+                                                while (true) {
+                                                    cin >> user_exit;
+                                                    if (user_exit == 'n' || user_exit == 'N' || user_exit == 'y' || user_exit == 'Y')
+                                                        break;
+                                                    else
+                                                        cout << "That was not a valid input. Please try again." << endl;
+                                                } 
+                                                ii = 0;
                                             }
+                                            screenclear();
                                             madeMac.name = tempname;
                                             // drinks
                                             madeMac.re_coke = 12;
@@ -111,21 +135,51 @@ int main(){
                                             madeMac.ini_val    = 12;
                                             madeMac.usable_bal = madeMac.ini_val;
                                             madeMac.gain_val   = 0;
-                                            cout << "The name you wrote is " << madeMac.name << ". It has the tag: " << madeMac.tag <<  endl;
-                                            cout << "The preset drink can quantities are:\nCola: " << madeMac.bot_coke << ", Ginger Ale: " << madeMac.bot_ale << ", Sprite: " \
+
+                                            cout << "\nThe name you wrote is " << madeMac.name << ". It has the tag: " << madeMac.tag <<  endl;
+                                            cout << "\nThe preset drink can quantities are:\nCola: " << madeMac.bot_coke << ", Ginger Ale: " << madeMac.bot_ale << ", Sprite: " \
                                             << madeMac.bot_sprite << "."<< endl;
-                                            cout << "The present snack quantities are:\nChocolate Bars: " << madeMac.choco_bar << ", Gummy Snacks: " << madeMac.gummy_bag << \
+                                            cout << "\nThe present snack quantities are:\nChocolate Bars: " << madeMac.choco_bar << ", Gummy Snacks: " << madeMac.gummy_bag << \
                                             ", Chip bags: " << madeMac.chips << "." << endl; 
                                             mahrray[num_of_mac] = madeMac;
-                                            num_of_mac++;   
-
+                                            num_of_mac++;
                                             break;
-                                        case 2:
-                                            // school_vend(macArray);
+                                        case 2:                                                                                  
+                                            // work_vend(macArray);
+                                            cout << "What is the name of the school?" << endl;
+                                            cin.ignore();
+                                            /////// working old version /////
+                                            // getline(cin,madeMac.name);
+                                            ////////////////////////////////
+                                            getline(cin,tempname);
+                                            while (ii <= tempname.length()) {
+                                                if (ii == 0) {
+                                                    while (tempname[ii] == ' ') {
+                                                        tempname.erase(ii,1);
+                                                    }                                                        
+                                                    tempname[ii] = toupper(tempname[ii]);
+                                                    madeMac.tag += tempname[ii];
+                                                    ii++;
+                                                }
+                                                else if ((tempname[ii] == ' ' && tempname[ii+1] == ' ')) {
+                                                    while (tempname[ii+1] == ' ')
+                                                        tempname.erase(ii+1,1);
+                                                }
+                                                else if ((tempname[ii-1] == ' ') && !((tempname[ii] == 'o' || tempname[ii] == 'O') && (tempname[ii+1] == 'f' || tempname[ii+1] == 'F'))) {
+                                                    tempname[ii] = toupper(tempname[ii]);
+                                                    madeMac.tag += tempname[ii];
+                                                    ii++;
+                                                }
+                                                else 
+                                                    tempname[ii] = tolower(tempname[ii]);
+                                                ii++;
+                                            }
+                                            madeMac.name = tempname;
+/*                                            // school_vend(macArray);
                                             cout << "What is the name of the school?" << endl;
                                             cin.ignore();
                                             getline(cin,madeMac.name);
-
+*/
                                             // drinks
                                             madeMac.re_coke   = 6;
                                             madeMac.re_ale    = 6;
@@ -145,11 +199,14 @@ int main(){
                                             madeMac.usable_bal = madeMac.ini_val;
                                             madeMac.gain_val = 0;
 
+                                            cout << "The name you wrote is " << madeMac.name << ". It has the tag: " << madeMac.tag <<  endl;
                                             cout << "The preset drink can quantities are:\nCola: " << madeMac.bot_coke << ", Ginger Ale: " << madeMac.bot_ale << ", Sprite: " \
                                             << madeMac.bot_sprite << "."<< endl;
                                             cout << "The present snack quantities are:\nChocolate Bars: " << madeMac.choco_bar << ", Gummy Snacks: " << madeMac.gummy_bag << \
                                             ", Fruit Bags: " << madeMac.fruit_bag << "." << endl; 
                                             mahrray[num_of_mac] = madeMac;
+                                            num_of_mac++;
+                                            ii = 0;
                                             break;
                                         case 3:
                                             break;
@@ -161,15 +218,19 @@ int main(){
                                 break;
                             case 2: // Edit Machines 
                                     while(user_input != 4){
+                                        for (int i = 0; i < num_of_mac; i++){
+                                            cout << i + 1;
+                                            cout << ". " << mahrray[i].tag << endl;
+                                        };
                                         if (user_input == 0 || user_input == 3){
                                             cout << "Please enter the location name" << endl;
                                             cin >> macsel;
-                                            while (macsel > num_of_mac){
+                                            while (macsel > num_of_mac || macsel == 0){
                                                 screenclear();
                                                 cout << macsel << " is not a valid entry. Please try again." << endl;
                                                 cin >> macsel;
                                             }
-                                            madeMac = mahrray[macsel];
+                                            madeMac = mahrray[macsel-1];
                                         }
                                         cout << "What would you like to change for " << madeMac.name << "?\n1. Drinks.\n2. Food.\n3. Change Machine.\n4. Back." << endl;
                                         cin >> user_input;
@@ -300,6 +361,7 @@ void screenclear(){
 }
 
 void simulatedelay(){
+    cin.ignore();
     cout << "\nPress enter key to continue..." << endl;
     cin.get();
 }
