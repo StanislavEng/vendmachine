@@ -23,24 +23,62 @@ struct myVend
     int re_choc, re_gumy, re_chip, re_fruit;                  // restock value for food 
     double usable_bal, gain_val, ini_val;                     // usable balance, how much money earned, initial value
     std::string tag;                                          // classification tag
+    int macNum = 0;                                           // For use in array only
+    myVend *f_ptr;
+    myVend *b_ptr;
 };
+typedef myVend* ptr;
 
 void school_vend(struct myVend the_school);                   // create a vending machine for use in a school
 void work_vend(struct myVend the_office);                     // create a vending machine for use in a work office
-void admin_control(struct myVend macArray, int admin_choice); // Entering Admin Control 
+//void admin_control(struct myVend macArray, int admin_choice); // Entering Admin Control 
+//void admin_control(struct myVend macArray[100]);
+void admin_control(struct myVend *macArray);
 void user_control(struct myVend& machine);                    // Entering User Input Mode
 void initializesystem();                                      // Limits the decimal values
 void screenclear();                                           // clear screen for easier UI
 void simulatedelay();                                         // allow user to see response before clearing screen
+int check_static(int test);
 
 int main(){
     screenclear();
+    int macMax = 100;
+    struct myVend macArray[macMax];
+    myVend *ptr;
+    ptr = macArray;
+    //int firstInput;
+    //std::cout << "Weclome to the Vending Machine Control Hub\n";
+    //TODO:: add in counter
+    //std::cout << "What would you like to do?\n";
+    //std::cout << "1. Manage Machines\n2.Exit" << std::endl;
+    //std::cin >> firstInput;
+    while(true){
+        admin_control(ptr);
+    }
+    
 
 }
 
+void admin_control(struct myVend *macArray){
+    int admin_input; 
+    //static struct myVend macArray[100];
+    //int num_of_mac = 0;
+    std::cout << "Welcome to the Vending Machine Control Hub\n";
+    //std::cout << "There are " << num_of_mac << " machines in service\n";
+    std::cout << "There are " << macArray.macNum << " machines in service\n";
+    std::cout << "What would you like to do?\n";
+    std::cout << "1. Manage Machines\n2. Exit" << std::endl;
+    std:: cin >> admin_input;
+    //check_static(num_of_mac);
 
+}
 
-
+int check_static(int test){
+    std::cout << "The number is " << test << ".\nDoes this impact number?\n";
+    test++;
+    std::cout << "The number is now " << test << ".\n";
+    return test;
+}
 
 /*
 int main(){
