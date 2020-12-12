@@ -27,24 +27,28 @@ struct myVend
     myVend *f_ptr;
     myVend *b_ptr;
 };
-typedef myVend* ptr;
+typedef myVend* VendPtr;
 
 void school_vend(struct myVend the_school);                   // create a vending machine for use in a school
 void work_vend(struct myVend the_office);                     // create a vending machine for use in a work office
 //void admin_control(struct myVend macArray, int admin_choice); // Entering Admin Control 
 //void admin_control(struct myVend macArray[100]);
-void admin_control(struct myVend *macArray);
+void admin_control(VendPtr& head);
+void manageMac(VendPtr& head);
+void addMac(VendPtr& head);
+void editMac(VendPtr& head);
+void removeMac(VendPtr& head);
 void user_control(struct myVend& machine);                    // Entering User Input Mode
 void initializesystem();                                      // Limits the decimal values
 void screenclear();                                           // clear screen for easier UI
 void simulatedelay();                                         // allow user to see response before clearing screen
 int check_static(int test);
 
-int main(){
+int main(int argc, char *argv[]){
     screenclear();
     int macMax = 100;
     struct myVend macArray[macMax];
-    myVend *ptr;
+    VendPtr ptr;
     ptr = macArray;
     //int firstInput;
     //std::cout << "Weclome to the Vending Machine Control Hub\n";
@@ -54,31 +58,83 @@ int main(){
     //std::cin >> firstInput;
     while(true){
         admin_control(ptr);
+        screenclear();
+        //std::cout << "You shouldn't be here\n";
     }
-    
-
+    //std::cout << ptr->macNum;
+    return 0;
 }
-
-void admin_control(struct myVend *macArray){
-    int admin_input; 
+//////////////////// Start of functions ////////////////////
+void admin_control(VendPtr& head){
+    int admin_input = 0;; 
+    int arrayLength = head->macNum;
     //static struct myVend macArray[100];
     //int num_of_mac = 0;
     std::cout << "Welcome to the Vending Machine Control Hub\n";
+    std::cout << "There are " << arrayLength << " machines in service\n";
     //std::cout << "There are " << num_of_mac << " machines in service\n";
-    std::cout << "There are " << macArray.macNum << " machines in service\n";
-    std::cout << "What would you like to do?\n";
-    std::cout << "1. Manage Machines\n2. Exit" << std::endl;
-    std:: cin >> admin_input;
-    //check_static(num_of_mac);
+    do {
+        std::cout << "What would you like to do?\n";
+        std::cout << "1. Manage Machines\n2. # of Machines?\n3. Exit\n";
+        std::cout << "PLease enter your choice: "<< std::endl;
+        std:: cin >> admin_input;
+        switch(admin_input){
+            case 1: // Management screen: Create, Remove, Edit
+                manageMac(head);
+                break;
+            case 2: // 
+                std::cout << "There are " << arrayLength << " machines in service\n";
+                break;
+            case 3:
+                std::cout << "Leaving the Control Hub\n";
+                break;
+            default:
+                screenclear();
+                std::cout << "That was not a valid choice. Please pick again\n.";\
+                break;
+                
+        }
+        //head->macNum = arrayLength+1;
+        //check_static(num_of_mac);
+    } while (admin_input != 3);
+    //admin_input = 0;
 
 }
-
+void manageMac(VendPtr& head){
+    int decision = 0; 
+    screenclear();
+    do{
+        std::cout << "Do you want to:\n1. Create New Machine\n2. Edit Machines\n3. Remove Machines\n4. Cancel\n";
+        std::cout << "Please enter your choice: ";
+        std::cin >> decision;
+        std::cout << "\n";
+        switch (decision){
+        case 1:
+            addMac(head);
+            break;
+        case 2:
+            editMac(head);
+            break;
+        case 3:
+            removeMac(head);
+            break;
+        default:
+            screenclear();
+            std::cout << "That was not a valid input. Please try again";
+            break;
+        }
+    }while(decision != 3);
+}
+void addMac(VendPtr& head){
+    VendPtr tempPtr;
+}
+/* useless test function now
 int check_static(int test){
     std::cout << "The number is " << test << ".\nDoes this impact number?\n";
     test++;
     std::cout << "The number is now " << test << ".\n";
     return test;
-}
+}*/
 
 /*
 int main(){
