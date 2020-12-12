@@ -38,11 +38,15 @@ void manageMac(VendPtr& head);
 void addMac(VendPtr& head);
 void editMac(VendPtr& head);
 void removeMac(VendPtr& head);
+void newOffice(VendPtr& head);
+//void newSchool(VendPtr& head);
+void processName(VendPtr& temp, int loc);
 void user_control(struct myVend& machine);                    // Entering User Input Mode
 void initializesystem();                                      // Limits the decimal values
 void screenclear();                                           // clear screen for easier UI
 void simulatedelay();                                         // allow user to see response before clearing screen
 int check_static(int test);
+void naughtyUser();
 
 int main(int argc, char *argv[]){
     screenclear();
@@ -90,10 +94,11 @@ void admin_control(VendPtr& head){
                 break;
             default:
                 screenclear();
-                std::cout << "That was not a valid choice. Please pick again\n.";\
+                std::cout << "That was not a valid input. Please try again.\n";
                 break;
                 
         }
+        naughtyUser();
         //head->macNum = arrayLength+1;
         //check_static(num_of_mac);
     } while (admin_input != 3);
@@ -113,20 +118,109 @@ void manageMac(VendPtr& head){
             addMac(head);
             break;
         case 2:
-            editMac(head);
+            //editMac(head);
             break;
         case 3:
-            removeMac(head);
+            //removeMac(head);
             break;
         default:
             screenclear();
-            std::cout << "That was not a valid input. Please try again";
+            std::cout << "That was not a valid input. Please try again.\n";
             break;
         }
-    }while(decision != 3);
+        naughtyUser();
+    }while(decision != 4);
 }
 void addMac(VendPtr& head){
+    screenclear();
+    int pickLoc;
+    do{
+        std::cout << "Is this for a school or an office?\n";
+        std::cout << "1. Office\n2. School\n3. Cancel\n";
+        std::cout << "Enter your decision: ";
+        std::cin >> pickLoc;
+        switch (pickLoc){
+        case 1:
+            newOffice(head);
+            break;
+        case 2: 
+            //newSchool(head);
+            break;
+        default:
+            screenclear();
+            std::cout << "That was not a valid input. Please try again.\n";
+            break;
+        }
+        naughtyUser();
+    } while (pickLoc != 3);
+}
+void newOffice(VendPtr& head){
+    screenclear();
+    int test = 1;
     VendPtr tempPtr;
+    std::cout << "This should only happen once";
+    processName(tempPtr,test);
+    screenclear();
+
+}
+void processName(VendPtr& tempP, int loc){
+    char user_in;
+    int counter;
+    std::string temptag;
+    std::string tempname;
+    do{ 
+        counter = 0;
+        tempname.clear();
+        temptag.clear();
+        char confirm = 'k';
+        int ii =0;
+        std::cout << ii << " " << confirm;
+        if (loc == 1)
+            std::cout << "\nWhat is the name of your company?\n";
+        else if (loc == 2)
+            std::cout << "What is the name of your school?\n";
+        std::cin.ignore();
+        std::getline(std::cin, tempname);
+        while (ii <= tempname.length()){ // loops through the provided name
+            if (ii == 0){
+                while (tempname[ii] == ' '){ // removes extra spaces in front
+                    tempname.erase(ii,1);
+                }
+                tempname[ii] = toupper(tempname[ii]); // upper case the first word
+                temptag += tempname[ii];
+                ii++;
+            }
+            else if ((tempname[ii] == ' ' && tempname[ii+1] == ' ')){
+                while (tempname[ii+1] == ' ')
+                    tempname.erase(ii+1,1);
+            }
+            else if ((tempname[ii-1] == ' ') && !((tempname[ii] == 'o' || tempname[ii] == 'O') && (tempname[ii+1] == 'f' || (tempname[ii+1] == 'F')))){
+                std::cout << "Am I getting here? " << tempname[ii];
+                tempname[ii] = toupper(tempname[ii]);
+                temptag += tempname[ii];
+            } // upper case the first letter of a word excluding "of"
+            else 
+                tempname[ii] = tolower(tempname[ii]); // lower case the rest
+            ii++;
+        }
+        std::cout << confirm;
+        while(confirm != 'y'){
+            if (counter == 0 || counter == 5){
+                    std::cout << "Is " << tempname << " the name you wanted? Y / N\n";
+                    std::cout <<  temptag << '\n';
+                    counter = 1;
+            }
+            std::cin >> confirm;
+            if(confirm == 'n' || confirm == 'N' || confirm == 'y' || confirm == 'Y')
+                break;
+            else{
+                std::cout << "That was not a valid input. Please try again:\n"; 
+                counter++;
+            }       
+        }
+        user_in = confirm;
+    }while (!(user_in == 'Y') && !(user_in == 'y'));
+    std::cout <<" I'm done ";
 }
 /* useless test function now
 int check_static(int test){
@@ -135,7 +229,8 @@ int check_static(int test){
     std::cout << "The number is now " << test << ".\n";
     return test;
 }*/
-
+/////// my debugger ////
+// std::cout << "I am in []" << std::endl; simulatedelay();
 /*
 int main(){
     screenclear();
@@ -422,44 +517,6 @@ void initializesystem(){
     std::cout.setf(std::ios::showpoint);
     std::cout.precision(2);
 }
-
-/* for when works in main body
-void admin_control(struct myVend macArray, int admin_choice){
-    static int machine_counter = 0;
-    int choicehere = 0;
-    
-    switch(admin_choice){
-        case 1: // Create Machines 
-            cout << "Is this machine for a school or an office environement?" << endl;
-            cout << "1. Office\n2. School\n3. Back";
-            cin >> choicehere;
-            switch (choicehere){
-                case 1:
-                    work_vend(macArray);
-                break;
-                case 2:
-                    school_vend(macArray);
-                break;
-                case 3:
-                break;
-            }
-
-        break;
-        case 2: // Edit Machines 
-        
-        break; 
-        case 3: // Restock Machines 
-        
-        break;
-        case 4: // Remove Machines
-
-        break;
-    }
- 
-
-}
-*/
-
 void screenclear(){
     std::cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 }
@@ -555,4 +612,8 @@ void simulatedelay(){
     std::cin.ignore();
     std::cout << "\nPress enter key to continue..." << std::endl;
     std::cin.get();
+}
+void naughtyUser(){
+    std::cin.clear();
+    std::cin.ignore(1000,'\n');
 }
