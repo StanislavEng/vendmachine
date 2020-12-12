@@ -46,6 +46,7 @@ void initializesystem();                                      // Limits the deci
 void screenclear();                                           // clear screen for easier UI
 void simulatedelay();                                         // allow user to see response before clearing screen
 int check_static(int test);
+void naughtyUser();
 
 int main(int argc, char *argv[]){
     screenclear();
@@ -93,10 +94,11 @@ void admin_control(VendPtr& head){
                 break;
             default:
                 screenclear();
-                std::cout << "That was not a valid input. Please try again.";
+                std::cout << "That was not a valid input. Please try again.\n";
                 break;
                 
         }
+        naughtyUser();
         //head->macNum = arrayLength+1;
         //check_static(num_of_mac);
     } while (admin_input != 3);
@@ -123,9 +125,10 @@ void manageMac(VendPtr& head){
             break;
         default:
             screenclear();
-            std::cout << "That was not a valid input. Please try again.";
+            std::cout << "That was not a valid input. Please try again.\n";
             break;
         }
+        naughtyUser();
     }while(decision != 4);
 }
 void addMac(VendPtr& head){
@@ -145,9 +148,10 @@ void addMac(VendPtr& head){
             break;
         default:
             screenclear();
-            std::cout << "That was not a valid input. Please try again.";
+            std::cout << "That was not a valid input. Please try again.\n";
             break;
         }
+        naughtyUser();
     } while (pickLoc != 3);
 }
 void newOffice(VendPtr& head){
@@ -164,21 +168,21 @@ void processName(VendPtr& tempP, int loc){
     int counter;
     std::string temptag;
     std::string tempname;
-    do{
+    do{ 
         counter = 0;
         tempname.clear();
         temptag.clear();
+        char confirm = 'k';
         int ii =0;
+        std::cout << ii << " " << confirm;
         if (loc == 1)
-            std::cout << "What is the name of your company?\n";
+            std::cout << "\nWhat is the name of your company?\n";
         else if (loc == 2)
             std::cout << "What is the name of your school?\n";
         std::cin.ignore();
         std::getline(std::cin, tempname);
         while (ii <= tempname.length()){ // loops through the provided name
             if (ii == 0){
-                //std::cout << "I am in 1" << std::endl; 
-                //simulatedelay();
                 while (tempname[ii] == ' '){ // removes extra spaces in front
                     tempname.erase(ii,1);
                 }
@@ -187,42 +191,35 @@ void processName(VendPtr& tempP, int loc){
                 ii++;
             }
             else if ((tempname[ii] == ' ' && tempname[ii+1] == ' ')){
-                //std::cout << "I am in 2" << std::endl;
-                //simulatedelay();
                 while (tempname[ii+1] == ' ')
                     tempname.erase(ii+1,1);
             }
             else if ((tempname[ii-1] == ' ') && !((tempname[ii] == 'o' || tempname[ii] == 'O') && (tempname[ii+1] == 'f' || (tempname[ii+1] == 'F')))){
-                //std::cout << "I am in 3" << std::endl;
-                //simulatedelay();
+                std::cout << "Am I getting here? " << tempname[ii];
                 tempname[ii] = toupper(tempname[ii]);
                 temptag += tempname[ii];
-                ii++;
             } // upper case the first letter of a word excluding "of"
             else 
-                //std::cout << "I am in 4" << std::endl;
-                //simulatedelay();
                 tempname[ii] = tolower(tempname[ii]); // lower case the rest
             ii++;
         }
-        while(user_in != 'y'){
-            //std::cout << "I am in 5" << std::endl;
+        std::cout << confirm;
+        while(confirm != 'y'){
             if (counter == 0 || counter == 5){
                     std::cout << "Is " << tempname << " the name you wanted? Y / N\n";
                     std::cout <<  temptag << '\n';
                     counter = 1;
             }
-            std::cin >> user_in;
-            if(user_in == 'n' || user_in == 'N' || user_in == 'y' || user_in == 'Y')
-                //break;
-                std::cout << "Hello world";
+            std::cin >> confirm;
+            if(confirm == 'n' || confirm == 'N' || confirm == 'y' || confirm == 'Y')
+                break;
             else{
                 std::cout << "That was not a valid input. Please try again:\n"; 
                 counter++;
             }       
         }
-        std::cout << user_in;
-    }while (user_in != 'Y' || user_in != 'y');
+        user_in = confirm;
+    }while (!(user_in == 'Y') && !(user_in == 'y'));
     std::cout <<" I'm done ";
 }
 /* useless test function now
@@ -520,44 +517,6 @@ void initializesystem(){
     std::cout.setf(std::ios::showpoint);
     std::cout.precision(2);
 }
-
-/* for when works in main body
-void admin_control(struct myVend macArray, int admin_choice){
-    static int machine_counter = 0;
-    int choicehere = 0;
-    
-    switch(admin_choice){
-        case 1: // Create Machines 
-            cout << "Is this machine for a school or an office environement?" << endl;
-            cout << "1. Office\n2. School\n3. Back";
-            cin >> choicehere;
-            switch (choicehere){
-                case 1:
-                    work_vend(macArray);
-                break;
-                case 2:
-                    school_vend(macArray);
-                break;
-                case 3:
-                break;
-            }
-
-        break;
-        case 2: // Edit Machines 
-        
-        break; 
-        case 3: // Restock Machines 
-        
-        break;
-        case 4: // Remove Machines
-
-        break;
-    }
- 
-
-}
-*/
-
 void screenclear(){
     std::cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 }
@@ -653,4 +612,8 @@ void simulatedelay(){
     std::cin.ignore();
     std::cout << "\nPress enter key to continue..." << std::endl;
     std::cin.get();
+}
+void naughtyUser(){
+    std::cin.clear();
+    std::cin.ignore(1000,'\n');
 }
