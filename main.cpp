@@ -38,6 +38,9 @@ void manageMac(VendPtr& head);
 void addMac(VendPtr& head);
 void editMac(VendPtr& head);
 void removeMac(VendPtr& head);
+void newOffice(VendPtr& head);
+//void newSchool(VendPtr& head);
+void processName(VendPtr& temp, int loc);
 void user_control(struct myVend& machine);                    // Entering User Input Mode
 void initializesystem();                                      // Limits the decimal values
 void screenclear();                                           // clear screen for easier UI
@@ -90,7 +93,7 @@ void admin_control(VendPtr& head){
                 break;
             default:
                 screenclear();
-                std::cout << "That was not a valid choice. Please pick again\n.";\
+                std::cout << "That was not a valid input. Please try again.";
                 break;
                 
         }
@@ -113,20 +116,114 @@ void manageMac(VendPtr& head){
             addMac(head);
             break;
         case 2:
-            editMac(head);
+            //editMac(head);
             break;
         case 3:
-            removeMac(head);
+            //removeMac(head);
             break;
         default:
             screenclear();
-            std::cout << "That was not a valid input. Please try again";
+            std::cout << "That was not a valid input. Please try again.";
             break;
         }
-    }while(decision != 3);
+    }while(decision != 4);
 }
 void addMac(VendPtr& head){
+    screenclear();
+    int pickLoc;
+    do{
+        std::cout << "Is this for a school or an office?\n";
+        std::cout << "1. Office\n2. School\n3. Cancel\n";
+        std::cout << "Enter your decision: ";
+        std::cin >> pickLoc;
+        switch (pickLoc){
+        case 1:
+            newOffice(head);
+            break;
+        case 2: 
+            //newSchool(head);
+            break;
+        default:
+            screenclear();
+            std::cout << "That was not a valid input. Please try again.";
+            break;
+        }
+    } while (pickLoc != 3);
+}
+void newOffice(VendPtr& head){
+    screenclear();
+    int test = 1;
     VendPtr tempPtr;
+    std::cout << "This should only happen once";
+    processName(tempPtr,test);
+    screenclear();
+
+}
+void processName(VendPtr& tempP, int loc){
+    char user_in;
+    int counter;
+    std::string temptag;
+    std::string tempname;
+    do{
+        counter = 0;
+        tempname.clear();
+        temptag.clear();
+        int ii =0;
+        if (loc == 1)
+            std::cout << "What is the name of your company?\n";
+        else if (loc == 2)
+            std::cout << "What is the name of your school?\n";
+        std::cin.ignore();
+        std::getline(std::cin, tempname);
+        while (ii <= tempname.length()){ // loops through the provided name
+            if (ii == 0){
+                //std::cout << "I am in 1" << std::endl; 
+                //simulatedelay();
+                while (tempname[ii] == ' '){ // removes extra spaces in front
+                    tempname.erase(ii,1);
+                }
+                tempname[ii] = toupper(tempname[ii]); // upper case the first word
+                temptag += tempname[ii];
+                ii++;
+            }
+            else if ((tempname[ii] == ' ' && tempname[ii+1] == ' ')){
+                //std::cout << "I am in 2" << std::endl;
+                //simulatedelay();
+                while (tempname[ii+1] == ' ')
+                    tempname.erase(ii+1,1);
+            }
+            else if ((tempname[ii-1] == ' ') && !((tempname[ii] == 'o' || tempname[ii] == 'O') && (tempname[ii+1] == 'f' || (tempname[ii+1] == 'F')))){
+                //std::cout << "I am in 3" << std::endl;
+                //simulatedelay();
+                tempname[ii] = toupper(tempname[ii]);
+                temptag += tempname[ii];
+                ii++;
+            } // upper case the first letter of a word excluding "of"
+            else 
+                //std::cout << "I am in 4" << std::endl;
+                //simulatedelay();
+                tempname[ii] = tolower(tempname[ii]); // lower case the rest
+            ii++;
+        }
+        while(user_in != 'y'){
+            //std::cout << "I am in 5" << std::endl;
+            if (counter == 0 || counter == 5){
+                    std::cout << "Is " << tempname << " the name you wanted? Y / N\n";
+                    std::cout <<  temptag << '\n';
+                    counter = 1;
+            }
+            std::cin >> user_in;
+            if(user_in == 'n' || user_in == 'N' || user_in == 'y' || user_in == 'Y')
+                //break;
+                std::cout << "Hello world";
+            else{
+                std::cout << "That was not a valid input. Please try again:\n"; 
+                counter++;
+            }       
+        }
+        std::cout << user_in;
+    }while (user_in != 'Y' || user_in != 'y');
+    std::cout <<" I'm done ";
 }
 /* useless test function now
 int check_static(int test){
@@ -135,7 +232,8 @@ int check_static(int test){
     std::cout << "The number is now " << test << ".\n";
     return test;
 }*/
-
+/////// my debugger ////
+// std::cout << "I am in []" << std::endl; simulatedelay();
 /*
 int main(){
     screenclear();
