@@ -25,6 +25,7 @@ struct myVend{
     int macNum = 0;                                           // For use in array only
     myVend *f_ptr;
     myVend *b_ptr;
+    //myVend *link;
 };
 typedef myVend* VendPtr;
 
@@ -32,12 +33,12 @@ void school_vend(VendPtr& tempPtr);                   // create a vending machin
 void office_vend(VendPtr& tempPtr);                     // create a vending machine for use in a work office
 //void admin_control(struct myVend macArray, int admin_choice); // Entering Admin Control 
 //void admin_control(struct myVend macArray[100]);
-void admin_control(VendPtr& head);
-void manageMac(VendPtr& head);
-void addMac(VendPtr& head);
-void editMac(VendPtr& head);
-void removeMac(VendPtr& head);
-void newOffice(VendPtr& head);
+void admin_control(VendPtr& iter);
+void manageMac(VendPtr& iter);
+void addMac(VendPtr& iter);
+void editMac(VendPtr& iter);
+void removeMac(VendPtr& iter);
+void newOffice(VendPtr& iter);
 //void newSchool(VendPtr& head);
 void processName(VendPtr& temp, int loc);
 void user_control(struct myVend& machine);                    // Entering User Input Mode
@@ -47,15 +48,23 @@ void screenclear();                                           // clear screen fo
 void simulatedelay();                                         // allow user to see response before clearing screen
 int  check_static(int test);
 void naughtyUser();
+void myDebug(VendPtr& head,VendPtr& itr);
+void uselessfun1();
+void uselessfun2();
+void enterDebug(VendPtr& ptr);
 
 int main(int argc, char *argv[]){
     screenclear();
-    //int macMax = 100;
+    int macMax = 100;
     //struct myVend macArray[macMax];
-    VendPtr head;
-    int macsize;
-    VendPtr itr;
-    itr = head;
+    //struct myVend macArray;
+    //VendPtr ptr = new myVend;
+    //struct myVend macArray;
+    VendPtr head = new myVend;
+    //int macsize;  
+    //head = macArray;
+    VendPtr last;
+    last = head;
     //ptr = macArray;
     //int firstInput;
     //std::cout << "Weclome to the Vending Machine Control Hub\n";
@@ -63,34 +72,106 @@ int main(int argc, char *argv[]){
     //std::cout << "What would you like to do?\n";
     //std::cout << "1. Manage Machines\n2.Exit" << std::endl;
     //std::cin >> firstInput;
-    while(true){
-        admin_control(itr);
-        screenclear();
-        //std::cout << "You shouldn't be here\n";
+    while(1){
+        std::cout << "Checking something";
+        simulatedelay();
+        while(1){
+            myDebug(head,last);
+            admin_control(last);
+            screenclear();
+            std::cout << "You shouldn't be here\n";
+            simulatedelay();
+        }
+        std::cout << "Where are you going";
+        simulatedelay();
     }
+    std::cout << "You shouldn't have gotten here";
+    simulatedelay();
     //std::cout << ptr->macNum;
-    return 0;
+    //return 0;
 }
 /*void initilizesystem(VendPtr& head, VendPtr& iter){
 
 }*/
 //////////////////// Start of functions ////////////////////
-void admin_control(VendPtr& head){
+void myDebug(VendPtr& head, VendPtr& itr){
+    int picker;
+    do {
+        screenclear();
+        uselessfun1();
+        uselessfun2();
+        std::cout << "Welcome to the debug screen\n";
+        uselessfun2();
+        std::cout << "Which pointer do you want to access?\n"; uselessfun2(); std::cout << "1. Head or 2. Iter? 3. Quit" << std::endl;
+        uselessfun1();
+        std::cin >> picker;
+        switch (picker){
+        case 1:
+            enterDebug(head);
+            break;
+        case 2:
+            enterDebug(itr);
+            break;
+        case 3: 
+            break;
+        default:
+            std::cout << "That ain't it chief";
+            naughtyUser();
+            simulatedelay();
+            break;
+        }
+    } while (picker != 3);
+}
+void enterDebug(VendPtr& ptr){
+    int picker;
+    do {
+        screenclear();
+        uselessfun1();
+        uselessfun2();
+        std::cout << "What are we debugging?\n";
+        uselessfun2();
+        std::cout << "1. # of machines\n"; uselessfun2(); std::cout << "2. Balance\n"; uselessfun2(); std::cout << "3. Items\n"; uselessfun2(); std::cout << "4. Exit\n";
+        uselessfun1();
+        std::cin >> picker;
+        switch (picker){
+        case 1:
+            std::cout << ptr->macNum;
+            simulatedelay();
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        default:
+            std::cout << "That ain't it chief";
+            naughtyUser();
+            simulatedelay();
+            break;
+        }
+    }while (picker != 4);
+
+}
+void admin_control(VendPtr& iter){
     int admin_input = 0;; 
-    int arrayLength = head->macNum;
+    int arrayLength = iter->macNum;
     //static struct myVend macArray[100];
     //int num_of_mac = 0;
-    std::cout << "Welcome to the Vending Machine Control Hub\n";
-    std::cout << "There are " << arrayLength << " machines in service\n";
+    screenclear();
+    uselessfun1(); uselessfun2();
+    std::cout << "Welcome to the Vending Machine Control Hub\n"; uselessfun2();
+    std::cout << "There are " << arrayLength << " machines in service\n"; uselessfun2();
     //std::cout << "There are " << num_of_mac << " machines in service\n";
     do {
-        std::cout << "What would you like to do?\n";
+        //uselessfun1();
+        std::cout << "What would you like to do?\n"; uselessfun1();
         std::cout << "1. Manage Machines\n2. # of Machines?\n3. Exit\n";
-        std::cout << "PLease enter your choice: "<< std::endl;
+        std::cout << "Please enter your choice: "<< std::endl;
         std:: cin >> admin_input;
         switch(admin_input){
             case 1: // Management screen: Create, Remove, Edit
-                manageMac(head);
+                manageMac(iter);
                 break;
             case 2: // 
                 std::cout << "There are " << arrayLength << " machines in service\n";
@@ -100,44 +181,47 @@ void admin_control(VendPtr& head){
                 break;
             default:
                 screenclear();
+                uselessfun1();
                 std::cout << "That was not a valid input. Please try again.\n";
+                naughtyUser();
                 break;
-                
+
         }
-        naughtyUser();
         //head->macNum = arrayLength+1;
         //check_static(num_of_mac);
     } while (admin_input != 3);
     //admin_input = 0;
 
 }
-void manageMac(VendPtr& head){
+void manageMac(VendPtr& iter){
     int decision = 0; 
     screenclear();
     do{
+        uselessfun1();
         std::cout << "Do you want to:\n1. Create New Machine\n2. Edit Machines\n3. Remove Machines\n4. Cancel\n";
         std::cout << "Please enter your choice: ";
         std::cin >> decision;
         std::cout << "\n";
         switch (decision){
         case 1:
-            addMac(head);
-            break;
+            addMac(iter);
+            //break;
         case 2:
             //editMac(head);
-            break;
+            //break;
         case 3:
             //removeMac(head);
-            break;
+           // break;
         default:
             screenclear();
             std::cout << "That was not a valid input. Please try again.\n";
+            naughtyUser();
             break;
         }
-        naughtyUser();
+        std::cout <<"oh no";
     }while(decision != 4);
 }
-void addMac(VendPtr& head){
+void addMac(VendPtr& iter){
     screenclear();
     int pickLoc;
     do{
@@ -147,20 +231,23 @@ void addMac(VendPtr& head){
         std::cin >> pickLoc;
         switch (pickLoc){
         case 1:
-            newOffice(head);
+            newOffice(iter);
             break;
         case 2: 
-            //newSchool(head);
+            //newSchool(iter);
             break;
         default:
             screenclear();
             std::cout << "That was not a valid input. Please try again.\n";
+            naughtyUser();
             break;
         }
+        std::cout << pickLoc << "Is not right";
         naughtyUser();
-    } while (pickLoc != 3);
+        simulatedelay();
+    } while (!(pickLoc == 3));
 }
-void newOffice(VendPtr& head){
+void newOffice(VendPtr& iter){
     screenclear();
     //int test = 1;
     VendPtr tempPtr;
@@ -168,11 +255,11 @@ void newOffice(VendPtr& head){
     processName(tempPtr,1);
     screenclear();
     office_vend(tempPtr);
-    head->f_ptr = tempPtr;
-    tempPtr->b_ptr = head;
-    head->macNum++;
+    iter->f_ptr = tempPtr;
+    tempPtr->b_ptr = iter;
+    iter->macNum++;
 }
-void newSchool(VendPtr* head){
+void newSchool(VendPtr* iter){
     screenclear();
     VendPtr tempPtr;
     processName(tempPtr,2);
@@ -273,7 +360,12 @@ void school_vend(VendPtr& tempPtr){
     tempPtr->usable_bal = tempPtr->ini_val;
     tempPtr->gain_val   = 0;
 }
-
+void uselessfun1(){
+    std::cout << "//////////////////////////////////////////////////////////\n";
+}
+void uselessfun2(){
+    std::cout << "//     ";
+}
 /* useless test function now
 int check_static(int test){
     std::cout << "The number is " << test << ".\nDoes this impact number?\n";
@@ -667,5 +759,5 @@ void simulatedelay(){
 }
 void naughtyUser(){
     std::cin.clear();
-    std::cin.ignore(1000,'\n');
+    std::cin.ignore(10,'\n');
 }
