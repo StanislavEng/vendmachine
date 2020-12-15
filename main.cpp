@@ -14,8 +14,7 @@ Last Changed Dec 8, 2020*/  // quick edit to double check some stuff
 //using namespace std;
 
 // Structue for a vending machine 
-struct myVend
-{
+struct myVend{
     std::string name;                                         // name of the location 
     int bot_coke, bot_ale, bot_sprite;                        // bottles of drinks (coca cola, ginger ale, sprite)
     int re_coke, re_ale, re_sprite;                           // restock value for drinks
@@ -29,8 +28,8 @@ struct myVend
 };
 typedef myVend* VendPtr;
 
-void school_vend(struct myVend the_school);                   // create a vending machine for use in a school
-void work_vend(struct myVend the_office);                     // create a vending machine for use in a work office
+void school_vend(VendPtr& tempPtr);                   // create a vending machine for use in a school
+void office_vend(VendPtr& tempPtr);                     // create a vending machine for use in a work office
 //void admin_control(struct myVend macArray, int admin_choice); // Entering Admin Control 
 //void admin_control(struct myVend macArray[100]);
 void admin_control(VendPtr& head);
@@ -42,18 +41,22 @@ void newOffice(VendPtr& head);
 //void newSchool(VendPtr& head);
 void processName(VendPtr& temp, int loc);
 void user_control(struct myVend& machine);                    // Entering User Input Mode
-void initializesystem();                                      // Limits the decimal values
+void initializescale();                                       // Limits the decimal values
+void initilizesystem();                                       // place holder for creating 
 void screenclear();                                           // clear screen for easier UI
 void simulatedelay();                                         // allow user to see response before clearing screen
-int check_static(int test);
+int  check_static(int test);
 void naughtyUser();
 
 int main(int argc, char *argv[]){
     screenclear();
-    int macMax = 100;
-    struct myVend macArray[macMax];
-    VendPtr ptr;
-    ptr = macArray;
+    //int macMax = 100;
+    //struct myVend macArray[macMax];
+    VendPtr head;
+    int macsize;
+    VendPtr itr;
+    itr = head;
+    //ptr = macArray;
     //int firstInput;
     //std::cout << "Weclome to the Vending Machine Control Hub\n";
     //TODO:: add in counter
@@ -61,13 +64,16 @@ int main(int argc, char *argv[]){
     //std::cout << "1. Manage Machines\n2.Exit" << std::endl;
     //std::cin >> firstInput;
     while(true){
-        admin_control(ptr);
+        admin_control(itr);
         screenclear();
         //std::cout << "You shouldn't be here\n";
     }
     //std::cout << ptr->macNum;
     return 0;
 }
+/*void initilizesystem(VendPtr& head, VendPtr& iter){
+
+}*/
 //////////////////// Start of functions ////////////////////
 void admin_control(VendPtr& head){
     int admin_input = 0;; 
@@ -156,12 +162,23 @@ void addMac(VendPtr& head){
 }
 void newOffice(VendPtr& head){
     screenclear();
-    int test = 1;
+    //int test = 1;
     VendPtr tempPtr;
-    std::cout << "This should only happen once";
-    processName(tempPtr,test);
+    //processName(tempPtr,test);
+    processName(tempPtr,1);
     screenclear();
-
+    office_vend(tempPtr);
+    head->f_ptr = tempPtr;
+    tempPtr->b_ptr = head;
+    head->macNum++;
+}
+void newSchool(VendPtr* head){
+    screenclear();
+    VendPtr tempPtr;
+    processName(tempPtr,2);
+    screenclear();
+    school_vend(tempPtr);
+    
 }
 void processName(VendPtr& tempP, int loc){
     char user_in;
@@ -174,7 +191,6 @@ void processName(VendPtr& tempP, int loc){
         temptag.clear();
         char confirm = 'k';
         int ii =0;
-        std::cout << ii << " " << confirm;
         if (loc == 1)
             std::cout << "\nWhat is the name of your company?\n";
         else if (loc == 2)
@@ -195,7 +211,6 @@ void processName(VendPtr& tempP, int loc){
                     tempname.erase(ii+1,1);
             }
             else if ((tempname[ii-1] == ' ') && !((tempname[ii] == 'o' || tempname[ii] == 'O') && (tempname[ii+1] == 'f' || (tempname[ii+1] == 'F')))){
-                std::cout << "Am I getting here? " << tempname[ii];
                 tempname[ii] = toupper(tempname[ii]);
                 temptag += tempname[ii];
             } // upper case the first letter of a word excluding "of"
@@ -203,11 +218,10 @@ void processName(VendPtr& tempP, int loc){
                 tempname[ii] = tolower(tempname[ii]); // lower case the rest
             ii++;
         }
-        std::cout << confirm;
         while(confirm != 'y'){
             if (counter == 0 || counter == 5){
                     std::cout << "Is " << tempname << " the name you wanted? Y / N\n";
-                    std::cout <<  temptag << '\n';
+                    //std::cout <<  temptag << '\n';
                     counter = 1;
             }
             std::cin >> confirm;
@@ -220,8 +234,46 @@ void processName(VendPtr& tempP, int loc){
         }
         user_in = confirm;
     }while (!(user_in == 'Y') && !(user_in == 'y'));
-    std::cout <<" I'm done ";
 }
+void office_vend(VendPtr& tempPtr){
+    // preset drinks
+    tempPtr->re_coke    = 12;
+    tempPtr->re_ale     = 12;
+    tempPtr->bot_coke   = tempPtr->re_coke;
+    tempPtr->bot_ale    = tempPtr->re_ale;
+    // preset food 
+    tempPtr->re_choc    = 12;
+    tempPtr->re_gumy    = 12;
+    tempPtr->re_chip    = 12;
+    tempPtr->choco_bar  = tempPtr->re_choc;
+    tempPtr->gummy_bag  = tempPtr->re_gumy;
+    tempPtr->chips      = tempPtr->re_chip;
+    // preset money
+    tempPtr->ini_val    = 12;
+    tempPtr->usable_bal = tempPtr->ini_val;
+    tempPtr->gain_val   = 0;
+}
+void school_vend(VendPtr& tempPtr){
+    // drinks
+    tempPtr->re_coke    = 6;
+    tempPtr->re_ale     = 6;
+    tempPtr->re_sprite  = 6;
+    tempPtr->bot_coke   = tempPtr->re_coke;
+    tempPtr->bot_ale    = tempPtr->re_ale;
+    tempPtr->bot_sprite = tempPtr->re_sprite;
+    // food
+    tempPtr->re_choc    = 12;
+    tempPtr->re_gumy    =  6;
+    tempPtr->re_fruit   = 12;
+    tempPtr->choco_bar  = tempPtr->re_choc;
+    tempPtr->gummy_bag  = tempPtr->re_gumy;
+    tempPtr->fruit_bag  = tempPtr->re_fruit;
+    // money
+    tempPtr->ini_val    = 8;
+    tempPtr->usable_bal = tempPtr->ini_val;
+    tempPtr->gain_val   = 0;
+}
+
 /* useless test function now
 int check_static(int test){
     std::cout << "The number is " << test << ".\nDoes this impact number?\n";
@@ -512,7 +564,7 @@ int main(){
 }
 */
 // Sets the cout of dollars to 2 decimal points. 
-void initializesystem(){
+void initializescale(){
     std::cout.setf(std::ios::fixed);
     std::cout.setf(std::ios::showpoint);
     std::cout.precision(2);
