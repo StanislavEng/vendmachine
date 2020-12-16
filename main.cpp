@@ -14,8 +14,7 @@ Last Changed Dec 8, 2020*/  // quick edit to double check some stuff
 //using namespace std;
 
 // Structue for a vending machine 
-struct myVend
-{
+struct myVend{
     std::string name;                                         // name of the location 
     int bot_coke, bot_ale, bot_sprite;                        // bottles of drinks (coca cola, ginger ale, sprite)
     int re_coke, re_ale, re_sprite;                           // restock value for drinks
@@ -26,65 +25,153 @@ struct myVend
     int macNum = 0;                                           // For use in array only
     myVend *f_ptr;
     myVend *b_ptr;
+    //myVend *link;
 };
 typedef myVend* VendPtr;
 
-void school_vend(struct myVend the_school);                   // create a vending machine for use in a school
-void work_vend(struct myVend the_office);                     // create a vending machine for use in a work office
+void school_vend(VendPtr& tempPtr);                   // create a vending machine for use in a school
+void office_vend(VendPtr& tempPtr);                     // create a vending machine for use in a work office
 //void admin_control(struct myVend macArray, int admin_choice); // Entering Admin Control 
 //void admin_control(struct myVend macArray[100]);
-void admin_control(VendPtr& head);
-void manageMac(VendPtr& head);
-void addMac(VendPtr& head);
-void editMac(VendPtr& head);
-void removeMac(VendPtr& head);
-void newOffice(VendPtr& head);
-//void newSchool(VendPtr& head);
+void admin_control(VendPtr& iter);
+void manageMac(VendPtr& iter);
+void addMac(VendPtr& iter);
+void editMac(VendPtr& iter);
+void removeMac(VendPtr& iter);
+void newOffice(VendPtr& iter);
+void newSchool(VendPtr& head);
 void processName(VendPtr& temp, int loc);
 void user_control(struct myVend& machine);                    // Entering User Input Mode
-void initializesystem();                                      // Limits the decimal values
+void initializescale();                                       // Limits the decimal values
+void initilizesystem();                                       // place holder for creating 
 void screenclear();                                           // clear screen for easier UI
 void simulatedelay();                                         // allow user to see response before clearing screen
-int check_static(int test);
+int  check_static(int test);
 void naughtyUser();
+void myDebug(VendPtr& head,VendPtr& itr);
+void uselessfun1();
+void uselessfun2();
+void enterDebug(VendPtr& ptr);
 
 int main(int argc, char *argv[]){
     screenclear();
     int macMax = 100;
-    struct myVend macArray[macMax];
-    VendPtr ptr;
-    ptr = macArray;
+    //struct myVend macArray[macMax];
+    //struct myVend macArray;
+    //VendPtr ptr = new myVend;
+    //struct myVend macArray;
+    VendPtr head = new myVend;
+    //int macsize;  
+    //head = macArray;
+    VendPtr last;
+    last = head;
+    //ptr = macArray;
     //int firstInput;
     //std::cout << "Weclome to the Vending Machine Control Hub\n";
     //TODO:: add in counter
     //std::cout << "What would you like to do?\n";
     //std::cout << "1. Manage Machines\n2.Exit" << std::endl;
     //std::cin >> firstInput;
-    while(true){
-        admin_control(ptr);
-        screenclear();
-        //std::cout << "You shouldn't be here\n";
+    while(1){
+        std::cout << "Checking something";
+        simulatedelay();
+        while(1){
+            //myDebug(head,last);
+            admin_control(last);
+            screenclear();
+            std::cout << "You shouldn't be here\n";
+            simulatedelay();
+        }
+        std::cout << "Where are you going";
+        simulatedelay();
     }
+    std::cout << "You shouldn't have gotten here";
+    simulatedelay();
     //std::cout << ptr->macNum;
-    return 0;
+    //return 0;
 }
+/*void initilizesystem(VendPtr& head, VendPtr& iter){
+
+}*/
 //////////////////// Start of functions ////////////////////
-void admin_control(VendPtr& head){
+void myDebug(VendPtr& head, VendPtr& itr){
+    int picker;
+    do {
+        screenclear();
+        uselessfun1();
+        uselessfun2();
+        std::cout << "Welcome to the debug screen\n";
+        uselessfun2();
+        std::cout << "Which pointer do you want to access?\n"; uselessfun2(); std::cout << "1. Head or 2. Iter? 3. Quit" << std::endl;
+        uselessfun1();
+        std::cin >> picker;
+        switch (picker){
+        case 1:
+            enterDebug(head);
+            break;
+        case 2:
+            enterDebug(itr);
+            break;
+        case 3: 
+            break;
+        default:
+            std::cout << "That ain't it chief";
+            naughtyUser();
+            simulatedelay();
+            break;
+        }
+    } while (picker != 3);
+}
+void enterDebug(VendPtr& ptr){
+    int picker;
+    do {
+        screenclear();
+        uselessfun1();
+        uselessfun2();
+        std::cout << "What are we debugging?\n";
+        uselessfun2();
+        std::cout << "1. # of machines\n"; uselessfun2(); std::cout << "2. Balance\n"; uselessfun2(); std::cout << "3. Items\n"; uselessfun2(); std::cout << "4. Exit\n";
+        uselessfun1();
+        std::cin >> picker;
+        switch (picker){
+        case 1:
+            std::cout << ptr->macNum;
+            simulatedelay();
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        default:
+            std::cout << "That ain't it chief";
+            naughtyUser();
+            simulatedelay();
+            break;
+        }
+    }while (picker != 4);
+
+}
+void admin_control(VendPtr& iter){
     int admin_input = 0;; 
-    int arrayLength = head->macNum;
+    int arrayLength = iter->macNum;
     //static struct myVend macArray[100];
     //int num_of_mac = 0;
-    std::cout << "Welcome to the Vending Machine Control Hub\n";
-    std::cout << "There are " << arrayLength << " machines in service\n";
+    screenclear();
+    uselessfun1(); uselessfun2();
+    std::cout << "Welcome to the Vending Machine Control Hub\n"; uselessfun2();
+    std::cout << "There are " << arrayLength << " machines in service\n"; uselessfun2();
     //std::cout << "There are " << num_of_mac << " machines in service\n";
     do {
-        std::cout << "What would you like to do?\n";
+        //uselessfun1();
+        std::cout << "What would you like to do?\n"; uselessfun1();
         std::cout << "1. Manage Machines\n2. # of Machines?\n3. Exit\n";
-        std::cout << "PLease enter your choice: "<< std::endl;
+        std::cout << "Please enter your choice: "<< std::endl;
         std:: cin >> admin_input;
         switch(admin_input){
             case 1: // Management screen: Create, Remove, Edit
-                manageMac(head);
+                manageMac(iter);
                 break;
             case 2: // 
                 std::cout << "There are " << arrayLength << " machines in service\n";
@@ -94,28 +181,30 @@ void admin_control(VendPtr& head){
                 break;
             default:
                 screenclear();
+                uselessfun1();
                 std::cout << "That was not a valid input. Please try again.\n";
+                naughtyUser();
                 break;
-                
+
         }
-        naughtyUser();
         //head->macNum = arrayLength+1;
         //check_static(num_of_mac);
     } while (admin_input != 3);
     //admin_input = 0;
 
 }
-void manageMac(VendPtr& head){
+void manageMac(VendPtr& iter){
     int decision = 0; 
     screenclear();
     do{
+        uselessfun1();
         std::cout << "Do you want to:\n1. Create New Machine\n2. Edit Machines\n3. Remove Machines\n4. Cancel\n";
         std::cout << "Please enter your choice: ";
         std::cin >> decision;
         std::cout << "\n";
         switch (decision){
         case 1:
-            addMac(head);
+            addMac(iter);
             break;
         case 2:
             //editMac(head);
@@ -123,45 +212,93 @@ void manageMac(VendPtr& head){
         case 3:
             //removeMac(head);
             break;
+        case 4:
+            break;
         default:
             screenclear();
             std::cout << "That was not a valid input. Please try again.\n";
+            naughtyUser();
             break;
         }
-        naughtyUser();
+        std::cout <<"oh no";
     }while(decision != 4);
 }
-void addMac(VendPtr& head){
+void addMac(VendPtr& iter){
     screenclear();
-    int pickLoc;
+    int test;
+    bool exitcond = false;
     do{
+        int pickLoc = 0;   
+        char morecpic = 'k'; 
+        std::cout << pickLoc;
         std::cout << "Is this for a school or an office?\n";
         std::cout << "1. Office\n2. School\n3. Cancel\n";
-        std::cout << "Enter your decision: ";
+        std::cout << "Enter your decision: " << std::endl;
+        //std::cin.ignore();
+        //std::cin >> std::ws;
         std::cin >> pickLoc;
+        std::cout << "How far are we getting?";
         switch (pickLoc){
         case 1:
-            newOffice(head);
+            //std::cin >> test;
+            //std::cout << "We got here\n";
+            newOffice(iter);
+            //std::cout << "We got there\n";
             break;
         case 2: 
-            //newSchool(head);
+            newSchool(iter);
+            break;
+        case 3:
+            exitcond = true;
             break;
         default:
             screenclear();
+            std::cin >> test;
             std::cout << "That was not a valid input. Please try again.\n";
+            naughtyUser();
             break;
         }
-        naughtyUser();
-    } while (pickLoc != 3);
-}
-void newOffice(VendPtr& head){
-    screenclear();
-    int test = 1;
-    VendPtr tempPtr;
-    std::cout << "This should only happen once";
-    processName(tempPtr,test);
-    screenclear();
+        //std::cin.clear();
+        //std::cout << "just in case " << std::endl;
+        //std::cin >> test;
+        if (pickLoc == 1 || pickLoc == 2){
+            std::cout << "Do you want to add another machine? Y / N" << std::endl;
+            while(true){
+                std::cin >> morecpic;
+                if(morecpic == 'n' || morecpic == 'N' || morecpic == 'y' || morecpic == 'Y')
+                    break;
+                else
+                    std::cout << "That was not a valid input. Please try again:\n"; 
+            }
 
+        }
+
+        std::cout << pickLoc << "Is not right";// << std::endl;
+        //naughtyUser();
+    } while ((exitcond == false));
+}
+void newOffice(VendPtr& iter){
+    screenclear();
+    //int test = 1;
+    VendPtr tempPtr;
+    //processName(tempPtr,test);
+    processName(tempPtr,1);
+    //screenclear();
+    std::cout << "Are we here?\n";
+    //simulatedelay();
+    //office_vend(tempPtr);
+    iter->f_ptr = tempPtr;
+    tempPtr->b_ptr = iter;
+    iter->macNum++;
+    iter = tempPtr;
+}
+void newSchool(VendPtr& iter){
+    screenclear();
+    VendPtr tempPtr;
+    processName(tempPtr,2);
+    screenclear();
+    school_vend(tempPtr);
+    
 }
 void processName(VendPtr& tempP, int loc){
     char user_in;
@@ -174,14 +311,13 @@ void processName(VendPtr& tempP, int loc){
         temptag.clear();
         char confirm = 'k';
         int ii =0;
-        std::cout << ii << " " << confirm;
         if (loc == 1)
             std::cout << "\nWhat is the name of your company?\n";
         else if (loc == 2)
             std::cout << "What is the name of your school?\n";
         std::cin.ignore();
         std::getline(std::cin, tempname);
-        while (ii <= tempname.length()){ // loops through the provided name
+        while (ii <= tempname.length() && tempname.length() != 0){ // loops through the provided name
             if (ii == 0){
                 while (tempname[ii] == ' '){ // removes extra spaces in front
                     tempname.erase(ii,1);
@@ -195,7 +331,6 @@ void processName(VendPtr& tempP, int loc){
                     tempname.erase(ii+1,1);
             }
             else if ((tempname[ii-1] == ' ') && !((tempname[ii] == 'o' || tempname[ii] == 'O') && (tempname[ii+1] == 'f' || (tempname[ii+1] == 'F')))){
-                std::cout << "Am I getting here? " << tempname[ii];
                 tempname[ii] = toupper(tempname[ii]);
                 temptag += tempname[ii];
             } // upper case the first letter of a word excluding "of"
@@ -203,11 +338,10 @@ void processName(VendPtr& tempP, int loc){
                 tempname[ii] = tolower(tempname[ii]); // lower case the rest
             ii++;
         }
-        std::cout << confirm;
         while(confirm != 'y'){
             if (counter == 0 || counter == 5){
                     std::cout << "Is " << tempname << " the name you wanted? Y / N\n";
-                    std::cout <<  temptag << '\n';
+                    //std::cout <<  temptag << '\n';
                     counter = 1;
             }
             std::cin >> confirm;
@@ -220,7 +354,52 @@ void processName(VendPtr& tempP, int loc){
         }
         user_in = confirm;
     }while (!(user_in == 'Y') && !(user_in == 'y'));
-    std::cout <<" I'm done ";
+}
+void office_vend(VendPtr& tempPtr){
+    std::cout << "Why do you crash";
+    // preset drinks
+    tempPtr->re_coke    = 12;
+    tempPtr->re_ale     = 12;
+    //tempPtr->bot_coke   = tempPtr->re_coke;
+    //tempPtr->bot_ale    = tempPtr->re_ale;
+    // preset food 
+    tempPtr->re_choc    = 12;
+    tempPtr->re_gumy    = 12;
+    tempPtr->re_chip    = 12;
+    //tempPtr->choco_bar  = tempPtr->re_choc;
+    //tempPtr->gummy_bag  = tempPtr->re_gumy;
+    //tempPtr->chips      = tempPtr->re_chip;
+    // preset money
+    tempPtr->ini_val    = 12;
+    //tempPtr->usable_bal = tempPtr->ini_val;
+    tempPtr->gain_val   = 0;
+    std::cout << "over here";
+}
+void school_vend(VendPtr& tempPtr){
+    // drinks
+    tempPtr->re_coke    = 6;
+    tempPtr->re_ale     = 6;
+    tempPtr->re_sprite  = 6;
+    tempPtr->bot_coke   = tempPtr->re_coke;
+    tempPtr->bot_ale    = tempPtr->re_ale;
+    tempPtr->bot_sprite = tempPtr->re_sprite;
+    // food
+    tempPtr->re_choc    = 12;
+    tempPtr->re_gumy    =  6;
+    tempPtr->re_fruit   = 12;
+    tempPtr->choco_bar  = tempPtr->re_choc;
+    tempPtr->gummy_bag  = tempPtr->re_gumy;
+    tempPtr->fruit_bag  = tempPtr->re_fruit;
+    // money
+    tempPtr->ini_val    = 8;
+    tempPtr->usable_bal = tempPtr->ini_val;
+    tempPtr->gain_val   = 0;
+}
+void uselessfun1(){
+    std::cout << "//////////////////////////////////////////////////////////\n";
+}
+void uselessfun2(){
+    std::cout << "//     ";
 }
 /* useless test function now
 int check_static(int test){
@@ -512,7 +691,7 @@ int main(){
 }
 */
 // Sets the cout of dollars to 2 decimal points. 
-void initializesystem(){
+void initializescale(){
     std::cout.setf(std::ios::fixed);
     std::cout.setf(std::ios::showpoint);
     std::cout.precision(2);
@@ -610,10 +789,12 @@ void initilizeSchool(myVend *schoolMac){
 */
 void simulatedelay(){
     std::cin.ignore();
+    std::cin.clear();
     std::cout << "\nPress enter key to continue..." << std::endl;
     std::cin.get();
 }
 void naughtyUser(){
     std::cin.clear();
-    std::cin.ignore(1000,'\n');
+    std::cin.ignore(10000,'\n');
+    std::cin.get();
 }
