@@ -28,7 +28,7 @@ struct myVend{
     //myVend *link;
 };
 typedef myVend* VendPtr;
-
+//making modification for remote push testing
 void school_vend(VendPtr& tempPtr);                   // create a vending machine for use in a school
 void office_vend(VendPtr& tempPtr);                     // create a vending machine for use in a work office
 //void admin_control(struct myVend macArray, int admin_choice); // Entering Admin Control 
