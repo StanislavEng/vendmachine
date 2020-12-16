@@ -39,7 +39,7 @@ void addMac(VendPtr& iter);
 void editMac(VendPtr& iter);
 void removeMac(VendPtr& iter);
 void newOffice(VendPtr& iter);
-//void newSchool(VendPtr& head);
+void newSchool(VendPtr& head);
 void processName(VendPtr& temp, int loc);
 void user_control(struct myVend& machine);                    // Entering User Input Mode
 void initializescale();                                       // Limits the decimal values
@@ -76,7 +76,7 @@ int main(int argc, char *argv[]){
         std::cout << "Checking something";
         simulatedelay();
         while(1){
-            myDebug(head,last);
+            //myDebug(head,last);
             admin_control(last);
             screenclear();
             std::cout << "You shouldn't be here\n";
@@ -205,13 +205,15 @@ void manageMac(VendPtr& iter){
         switch (decision){
         case 1:
             addMac(iter);
-            //break;
+            break;
         case 2:
             //editMac(head);
-            //break;
+            break;
         case 3:
             //removeMac(head);
-           // break;
+            break;
+        case 4:
+            break;
         default:
             screenclear();
             std::cout << "That was not a valid input. Please try again.\n";
@@ -223,18 +225,25 @@ void manageMac(VendPtr& iter){
 }
 void addMac(VendPtr& iter){
     screenclear();
-    int pickLoc;
+    int test;
+    bool exitcond = false;
     do{
+        int pickLoc = 0;   
+        char morecpic = 'k'; 
+        std::cout << pickLoc;
         std::cout << "Is this for a school or an office?\n";
         std::cout << "1. Office\n2. School\n3. Cancel\n";
-        std::cout << "Enter your decision: ";
+        std::cout << "Enter your decision: " << std::endl;
         std::cin >> pickLoc;
         switch (pickLoc){
         case 1:
             newOffice(iter);
             break;
         case 2: 
-            //newSchool(iter);
+            newSchool(iter);
+            break;
+        case 3:
+            exitcond = true;
             break;
         default:
             screenclear();
@@ -242,10 +251,18 @@ void addMac(VendPtr& iter){
             naughtyUser();
             break;
         }
-        std::cout << pickLoc << "Is not right";
-        naughtyUser();
-        simulatedelay();
-    } while (!(pickLoc == 3));
+        if (pickLoc == 1 || pickLoc == 2){
+            std::cout << "Do you want to add another machine? Y / N" << std::endl;
+            while(true){
+                std::cin >> morecpic;
+                if(morecpic == 'n' || morecpic == 'N' || morecpic == 'y' || morecpic == 'Y')
+                    break;
+                else
+                    std::cout << "That was not a valid input. Please try again:\n"; 
+            }
+
+        }
+    } while ((exitcond == false));
 }
 void newOffice(VendPtr& iter){
     screenclear();
@@ -258,13 +275,18 @@ void newOffice(VendPtr& iter){
     iter->f_ptr = tempPtr;
     tempPtr->b_ptr = iter;
     iter->macNum++;
+    iter = tempPtr;
 }
-void newSchool(VendPtr* iter){
+void newSchool(VendPtr& iter){
     screenclear();
     VendPtr tempPtr;
     processName(tempPtr,2);
     screenclear();
     school_vend(tempPtr);
+    iter->f_ptr = tempPtr;
+    tempPtr->b_ptr = iter;
+    iter->macNum++;
+    iter = tempPtr;
     
 }
 void processName(VendPtr& tempP, int loc){
@@ -284,7 +306,7 @@ void processName(VendPtr& tempP, int loc){
             std::cout << "What is the name of your school?\n";
         std::cin.ignore();
         std::getline(std::cin, tempname);
-        while (ii <= tempname.length()){ // loops through the provided name
+        while (ii <= tempname.length() && tempname.length() != 0){ // loops through the provided name
             if (ii == 0){
                 while (tempname[ii] == ' '){ // removes extra spaces in front
                     tempname.erase(ii,1);
@@ -754,10 +776,12 @@ void initilizeSchool(myVend *schoolMac){
 */
 void simulatedelay(){
     std::cin.ignore();
+    std::cin.clear();
     std::cout << "\nPress enter key to continue..." << std::endl;
     std::cin.get();
 }
 void naughtyUser(){
     std::cin.clear();
-    std::cin.ignore(10,'\n');
+    std::cin.ignore(10000,'\n');
+    std::cin.get();
 }
