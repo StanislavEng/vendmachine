@@ -234,10 +234,16 @@ void addMac(VendPtr& iter){
         std::cout << "Is this for a school or an office?\n";
         std::cout << "1. Office\n2. School\n3. Cancel\n";
         std::cout << "Enter your decision: " << std::endl;
+        //std::cin.ignore();
+        //std::cin >> std::ws;
         std::cin >> pickLoc;
+        std::cout << "How far are we getting?";
         switch (pickLoc){
         case 1:
+            //std::cin >> test;
+            //std::cout << "We got here\n";
             newOffice(iter);
+            //std::cout << "We got there\n";
             break;
         case 2: 
             newSchool(iter);
@@ -247,10 +253,14 @@ void addMac(VendPtr& iter){
             break;
         default:
             screenclear();
+            std::cin >> test;
             std::cout << "That was not a valid input. Please try again.\n";
             naughtyUser();
             break;
         }
+        //std::cin.clear();
+        //std::cout << "just in case " << std::endl;
+        //std::cin >> test;
         if (pickLoc == 1 || pickLoc == 2){
             std::cout << "Do you want to add another machine? Y / N" << std::endl;
             while(true){
@@ -262,6 +272,9 @@ void addMac(VendPtr& iter){
             }
 
         }
+
+        std::cout << pickLoc << "Is not right";// << std::endl;
+        //naughtyUser();
     } while ((exitcond == false));
 }
 void newOffice(VendPtr& iter){
@@ -270,8 +283,10 @@ void newOffice(VendPtr& iter){
     VendPtr tempPtr;
     //processName(tempPtr,test);
     processName(tempPtr,1);
-    screenclear();
-    office_vend(tempPtr);
+    //screenclear();
+    std::cout << "Are we here?\n";
+    //simulatedelay();
+    //office_vend(tempPtr);
     iter->f_ptr = tempPtr;
     tempPtr->b_ptr = iter;
     iter->macNum++;
@@ -283,10 +298,6 @@ void newSchool(VendPtr& iter){
     processName(tempPtr,2);
     screenclear();
     school_vend(tempPtr);
-    iter->f_ptr = tempPtr;
-    tempPtr->b_ptr = iter;
-    iter->macNum++;
-    iter = tempPtr;
     
 }
 void processName(VendPtr& tempP, int loc){
@@ -345,22 +356,24 @@ void processName(VendPtr& tempP, int loc){
     }while (!(user_in == 'Y') && !(user_in == 'y'));
 }
 void office_vend(VendPtr& tempPtr){
+    std::cout << "Why do you crash";
     // preset drinks
     tempPtr->re_coke    = 12;
     tempPtr->re_ale     = 12;
-    tempPtr->bot_coke   = tempPtr->re_coke;
-    tempPtr->bot_ale    = tempPtr->re_ale;
+    //tempPtr->bot_coke   = tempPtr->re_coke;
+    //tempPtr->bot_ale    = tempPtr->re_ale;
     // preset food 
     tempPtr->re_choc    = 12;
     tempPtr->re_gumy    = 12;
     tempPtr->re_chip    = 12;
-    tempPtr->choco_bar  = tempPtr->re_choc;
-    tempPtr->gummy_bag  = tempPtr->re_gumy;
-    tempPtr->chips      = tempPtr->re_chip;
+    //tempPtr->choco_bar  = tempPtr->re_choc;
+    //tempPtr->gummy_bag  = tempPtr->re_gumy;
+    //tempPtr->chips      = tempPtr->re_chip;
     // preset money
     tempPtr->ini_val    = 12;
-    tempPtr->usable_bal = tempPtr->ini_val;
+    //tempPtr->usable_bal = tempPtr->ini_val;
     tempPtr->gain_val   = 0;
+    std::cout << "over here";
 }
 void school_vend(VendPtr& tempPtr){
     // drinks
