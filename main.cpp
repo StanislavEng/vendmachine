@@ -24,8 +24,8 @@ struct myVend{
     std::string tag;                                          // classification tag
     int macNum = 0;                                           // For use in array only
     int macMax = 0;
-    myVend *f_ptr;
-    myVend *b_ptr;
+    myVend *f_ptr = NULL;
+    myVend *b_ptr = NULL;
     //myVend *link;
 };
 typedef myVend* VendPtr;
@@ -158,7 +158,7 @@ void myDebug(VendPtr& head, VendPtr& itr){
             simulatedelay();
             break;
         }
-    } while (picker != 3);
+    } while (picker != 5);
 }
 void manualOveride(VendPtr& ptr,VendPtr& head){
     int mypick;
@@ -184,8 +184,15 @@ void manualOveride(VendPtr& ptr,VendPtr& head){
     screenclear();
     uselessfun1();
     std::cout << "The machine you have made is called: " << temp->name << ". You added " << temp->bot_coke << " pop cans, " << temp->choco_bar << " chocolate, and  " << temp->fruit_bag << " fruit bags.\n";
-    if(head->f_ptr == NULL){
-        ptr = temp;
+    //std::cout << head->f_ptr;
+    if(head->macMax == 0){
+        //head->name = temp->name;
+        //head->bot_coke = temp->bot_coke;
+        //head->choco_bar = temp->choco_bar;
+        //head->fruit_bag = temp->fruit_bag;
+        head = temp;
+        head->macNum = 1;
+        ptr = head;
     }
     else{
         ptr->f_ptr = temp;
@@ -194,7 +201,7 @@ void manualOveride(VendPtr& ptr,VendPtr& head){
         ptr = temp;
     }
     head->macMax++;
-    std::cout << head->macMax;
+    //std::cout << head->macMax;
 
     //}while(mypick != 5);
 }
