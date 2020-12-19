@@ -15,23 +15,24 @@ Last Changed Dec 8, 2020*/  // quick edit to double check some stuff
 
 // Structue for a vending machine 
 struct myVend{
-    std::string name = "blank";                                         // name of the location 
-    int bot_coke = 0, bot_ale = 0, bot_sprite = 0;                        // bottles of drinks (coca cola, ginger ale, sprite)
-    int re_coke = 0, re_ale = 0, re_sprite = 0;                           // restock value for drinks
-    int choco_bar = 0, gummy_bag = 0, chips = 0, fruit_bag = 0;               // food items 
-    int re_choc = 0, re_gumy = 0, re_chip = 0, re_fruit = 0;                  // restock value for food 
-    double usable_bal = 0, gain_val = 0, ini_val = 0;                     // usable balance, how much money earned, initial value
-    std::string tag;                                          // classification tag
-    int macNum = 0;                                           // For use in array only
+    std::string name = "blank";                                       // name of the location 
+    int bot_coke = 0, bot_ale = 0, bot_sprite = 0;                    // bottles of drinks (coca cola, ginger ale, sprite)
+    int re_coke = 0, re_ale = 0, re_sprite = 0;                       // restock value for drinks
+    int choco_bar = 0, gummy_bag = 0, chips = 0, fruit_bag = 0;       // food items 
+    int re_choc = 0, re_gumy = 0, re_chip = 0, re_fruit = 0;          // restock value for food 
+    double usable_bal = 0, gain_val = 0, ini_val = 0;                 // usable balance, how much money earned, initial value
+    std::string tag;                                                  // classification tag
+    int macNum = 0;                                                   // For use in array only
     int macMax = 0;
     myVend *f_ptr = NULL;
     myVend *b_ptr = NULL;
+    std::string type;
     //myVend *link;
 };
 typedef myVend* VendPtr;
 //making modification for remote push testing
-void school_vend(VendPtr& tempPtr);                     // create a vending machine for use in a school
-void office_vend(VendPtr& tempPtr);                     // create a vending machine for use in a work office
+void school_vend(VendPtr& tempPtr);                             // create a vending machine for use in a school
+void office_vend(VendPtr& tempPtr);                             // create a vending machine for use in a work office
 //void admin_control(struct myVend macArray, int admin_choice); // Entering Admin Control 
 //void admin_control(struct myVend macArray[100]);
 void admin_control(VendPtr& head);
@@ -57,7 +58,7 @@ void manualOveride(VendPtr& ptr,VendPtr& head);
 
 int main(int argc, char *argv[]){
     screenclear();
-    int macMax = 100;
+    //int macMax = 100;
     myVend macArray;
     //struct myVend macArray[macMax];
     //struct myVend macArray;
@@ -313,7 +314,7 @@ void manageMac(VendPtr& head){
             //editMac(head);
             break;
         case 3:
-            //removeMac(head);
+            removeMac(head);
             break;
         case 4:
             break;
@@ -382,6 +383,29 @@ void addMac(VendPtr& head){
         }
     } while ((exitcond == false));
 }
+void removeMac(VendPtr& head){
+    VendPtr here = head;
+    int sel = 0, leng;
+    do{
+        int maxarr;
+        if(head->macMax < 10)
+            leng = 3;
+        else
+            leng = 5;
+        maxarr = head->macMax;
+        std::string tmparr[maxarr];
+        uselessfun1();
+        uselessfun2();
+        std::cout << "What machine do you want to delete?\n";
+        uselessfun2();
+        for(int ii = 0; ii < leng; ii++){
+        //    tmparr[ii] = ;
+        }
+        
+        
+    }while(sel != 6);
+
+}   
 void newOffice(VendPtr& iter){
     VendPtr tempPtr = new myVend;
     processName(tempPtr,1);
@@ -423,10 +447,14 @@ void processName(VendPtr& tempP, int loc){
         temptag.clear();
         char confirm = 'k';
         int ii =0;
-        if (loc == 1)
+        if (loc == 1){
             std::cout << "\nWhat is the name of your company?\n";
-        else if (loc == 2)
+            tempP->type = "Office";
+        }
+        else if (loc == 2){
             std::cout << "\nWhat is the name of your school? \n";
+            tempP->type = "School";
+        }
         std::cin.ignore();
         std::getline(std::cin, tempname);
         while (ii <= tempname.length() && tempname.length() != 0){ // loops through the provided name
