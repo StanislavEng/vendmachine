@@ -11,7 +11,7 @@ Stage 1:
 The original program, using one .cpp file with structures only.
 
 Stage 2:
-Converting to Classes
+Converting to Classes and maybe vectors.
 
 Stage 3:
 TBD
