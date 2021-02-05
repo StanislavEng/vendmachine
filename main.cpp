@@ -11,8 +11,6 @@ Last Changed Dec 8, 2020*/  // quick edit to double check some stuff
 #include <iostream>
 #include <string>
 
-//using namespace std;
-
 // Structue for a vending machine 
 struct myVend{
     std::string name = "blank";                                       // name of the location 
@@ -60,7 +58,7 @@ int main(int argc, char *argv[]){
     screenclear();
     //int macMax = 100;
     myVend macArray;
-    //struct myVend macArray[macMax];
+    //struct myVend macArray[macMax];  /// this caused problems, when using array which is like double pointer
     //struct myVend macArray;
     //VendPtr ptr = new myVend;
     //struct myVend macArray;
@@ -101,6 +99,7 @@ int main(int argc, char *argv[]){
         while(1){
             //myDebug(head,last);
             myDebug(head,head);
+            //VendPtr iter = head;
             //admin_control(last);
             admin_control(head);
             screenclear();
@@ -108,16 +107,14 @@ int main(int argc, char *argv[]){
             simulatedelay();
         }
         std::cout << "Where are you going";
-        simulatedelay();
+        simulatedelay();  
     }
     std::cout << "You shouldn't have gotten here";
     simulatedelay();
     //std::cout << ptr->macNum;
     //return 0;
 }
-/*void initilizesystem(VendPtr& head, VendPtr& iter){
 
-}*/
 //////////////////// Start of functions ////////////////////
 void myDebug(VendPtr& head, VendPtr& itr){
     int picker;
@@ -241,7 +238,7 @@ void enterDebug(VendPtr& ptr){ // will not be made optimized because it's just m
         std::cin >> picker;
         switch (picker){
         case 1:
-            std::cout << ptr->macNum;
+            std::cout << ptr->macMax;
             simulatedelay();
             break;
         case 2:
@@ -257,9 +254,9 @@ void enterDebug(VendPtr& ptr){ // will not be made optimized because it's just m
     }while (picker != 4);
 
 }
-void admin_control(VendPtr& iter){
+void admin_control(VendPtr& head){
     int admin_input = 0;; 
-    int arrayLength = iter->macNum;
+    int arrayLength = head->macMax;
     //static struct myVend macArray[100];
     //int num_of_mac = 0;
     screenclear();
@@ -275,7 +272,7 @@ void admin_control(VendPtr& iter){
         std:: cin >> admin_input;
         switch(admin_input){
             case 1: // Management screen: Create, Remove, Edit
-                manageMac(iter);
+                manageMac(head);
                 break;
             case 2: // 
                 std::cout << "There are " << arrayLength << " machines in service\n";
@@ -335,7 +332,6 @@ void addMac(VendPtr& head){
     while(iter->f_ptr != NULL)
         iter = iter->f_ptr;
     do{
-        std::cout << head->macMax << " should be " << iter->macMax;
         int pickLoc = 0;   
         char morecpic = 'k'; 
         std::cout << "\nIs this for a school or an office?\n";
@@ -372,15 +368,16 @@ void addMac(VendPtr& head){
                 else if ( morecpic == 'y' || morecpic == 'Y')
                     break;
                 else
-                    std::cout << "That was not a valid input. Please try again:\n"; 
+                    std::cout << "That was not a valid input. Please try again:\n";
             }
         }
-        std::cout <<"\n" <<head->macMax;
-        if(/*(head->name == "blank") && */(head->macMax == 1)){
+        std::cout <<"\nThere are" <<head->macMax;/*
+        if(/*(head->name == "blank") && (head->macMax == 1)){
             head = iter;
             std::cout << "\n" <<head->macMax << " should be " << iter->macMax;
             std::cout << "\nLet's compare " << iter->macNum; 
-        }
+        }*/
+        naughtyUser();
     } while ((exitcond == false));
 }
 void removeMac(VendPtr& head){
@@ -397,10 +394,17 @@ void removeMac(VendPtr& head){
         uselessfun1();
         uselessfun2();
         std::cout << "What machine do you want to delete?\n";
-        uselessfun2();
         for(int ii = 0; ii < leng; ii++){
         //    tmparr[ii] = ;
+            uselessfun2();
+            std::cout << "Machine #" <<here->macNum << " " << here->name << " (" << here->tag << ")";
+            here = here->f_ptr;
         }
+        uselessfun2();
+        if(here->macNum == 3)
+            std::cout << "6. Move to next " << leng << ".\n";
+        //else if()
+
         
         
     }while(sel != 6);
@@ -478,7 +482,7 @@ void processName(VendPtr& tempP, int loc){
                 tempname[ii] = tolower(tempname[ii]); // lower case the rest
             ii++;
         }
-        while(confirm != 'y'){
+        while(confirm != 'y' || confirm != 'Y'){
             if (counter == 0 || counter == 5){
                     std::cout << "Is " << tempname << " the name you wanted? Y / N\n";
                     //std::cout <<  temptag << '\n';
@@ -492,6 +496,7 @@ void processName(VendPtr& tempP, int loc){
                 counter++;
             }       
         }
+        naughtyUser();
         user_in = confirm;
     }while (!(user_in == 'Y') && !(user_in == 'y'));
     tempP->name = tempname;
@@ -538,7 +543,7 @@ void school_vend(VendPtr& tempPtr){
     tempPtr->gain_val   = 0;
 }
 void uselessfun1(){
-    std::cout << "//////////////////////////////////////////////////////////\n";
+    std::cout << "////////////////////////////////////////////////////////////////////\n";
 }
 void uselessfun2(){
     std::cout << "//     ";
@@ -550,7 +555,7 @@ int check_static(int test){
     std::cout << "The number is now " << test << ".\n";
     return test;
 }*/
-/////// my debugger ////
+//////////////////// my debugger ////////////////////
 // std::cout << "I am in []" << std::endl; simulatedelay();
 /*
 int main(){
@@ -937,5 +942,5 @@ void simulatedelay(){
 void naughtyUser(){
     std::cin.clear();
     std::cin.ignore(10000,'\n');
-    std::cin.get();
+    //std::cin.get();
 }
