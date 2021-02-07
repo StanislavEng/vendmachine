@@ -54,6 +54,9 @@ void uselessfun2();
 void enterDebug(VendPtr& ptr);
 void manualOveride(VendPtr& ptr,VendPtr& head);
 void testArray(VendPtr& head);
+void arrParse(VendPtr& head);
+void arrParse(VendPtr& head, int sel);
+void toDel();
 
 int main(int argc, char *argv[]){
     screenclear();
@@ -399,40 +402,121 @@ void addMac(VendPtr& head){
     } while ((exitcond == false));
 }
 void removeMac(VendPtr& head){
+    uselessfun1();
+    uselessfun2();
+    bool del, sel = false;
+    int pic = 0;
+    std::cout << "Opening Machine Removal Features\n";
+    for (int ii = 0; ii < 1500; ii++){
+        if ((ii == 500) || (ii == 1000))
+            std::cout << ". . .\n"; 
+    }
+    std::cout << "Opening\n";
+    for (int ii = 0; ii < 300; ii ++){};
+    VendPtr here = head;
+    do {
+        if(pic == 0)
+            arrParse(here);
+        else if (pic == 6 || pic == 7)
+            arrParse(here,pic);
+        std::cin >> pic;
+        /*while (std::cin.fail()){ // I'll try out this type of condition later
+            std::cout << "Invalid Input" << std::endl;
+            std::cin.clear();
+            std::cin.ignore(256,'\n');
+            std::cin >> pic;
+        }*/
+        switch (pic) {
+        case 1:
+            toDel();
+            break;
+        case 2:
+            toDel();
+            break;
+        case 3:
+            toDel();
+            break;
+        case 4:
+            if (head->macMax < 10)
+                std::cout << "Invalid Choice";
+            else
+                toDel();
+
+            break;
+        case 5:
+            if (head->macMax < 10)
+                std::cout << "Invalid Choice";
+            else 
+                toDel();
+            
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+        default:
+            std::cout << "That was not a valid Input. Please try again\n";
+            break;
+        }
+        
+
+    }while(sel == false);
+}
+void arrParse(VendPtr& head){
     VendPtr here = head;
     int sel = 0, leng;
-    do{
-        int maxarr;
-        if(head->macMax < 10)
-            leng = 3;
-        else
-            leng = 5;
-        maxarr = head->macMax;
-        std::string tmparr[maxarr];
-        uselessfun1();
-        uselessfun2();
-        std::cout << "What machine do you want to delete?\n";
-        for(int ii = 0; ii < leng; ii++){
-        //    tmparr[ii] = ;
-            if(here->f_ptr != NULL){
-                uselessfun2();
-                std::cout << "Machine #" <<here->macNum << " " << here->name << " (" << here->tag << ")";
-                here = here->f_ptr;
-            }
+    int maxarr;
+    if(head->macMax < 10)
+        leng = 3;
+    else
+        leng = 5;
+    maxarr = head->macMax;
+    std::string tmparr[maxarr];
+    uselessfun1();
+    uselessfun2();
+    std::cout << "What machine do you want to delete?\n";
+    for(int ii = 0; ii < leng; ii++){
+    //    tmparr[ii] = ;
+        if(here->f_ptr != NULL){
+            uselessfun2();
+            std::cout << "Machine #" <<here->macNum << " " << here->name << " (" << here->tag << ")";
+            here = here->f_ptr;
         }
-        uselessfun2();
-        if(here->f_ptr != NULL)
-            std::cout << "6. Move to next " << leng << ".\n";
-        if(here->b_ptr != NULL)
-            std::cout << "7. Move to previous " << leng << ".\n";
-        std::cout << "Enter your decision: ";
-        std::cin >> sel;
-        //else if()
-
-        
-        
-    }while(sel != 6);
-
+    }
+    uselessfun2();
+    if(here->f_ptr != NULL)
+        std::cout << "6. Move to next " << leng << ".\n";
+    if(here->b_ptr != NULL)
+        std::cout << "7. Move to previous " << leng << ".\n";
+    std::cout << "Enter your decision: ";
+}
+void arrParse(VendPtr& head, int pic){
+    VendPtr here = head;
+    int sel = 0, leng;
+    int maxarr;
+    if(head->macMax < 10)
+        leng = 3;
+    else
+        leng = 5;
+    maxarr = head->macMax;
+    std::string tmparr[maxarr];
+    uselessfun1();
+    uselessfun2();
+    std::cout << "What machine do you want to delete?\n";
+    for(int ii = 0; ii < leng; ii++){
+    //    tmparr[ii] = ;
+        if(here->f_ptr != NULL){
+            uselessfun2();
+            std::cout << "Machine #" <<here->macNum << " " << here->name << " (" << here->tag << ")";
+            here = here->f_ptr;
+        }
+    }
+    uselessfun2();
+    if(here->f_ptr != NULL)
+        std::cout << "6. Move to next " << leng << ".\n";
+    if(here->b_ptr != NULL)
+        std::cout << "7. Move to previous " << leng << ".\n";
+    std::cout << "Enter your decision: ";
 }   
 void newOffice(VendPtr& iter){
     VendPtr tempPtr = new myVend;
@@ -977,4 +1061,7 @@ void testArray(VendPtr& head){
         here = here->f_ptr;
     }
     simulatedelay();
+}
+void toDel(){
+    std::cout << "Confirm your selection: Y / N\n";
 }
