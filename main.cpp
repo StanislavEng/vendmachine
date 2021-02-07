@@ -53,6 +53,7 @@ void uselessfun1();
 void uselessfun2();
 void enterDebug(VendPtr& ptr);
 void manualOveride(VendPtr& ptr,VendPtr& head);
+void testArray(VendPtr& head);
 
 int main(int argc, char *argv[]){
     screenclear();
@@ -137,21 +138,29 @@ void myDebug(VendPtr& head, VendPtr& itr){
             enterDebug(itr);
             break;
         case 3: 
-            while(catme != 2){
-                manualOveride(itr,head); 
+            char choice;
+            std::cout << "Doing this will wipe your array, are you sure? Y / N \n";
+            while(!(catme == 'y') || !(catme == 'n')){
                 std::cin >> catme;
+                if(catme == 'y'){
+                    while(catme != 2){
+                        manualOveride(itr,head); 
+                        std::cin >> catme;
+                    }                    
+                }
             }
             break;
         case 4:
             do{
                 VendPtr here = head;
                 while(catme != 5){
+                    std::cout << "\n\n\n\n\n\n";
                     uselessfun1(); uselessfun2();
                     std::cout << "There are supposedly " << head->macMax << " machines in service\n";
                     uselessfun2();
                     std::cout << "We are on machine #" << here->macNum <<". It is called " << here->name;
                     uselessfun2();
-                    std::cout << "Their tag is " << here->tag << ". You added " << here->bot_coke << " pop cans, " << here->choco_bar << " chocolate, and  " << here->fruit_bag << " fruit bags.\n";
+                    std::cout << "\nTheir tag is " << here->tag << ". You added " << here->bot_coke << " pop cans, " << here->choco_bar << " chocolate, and  " << here->fruit_bag << " fruit bags.\n";
                     uselessfun2();
                     std::cout << "Do you want to go to the next or previous?\n";
                     uselessfun2();
@@ -159,8 +168,12 @@ void myDebug(VendPtr& head, VendPtr& itr){
                     if (catme == 1){
                         if(here->f_ptr != NULL)
                             here = here->f_ptr;
-                        else 
+                        else {
+                            uselessfun1();
+                            uselessfun2();
                             std::cout << "\nThere's no more machines in this direction\n";
+                        }
+
                     }
                     else if(catme ==2){
                         if(here->b_ptr != NULL)
@@ -266,6 +279,7 @@ void admin_control(VendPtr& head){
     //std::cout << "There are " << num_of_mac << " machines in service\n";
     do {
         //uselessfun1();
+        arrayLength = head->macMax;
         std::cout << "What would you like to do?\n"; uselessfun1();
         std::cout << "1. Manage Machines\n2. # of Machines?\n3. Exit\n";
         std::cout << "Please enter your choice: "<< std::endl;
@@ -329,9 +343,12 @@ void addMac(VendPtr& head){
     int test;
     bool exitcond = false;
     VendPtr iter = head;
-    while(iter->f_ptr != NULL)
-        iter = iter->f_ptr;
+
     do{
+        while(iter->f_ptr != NULL)
+            iter = iter->f_ptr;
+        if (head->macMax == 1)
+            head = iter;
         int pickLoc = 0;   
         char morecpic = 'k'; 
         std::cout << "\nIs this for a school or an office?\n";
@@ -378,6 +395,7 @@ void addMac(VendPtr& head){
             std::cout << "\nLet's compare " << iter->macNum; 
         }*/
         naughtyUser();
+        //testArray(head);
     } while ((exitcond == false));
 }
 void removeMac(VendPtr& head){
@@ -396,13 +414,19 @@ void removeMac(VendPtr& head){
         std::cout << "What machine do you want to delete?\n";
         for(int ii = 0; ii < leng; ii++){
         //    tmparr[ii] = ;
-            uselessfun2();
-            std::cout << "Machine #" <<here->macNum << " " << here->name << " (" << here->tag << ")";
-            here = here->f_ptr;
+            if(here->f_ptr != NULL){
+                uselessfun2();
+                std::cout << "Machine #" <<here->macNum << " " << here->name << " (" << here->tag << ")";
+                here = here->f_ptr;
+            }
         }
         uselessfun2();
-        if(here->macNum == 3)
+        if(here->f_ptr != NULL)
             std::cout << "6. Move to next " << leng << ".\n";
+        if(here->b_ptr != NULL)
+            std::cout << "7. Move to previous " << leng << ".\n";
+        std::cout << "Enter your decision: ";
+        std::cin >> sel;
         //else if()
 
         
@@ -943,4 +967,14 @@ void naughtyUser(){
     std::cin.clear();
     std::cin.ignore(10000,'\n');
     //std::cin.get();
+}
+void testArray(VendPtr& head){
+    uselessfun1();
+    VendPtr here = head;
+    while (here != NULL){
+        std::cout << here->macMax << " " << here->macNum << " " << here->name << " " << 
+        here->tag << " " << here->bot_ale << "\n";
+        here = here->f_ptr;
+    }
+    simulatedelay();
 }
