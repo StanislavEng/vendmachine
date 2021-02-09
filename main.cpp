@@ -405,7 +405,12 @@ void removeMac(VendPtr& head){
     uselessfun1();
     uselessfun2();
     bool del, sel = false;
-    int pic = 0;
+    int pic = 0, leng, maxarr;
+    if(head->macMax < 10)
+        leng = 3;
+    else
+        leng = 5;
+    maxarr = head->macMax;
     std::cout << "Opening Machine Removal Features\n";
     for (int ii = 0; ii < 1500; ii++){
         if ((ii == 500) || (ii == 1000))
@@ -415,10 +420,7 @@ void removeMac(VendPtr& head){
     for (int ii = 0; ii < 300; ii ++){};
     VendPtr here = head;
     do {
-        if(pic == 0)
-            arrParse(here);
-        else if (pic == 6 || pic == 7)
-            arrParse(here,pic);
+        arrParse(here,leng,maxarr);
         std::cin >> pic;
         /*while (std::cin.fail()){ // I'll try out this type of condition later
             std::cout << "Invalid Input" << std::endl;
@@ -427,6 +429,8 @@ void removeMac(VendPtr& head){
             std::cin >> pic;
         }*/
         switch (pic) {
+        case 0:
+            break;
         case 1:
             toDel();
             break;
@@ -451,6 +455,7 @@ void removeMac(VendPtr& head){
             
             break;
         case 6:
+
             break;
         case 7:
             break;
@@ -462,15 +467,9 @@ void removeMac(VendPtr& head){
 
     }while(sel == false);
 }
-void arrParse(VendPtr& head){
+void arrParse(VendPtr& head,int leng, int maxarr){
     VendPtr here = head;
-    int sel = 0, leng;
-    int maxarr;
-    if(head->macMax < 10)
-        leng = 3;
-    else
-        leng = 5;
-    maxarr = head->macMax;
+    int sel = 0;
     std::string tmparr[maxarr];
     uselessfun1();
     uselessfun2();
@@ -490,34 +489,6 @@ void arrParse(VendPtr& head){
         std::cout << "7. Move to previous " << leng << ".\n";
     std::cout << "Enter your decision: ";
 }
-void arrParse(VendPtr& head, int pic){
-    VendPtr here = head;
-    int sel = 0, leng;
-    int maxarr;
-    if(head->macMax < 10)
-        leng = 3;
-    else
-        leng = 5;
-    maxarr = head->macMax;
-    std::string tmparr[maxarr];
-    uselessfun1();
-    uselessfun2();
-    std::cout << "What machine do you want to delete?\n";
-    for(int ii = 0; ii < leng; ii++){
-    //    tmparr[ii] = ;
-        if(here->f_ptr != NULL){
-            uselessfun2();
-            std::cout << "Machine #" <<here->macNum << " " << here->name << " (" << here->tag << ")";
-            here = here->f_ptr;
-        }
-    }
-    uselessfun2();
-    if(here->f_ptr != NULL)
-        std::cout << "6. Move to next " << leng << ".\n";
-    if(here->b_ptr != NULL)
-        std::cout << "7. Move to previous " << leng << ".\n";
-    std::cout << "Enter your decision: ";
-}   
 void newOffice(VendPtr& iter){
     VendPtr tempPtr = new myVend;
     processName(tempPtr,1);
