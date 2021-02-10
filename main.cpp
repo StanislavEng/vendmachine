@@ -56,7 +56,7 @@ void manualOveride(VendPtr& ptr,VendPtr& head);
 void testArray(VendPtr& head);
 void arrParse(VendPtr& head);
 void arrParse(VendPtr& head, int sel);
-void toDel();
+bool toDel();
 
 int main(int argc, char *argv[]){
     screenclear();
@@ -431,32 +431,52 @@ void removeMac(VendPtr& head){
         case 0:
             break;
         case 1:
-            toDel();
+            del = toDel();
+            if (del == true){
+                delArr(here,pic);
+            }
             break;
         case 2:
-            toDel();
+            del = toDel();
+            if (del == true){
+                delArr(here,pic);
+            }
             break;
         case 3:
-            toDel();
+            del = toDel();
+            if (del == true){
+                delArr(here,pic);
+            }
             break;
         case 4:
             if (head->macMax < 10)
                 std::cout << "Invalid Choice";
             else
-                toDel();
-
+                del = toDel();
+            if (del == true){
+                delArr(here,pic);
+            }
             break;
         case 5:
             if (head->macMax < 10)
                 std::cout << "Invalid Choice";
             else 
-                toDel();
-            
+                del = toDel();
+            if (del == true){
+                delArr(here,pic);
+            }
             break;
         case 6:
-
+            for(int ii = 0; ii < leng; ii++){
+                if(here->f_ptr != NULL)
+                    here = here->f_ptr;
+            }
             break;
         case 7:
+            for(int ii = 0; ii < leng; ii++){
+                if(here->b_ptr != NULL)
+                    here = here->b_ptr;
+            }
             break;
         default:
             std::cout << "That was not a valid Input. Please try again\n";
@@ -750,6 +770,64 @@ void testArray(VendPtr& head){
     }
     simulatedelay();
 }
-void toDel(){
+bool toDel(){
+    bool ans;
     std::cout << "Confirm your selection: Y / N\n";
+    std::cin >> ans;
+    while (std::cin.fail()||!((ans == 'Y')||(ans == 'y')||(ans!='N')||(ans!='n'))){ // I'll try out this type of condition later
+        std::cout << "Invalid Input" << std::endl;
+        std::cin.clear();
+        std::cin.ignore(256,'\n');
+        std::cin >> ans;
+    }
+    if (ans == 'Y' || ans == 'y')
+        return true;
+    else
+        return false;
+}
+void delArr(VendPtr& here, int pic){
+    //VendPtr iter = here;
+    int ii = 1;
+    /*if(pic == 1){
+
+    }*/
+    while(ii != pic){
+        //iter = iter->f_ptr;
+        here = here->f_ptr;
+    }
+    //VendPtr back = iter, fwd = iter;
+    VendPtr back = here, fwd = here;
+//    if ((iter->b_ptr != NULL)&&(iter->f_ptr != NULL)){
+    if ((here->b_ptr != NULL)&&(here->f_ptr != NULL)){ // best case ; not at end or start
+        back = back->b_ptr;
+        fwd  =  fwd->f_ptr;
+        back->f_ptr =  fwd;
+        fwd->b_ptr  = back;
+        delete here;
+    }/*
+    if (iter->b_ptr != NULL){
+        back = back->b_ptr;
+    }
+    else{
+        //back->b_ptr = NULL;
+    }
+    if (iter->f_ptr != NULL){
+        fwd = fwd->f_ptr;
+    }
+    else{
+        //fwd->f_ptr = NULL;
+    }*/
+    else if (here->b_ptr == NULL){
+        fwd = fwd->f_ptr;
+        fwd->b_ptr = here->b_ptr;
+        delete here;
+    }
+    else if (here->f_ptr == NULL){
+        back = back->b_ptr;
+        back->f_ptr = here->f_ptr;
+        delete here;
+    }
+    else { // delete everything(?)
+
+    }
 }
