@@ -1,4 +1,4 @@
-# vendmachine
+# Vending Machine Program
 ### Used to repractice C++ programming
 
 Have not worked in C++ (or any programming outside of embedded) environments in a while. 
