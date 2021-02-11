@@ -55,8 +55,9 @@ void enterDebug(VendPtr& ptr);
 void manualOveride(VendPtr& ptr,VendPtr& head);
 void testArray(VendPtr& head);
 void arrParse(VendPtr& head);
-void arrParse(VendPtr& head, int sel);
+void arrParse(VendPtr& head, int leng, int maxarr);
 bool toDel();
+void delArr(VendPtr& head, int sel);
 
 int main(int argc, char *argv[]){
     screenclear();
@@ -467,10 +468,10 @@ void removeMac(VendPtr& head){
             }
             break;
         case 6:
-            for(int ii = 0; ii < leng; ii++){
-                if(here->f_ptr != NULL)
+            //for(int ii = 0; ii < leng; ii++){
+              //  if(here->f_ptr != NULL)
                     here = here->f_ptr;
-            }
+            //}
             break;
         case 7:
             for(int ii = 0; ii < leng; ii++){
@@ -493,16 +494,20 @@ void arrParse(VendPtr& head,int leng, int maxarr){
     std::cout << "What machine do you want to delete?\n";
     for(int ii = 0; ii < leng; ii++){
     //    tmparr[ii] = ;
-        if(here->f_ptr != NULL){
+        VendPtr check = here->f_ptr;
+        if(check != NULL){
             uselessfun2();
-            std::cout << "Machine #" <<here->macNum << " " << here->name << " (" << here->tag << ")";
-            here = here->f_ptr;
+            std::cout << "Machine #" <<here->macNum << " " << here->name << " (" << here->tag << ")\n";
+            if (ii < leng - 1){
+                here = here->f_ptr;
+            }
         }
     }
-    uselessfun2();
     if(here->f_ptr != NULL)
+        uselessfun2();
         std::cout << "6. Move to next " << leng << ".\n";
     if(here->b_ptr != NULL)
+        uselessfun2();
         std::cout << "7. Move to previous " << leng << ".\n";
     std::cout << "Enter your decision: ";
 }
@@ -555,8 +560,10 @@ void processName(VendPtr& tempP, int loc){
             std::cout << "\nWhat is the name of your school? \n";
             tempP->type = "School";
         }
-        std::cin.ignore();
-        std::getline(std::cin, tempname);
+        //std::cin.ignore();
+        do{
+            std::getline(std::cin, tempname);
+        }while(tempname.empty());
         while (ii <= tempname.length() && tempname.length() != 0){ // loops through the provided name
             if (ii == 0){
                 while (tempname[ii] == ' '){ // removes extra spaces in front
@@ -757,8 +764,8 @@ void simulatedelay(){
 }
 void naughtyUser(){
     std::cin.clear();
-    std::cin.ignore(10000,'\n');
-    //std::cin.get();
+    //std::cin.ignore(256,'\n');
+    std::cin.get();
 }
 void testArray(VendPtr& head){
     uselessfun1();
@@ -771,10 +778,10 @@ void testArray(VendPtr& head){
     simulatedelay();
 }
 bool toDel(){
-    bool ans;
+    char ans;
     std::cout << "Confirm your selection: Y / N\n";
     std::cin >> ans;
-    while (std::cin.fail()||!((ans == 'Y')||(ans == 'y')||(ans!='N')||(ans!='n'))){ // I'll try out this type of condition later
+    while (std::cin.fail()||!((ans == 'Y')||(ans == 'y')||(ans=='N')||(ans=='n'))){ // I'll try out this type of condition later
         std::cout << "Invalid Input" << std::endl;
         std::cin.clear();
         std::cin.ignore(256,'\n');
