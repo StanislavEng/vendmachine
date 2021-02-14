@@ -48,9 +48,11 @@ void screenclear();                                           // clear screen fo
 void simulatedelay();                                         // allow user to see response before clearing screen
 int  check_static(int test);
 void naughtyUser();
-void myDebug(VendPtr& head,VendPtr& itr);
+bool myDebug(VendPtr& head,VendPtr& itr);
 void uselessfun1();
+void uselessfun1(int num);
 void uselessfun2();
+void uselessfun3(std::string sen);
 void enterDebug(VendPtr& ptr);
 void manualOveride(VendPtr& ptr,VendPtr& head);
 void testArray(VendPtr& head);
@@ -68,6 +70,7 @@ int main(int argc, char *argv[]){
     //VendPtr ptr = new myVend;
     //struct myVend macArray;
     VendPtr head = &macArray;
+    bool exte = true;
     //int macsize;  
     //head = macArray;
     //VendPtr last;
@@ -98,10 +101,10 @@ int main(int argc, char *argv[]){
         std::cin.clear();
         std::cin.ignore(128,'\n');
     }*/
-    while(1){
+    while(exte){
         std::cout << "Checking something";
         simulatedelay();
-        while(1){
+        while(exte){
             //myDebug(head,last);
             myDebug(head,head);
             //VendPtr iter = head;
@@ -120,7 +123,7 @@ int main(int argc, char *argv[]){
     //return 0;
 }
 //////////////////// Start of functions ////////////////////
-void myDebug(VendPtr& head, VendPtr& itr){
+bool myDebug(VendPtr& head, VendPtr& itr){
     int picker;
     int catme;
     do {
@@ -130,7 +133,7 @@ void myDebug(VendPtr& head, VendPtr& itr){
         uselessfun2();
         std::cout << "Welcome to the debug screen\n";
         uselessfun2();
-        std::cout << "Which pointer do you want to access?\n"; uselessfun2(); std::cout << "1. Head or 2. Iter? 3. Manual Mode 4. Review Mode 5. Quit" << std::endl;
+        std::cout << "Which pointer do you want to access?\n"; uselessfun2(); std::cout << "1. Head or \n2. Iter? \n3. Manual Mode \n4. Review Mode \n5. Quit \n6. Exit Program" << std::endl;
         uselessfun1();
         std::cin >> picker;
         switch (picker){
@@ -176,7 +179,6 @@ void myDebug(VendPtr& head, VendPtr& itr){
                             uselessfun2();
                             std::cout << "\nThere's no more machines in this direction\n";
                         }
-
                     }
                     else if(catme ==2){
                         if(here->b_ptr != NULL)
@@ -187,7 +189,9 @@ void myDebug(VendPtr& head, VendPtr& itr){
                 }
             }while(catme != 5);
         case 5:
-            break;  
+            break;
+        case 6:
+            break;    
         default:
             std::cout << "That ain't it chief";
             naughtyUser();
@@ -195,6 +199,10 @@ void myDebug(VendPtr& head, VendPtr& itr){
             break;
         }
     } while (picker != 5);
+    if (picker == 6)
+        return false;
+    else
+        return true;
 }
 void manualOveride(VendPtr& ptr,VendPtr& head){
     int mypick;
@@ -291,17 +299,20 @@ void admin_control(VendPtr& head){
             case 1: // Management screen: Create, Remove, Edit
                 manageMac(head);
                 break;
-            case 2: // 
-                std::cout << "There are " << arrayLength << " machines in service\n";
+            case 2: { // Repeats amount of machines PS. need curly braces because of weird goto protocol
+                screenclear();
+                std::string arlen = "There are " + std::to_string(arrayLength) + " machines in service.\n";
+                uselessfun3(arlen);
                 break;
+            }
             case 3:
                 std::cout << "Leaving the Control Hub\n";
                 break;
             default:
-                screenclear();
                 uselessfun1();
                 std::cout << "That was not a valid input. Please try again.\n";
                 naughtyUser();
+                screenclear();
                 break;
 
         }
@@ -356,6 +367,7 @@ void addMac(VendPtr& head){
         char morecpic = 'k'; 
         std::cout << "\nIs this for a school or an office?\n";
         std::cout << "1. Office\n2. School\n3. Cancel\n";
+        uselessfun1();
         std::cout << "Enter your decision: " << std::endl;
         std::cin >> pickLoc;
         if (pickLoc == 1 || pickLoc == 2)
@@ -646,10 +658,21 @@ void school_vend(VendPtr& tempPtr){
     tempPtr->gain_val   = 0;
 }
 void uselessfun1(){
-    std::cout << "////////////////////////////////////////////////////////////////////\n";
+    std::cout << "////////////////////////////////////////////////////////////////////\n\n";
+}
+void uselessfun1(int num){
+    for (int ii = 0; ii < num; ii++){
+        std::cout << "////////////////////////////////////////////////////////////////////\n";
+    }
+    std::cout << "\n";
 }
 void uselessfun2(){
     std::cout << "//     ";
+}
+void uselessfun3(std::string sen){
+    uselessfun1();
+    std::cout << sen; 
+    uselessfun1();
 }
 /* useless test function now
 int check_static(int test){
@@ -781,7 +804,7 @@ bool toDel(){
     char ans;
     std::cout << "Confirm your selection: Y / N\n";
     std::cin >> ans;
-    while (std::cin.fail()||!((ans == 'Y')||(ans == 'y')||(ans=='N')||(ans=='n'))){ // I'll try out this type of condition later
+    while (!((ans == 'Y')||(ans == 'y')||(ans=='N')||(ans=='n'))){ // I'll try out this type of condition later
         std::cout << "Invalid Input" << std::endl;
         std::cin.clear();
         std::cin.ignore(256,'\n');
@@ -801,6 +824,7 @@ void delArr(VendPtr& here, int pic){
     while(ii != pic){
         //iter = iter->f_ptr;
         here = here->f_ptr;
+        ii++;
     }
     //VendPtr back = iter, fwd = iter;
     VendPtr back = here, fwd = here;
