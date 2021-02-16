@@ -101,12 +101,14 @@ int main(int argc, char *argv[]){
         std::cin.clear();
         std::cin.ignore(128,'\n');
     }*/
-    while(exte){
+    while(exte==true){
         std::cout << "Checking something";
         simulatedelay();
-        while(exte){
+        while(exte==true){
             //myDebug(head,last);
-            myDebug(head,head);
+            exte = myDebug(head,head);
+            if (exte == false)
+                break;
             //VendPtr iter = head;
             //admin_control(last);
             admin_control(head);
@@ -118,7 +120,6 @@ int main(int argc, char *argv[]){
         simulatedelay();  
     }
     std::cout << "You shouldn't have gotten here";
-    simulatedelay();
     //std::cout << ptr->macNum;
     //return 0;
 }
@@ -133,7 +134,9 @@ bool myDebug(VendPtr& head, VendPtr& itr){
         uselessfun2();
         std::cout << "Welcome to the debug screen\n";
         uselessfun2();
-        std::cout << "Which pointer do you want to access?\n"; uselessfun2(); std::cout << "1. Head or \n2. Iter? \n3. Manual Mode \n4. Review Mode \n5. Quit \n6. Exit Program" << std::endl;
+        std::cout << "Which pointer do you want to access?\n"; 
+        uselessfun1();
+        std::cout << "1. Head \n2. Iter \n3. Manual Mode \n4. Review Mode \n5. Quit \n6. Exit Program" << std::endl;
         uselessfun1();
         std::cin >> picker;
         switch (picker){
@@ -198,7 +201,8 @@ bool myDebug(VendPtr& head, VendPtr& itr){
             simulatedelay();
             break;
         }
-    } while (picker != 5);
+    } while (!(picker == 5) && !(picker == 6));
+    std::cout <<"I do get out\n";
     if (picker == 6)
         return false;
     else
@@ -365,7 +369,8 @@ void addMac(VendPtr& head){
             head = iter;
         int pickLoc = 0;   
         char morecpic = 'k'; 
-        std::cout << "\nIs this for a school or an office?\n";
+        uselessfun1();
+        std::cout << "Is this for a school or an office?\n";
         std::cout << "1. Office\n2. School\n3. Cancel\n";
         uselessfun1();
         std::cout << "Enter your decision: " << std::endl;
@@ -410,6 +415,7 @@ void addMac(VendPtr& head){
             std::cout << "\nLet's compare " << iter->macNum; 
         }*/
         naughtyUser();
+        screenclear();
         //testArray(head);
     } while ((exitcond == false));
 }
@@ -424,14 +430,13 @@ void removeMac(VendPtr& head){
         leng = 5;
     maxarr = head->macMax;
     std::cout << "Opening Machine Removal Features\n";
-    for (int ii = 0; ii < 1500; ii++){
-        if ((ii == 500) || (ii == 1000))
-            std::cout << ". . .\n"; 
-    }
-    std::cout << "Opening\n";
-    for (int ii = 0; ii < 300; ii ++){};
     VendPtr here = head;
     do {
+        if(head->macMax < 10)
+            leng = 3;
+        else
+            leng = 5;
+        maxarr = head->macMax;
         arrParse(here,leng,maxarr);
         std::cin >> pic;
         /*while (std::cin.fail()){ // I'll try out this type of condition later
@@ -482,7 +487,7 @@ void removeMac(VendPtr& head){
         case 6:
             //for(int ii = 0; ii < leng; ii++){
               //  if(here->f_ptr != NULL)
-                    here = here->f_ptr;
+            here = here->f_ptr;
             //}
             break;
         case 7:
@@ -491,11 +496,14 @@ void removeMac(VendPtr& head){
                     here = here->b_ptr;
             }
             break;
+        case 9: 
+            std::cout << "Leaving.";
+            break;
         default:
             std::cout << "That was not a valid Input. Please try again\n";
             break;
         }
-    }while(sel == false);
+    }while(pic != 9);
 }
 void arrParse(VendPtr& head,int leng, int maxarr){
     VendPtr here = head;
@@ -506,21 +514,27 @@ void arrParse(VendPtr& head,int leng, int maxarr){
     std::cout << "What machine do you want to delete?\n";
     for(int ii = 0; ii < leng; ii++){
     //    tmparr[ii] = ;
-        VendPtr check = here->f_ptr;
-        if(check != NULL){
-            uselessfun2();
+        uselessfun2();
+        if (here == NULL){
+            
+        }
+        else {
             std::cout << "Machine #" <<here->macNum << " " << here->name << " (" << here->tag << ")\n";
             if (ii < leng - 1){
                 here = here->f_ptr;
             }
         }
     }
-    if(here->f_ptr != NULL)
+    if(here->f_ptr != NULL){
         uselessfun2();
-        std::cout << "6. Move to next " << leng << ".\n";
-    if(here->b_ptr != NULL)
+        std::cout << "6. Move to next " << leng << "\n";
+    }
+    if(here->b_ptr != NULL) {
         uselessfun2();
-        std::cout << "7. Move to previous " << leng << ".\n";
+        std::cout << "7. Move to previous " << leng << "\n";
+    }
+    uselessfun2;
+    std::cout << "9. Cancel\n";
     std::cout << "Enter your decision: ";
 }
 void newOffice(VendPtr& iter){
@@ -658,7 +672,7 @@ void school_vend(VendPtr& tempPtr){
     tempPtr->gain_val   = 0;
 }
 void uselessfun1(){
-    std::cout << "////////////////////////////////////////////////////////////////////\n\n";
+    std::cout << "////////////////////////////////////////////////////////////////////\n";
 }
 void uselessfun1(int num){
     for (int ii = 0; ii < num; ii++){
