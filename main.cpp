@@ -48,9 +48,11 @@ void screenclear();                                           // clear screen fo
 void simulatedelay();                                         // allow user to see response before clearing screen
 int  check_static(int test);
 void naughtyUser();
-void myDebug(VendPtr& head,VendPtr& itr);
+bool myDebug(VendPtr& head,VendPtr& itr);
 void uselessfun1();
+void uselessfun1(int num);
 void uselessfun2();
+void uselessfun3(std::string sen);
 void enterDebug(VendPtr& ptr);
 void manualOveride(VendPtr& ptr,VendPtr& head);
 void testArray(VendPtr& head);
@@ -58,6 +60,7 @@ void arrParse(VendPtr& head);
 void arrParse(VendPtr& head, int leng, int maxarr);
 bool toDel();
 void delArr(VendPtr& head, int sel);
+void query();
 
 int main(int argc, char *argv[]){
     screenclear();
@@ -68,6 +71,7 @@ int main(int argc, char *argv[]){
     //VendPtr ptr = new myVend;
     //struct myVend macArray;
     VendPtr head = &macArray;
+    bool exte = true;
     //int macsize;  
     //head = macArray;
     //VendPtr last;
@@ -98,12 +102,14 @@ int main(int argc, char *argv[]){
         std::cin.clear();
         std::cin.ignore(128,'\n');
     }*/
-    while(1){
+    while(exte==true){
         std::cout << "Checking something";
         simulatedelay();
-        while(1){
+        while(exte==true){
             //myDebug(head,last);
-            myDebug(head,head);
+            exte = myDebug(head,head);
+            if (exte == false)
+                break;
             //VendPtr iter = head;
             //admin_control(last);
             admin_control(head);
@@ -115,12 +121,11 @@ int main(int argc, char *argv[]){
         simulatedelay();  
     }
     std::cout << "You shouldn't have gotten here";
-    simulatedelay();
     //std::cout << ptr->macNum;
     //return 0;
 }
 //////////////////// Start of functions ////////////////////
-void myDebug(VendPtr& head, VendPtr& itr){
+bool myDebug(VendPtr& head, VendPtr& itr){
     int picker;
     int catme;
     do {
@@ -130,7 +135,9 @@ void myDebug(VendPtr& head, VendPtr& itr){
         uselessfun2();
         std::cout << "Welcome to the debug screen\n";
         uselessfun2();
-        std::cout << "Which pointer do you want to access?\n"; uselessfun2(); std::cout << "1. Head or 2. Iter? 3. Manual Mode 4. Review Mode 5. Quit" << std::endl;
+        std::cout << "Which pointer do you want to access?\n"; 
+        uselessfun1();
+        std::cout << "1. Head \n2. Iter \n3. Manual Mode \n4. Review Mode \n5. Quit \n6. Exit Program" << std::endl;
         uselessfun1();
         std::cin >> picker;
         switch (picker){
@@ -176,7 +183,6 @@ void myDebug(VendPtr& head, VendPtr& itr){
                             uselessfun2();
                             std::cout << "\nThere's no more machines in this direction\n";
                         }
-
                     }
                     else if(catme ==2){
                         if(here->b_ptr != NULL)
@@ -187,14 +193,21 @@ void myDebug(VendPtr& head, VendPtr& itr){
                 }
             }while(catme != 5);
         case 5:
-            break;  
+            break;
+        case 6:
+            break;    
         default:
             std::cout << "That ain't it chief";
             naughtyUser();
             simulatedelay();
             break;
         }
-    } while (picker != 5);
+    } while (!(picker == 5) && !(picker == 6));
+    std::cout <<"I do get out\n";
+    if (picker == 6)
+        return false;
+    else
+        return true;
 }
 void manualOveride(VendPtr& ptr,VendPtr& head){
     int mypick;
@@ -285,23 +298,26 @@ void admin_control(VendPtr& head){
         arrayLength = head->macMax;
         std::cout << "What would you like to do?\n"; uselessfun1();
         std::cout << "1. Manage Machines\n2. # of Machines?\n3. Exit\n";
-        std::cout << "Please enter your choice: "<< std::endl;
+        query();
         std:: cin >> admin_input;
         switch(admin_input){
             case 1: // Management screen: Create, Remove, Edit
                 manageMac(head);
                 break;
-            case 2: // 
-                std::cout << "There are " << arrayLength << " machines in service\n";
+            case 2: { // Repeats amount of machines PS. need curly braces because of weird goto protocol
+                screenclear();
+                std::string arlen = "There are " + std::to_string(arrayLength) + " machines in service.\n";
+                uselessfun3(arlen);
                 break;
+            }
             case 3:
                 std::cout << "Leaving the Control Hub\n";
                 break;
             default:
-                screenclear();
                 uselessfun1();
                 std::cout << "That was not a valid input. Please try again.\n";
                 naughtyUser();
+                screenclear();
                 break;
 
         }
@@ -316,8 +332,10 @@ void manageMac(VendPtr& head){
     screenclear();
     do{
         uselessfun1();
-        std::cout << "Do you want to:\n1. Create New Machine\n2. Edit Machines\n3. Remove Machines\n4. Cancel\n";
-        std::cout << "Please enter your choice: ";
+        std::cout << "What do you want to do:\n";
+        uselessfun1();
+        std::cout << "1. Create New Machine\n2. Edit Machines\n3. Remove Machines\n4. Cancel\n";
+        query();
         std::cin >> decision;
         std::cout << "\n";
         switch (decision){
@@ -338,8 +356,10 @@ void manageMac(VendPtr& head){
             naughtyUser();
             break;
         }
-        std::cout <<"oh no";
+        std::cout <<"oh no\n";
     }while(decision != 4);
+    screenclear();
+    uselessfun1();
 }
 void addMac(VendPtr& head){
     screenclear();
@@ -354,12 +374,15 @@ void addMac(VendPtr& head){
             head = iter;
         int pickLoc = 0;   
         char morecpic = 'k'; 
-        std::cout << "\nIs this for a school or an office?\n";
+        uselessfun1();
+        std::cout << "Is this for a school or an office?\n";
         std::cout << "1. Office\n2. School\n3. Cancel\n";
-        std::cout << "Enter your decision: " << std::endl;
+        uselessfun1();
+        query();
         std::cin >> pickLoc;
         if (pickLoc == 1 || pickLoc == 2)
             head->macMax++;
+        screenclear();
         switch (pickLoc){
         case 1:
             newOffice(iter);
@@ -398,6 +421,7 @@ void addMac(VendPtr& head){
             std::cout << "\nLet's compare " << iter->macNum; 
         }*/
         naughtyUser();
+        screenclear();
         //testArray(head);
     } while ((exitcond == false));
 }
@@ -412,14 +436,13 @@ void removeMac(VendPtr& head){
         leng = 5;
     maxarr = head->macMax;
     std::cout << "Opening Machine Removal Features\n";
-    for (int ii = 0; ii < 1500; ii++){
-        if ((ii == 500) || (ii == 1000))
-            std::cout << ". . .\n"; 
-    }
-    std::cout << "Opening\n";
-    for (int ii = 0; ii < 300; ii ++){};
     VendPtr here = head;
     do {
+        if(head->macMax < 10)
+            leng = 3;
+        else
+            leng = 5;
+        maxarr = head->macMax;
         arrParse(here,leng,maxarr);
         std::cin >> pic;
         /*while (std::cin.fail()){ // I'll try out this type of condition later
@@ -452,26 +475,28 @@ void removeMac(VendPtr& head){
         case 4:
             if (head->macMax < 10)
                 std::cout << "Invalid Choice";
-            else
+            else{
                 del = toDel();
-            if (del == true){
-                delArr(here,pic);
+                if (del == true){
+                    delArr(here,pic);
+                }
             }
             break;
         case 5:
             if (head->macMax < 10)
                 std::cout << "Invalid Choice";
-            else 
+            else{
                 del = toDel();
-            if (del == true){
-                delArr(here,pic);
+                if (del == true){
+                    delArr(here,pic);
+                }
             }
             break;
         case 6:
-            //for(int ii = 0; ii < leng; ii++){
-              //  if(here->f_ptr != NULL)
+            for(int ii = 0; ii < leng; ii++){
+                if(here->f_ptr != NULL)
                     here = here->f_ptr;
-            //}
+            }
             break;
         case 7:
             for(int ii = 0; ii < leng; ii++){
@@ -479,11 +504,14 @@ void removeMac(VendPtr& head){
                     here = here->b_ptr;
             }
             break;
+        case 9: 
+            std::cout << "Leaving.";
+            break;
         default:
             std::cout << "That was not a valid Input. Please try again\n";
             break;
         }
-    }while(sel == false);
+    }while(pic != 9);
 }
 void arrParse(VendPtr& head,int leng, int maxarr){
     VendPtr here = head;
@@ -493,23 +521,29 @@ void arrParse(VendPtr& head,int leng, int maxarr){
     uselessfun2();
     std::cout << "What machine do you want to delete?\n";
     for(int ii = 0; ii < leng; ii++){
-    //    tmparr[ii] = ;
-        VendPtr check = here->f_ptr;
-        if(check != NULL){
-            uselessfun2();
-            std::cout << "Machine #" <<here->macNum << " " << here->name << " (" << here->tag << ")\n";
-            if (ii < leng - 1){
-                here = here->f_ptr;
-            }
+        uselessfun2();
+        //std::cout << "Machine #" <<here->macNum << " " << here->name << " (" << here->tag << ")\n";
+        std::cout << ii+1 << ". " << here->name << " (" << here->tag << ")\n";
+        if (here->f_ptr == NULL){
+            ii = leng;
+            break;
         }
+        else if (ii < leng - 1){
+            here = here->f_ptr;
+        }
+
     }
-    if(here->f_ptr != NULL)
+    if(here->f_ptr != NULL){
         uselessfun2();
-        std::cout << "6. Move to next " << leng << ".\n";
-    if(here->b_ptr != NULL)
+        std::cout << "6. Move to next " << leng << "\n";
+    }
+    if(here->b_ptr != NULL) {
         uselessfun2();
-        std::cout << "7. Move to previous " << leng << ".\n";
-    std::cout << "Enter your decision: ";
+        std::cout << "7. Move to previous " << leng << "\n";
+    }
+    uselessfun2;
+    std::cout << "9. Cancel\n";
+    query();
 }
 void newOffice(VendPtr& iter){
     VendPtr tempPtr = new myVend;
@@ -648,8 +682,19 @@ void school_vend(VendPtr& tempPtr){
 void uselessfun1(){
     std::cout << "////////////////////////////////////////////////////////////////////\n";
 }
+void uselessfun1(int num){
+    for (int ii = 0; ii < num; ii++){
+        std::cout << "////////////////////////////////////////////////////////////////////\n";
+    }
+    std::cout << "\n";
+}
 void uselessfun2(){
     std::cout << "//     ";
+}
+void uselessfun3(std::string sen){
+    uselessfun1();
+    std::cout << sen; 
+    uselessfun1();
 }
 /* useless test function now
 int check_static(int test){
@@ -668,94 +713,6 @@ void initializescale(){ // Sets the cout of dollars to 2 decimal points.
 void screenclear(){
     std::cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 }
-/*
-void makeMachine(myVend *macArray){
-    // temporary variables
-    char user_exit = 'N';
-    struct myVend madeMac; 
-    string tempname;
-    int ii = 0;
-
-    while (user_exit == 'N' || user_exit == 'n') {
-        madeMac = myVend();
-        cout << "What is the name of the company?" << endl;
-        cin.ignore();
-        getline(cin,tempname);
-        while (ii <= tempname.length()) {
-            if (ii == 0) { 
-                while (tempname[ii] == ' ') { // removes any spaces put in front of first word
-                    tempname.erase(ii,1);
-                }                                                        
-                tempname[ii] = toupper(tempname[ii]); // upper cases first word
-                madeMac.tag += tempname[ii]; // adds to tag
-                ii++;
-            } 
-            else if ((tempname[ii] == ' ' && tempname[ii+1] == ' ')) {
-                while (tempname[ii+1] == ' ')
-                    tempname.erase(ii+1,1);
-            } // removes EXTRA spaces
-            else if ((tempname[ii-1] == ' ') && !((tempname[ii] == 'o' || tempname[ii] == 'O') && (tempname[ii+1] == 'f' || tempname[ii+1] == 'F'))) {
-                tempname[ii] = toupper(tempname[ii]);
-                madeMac.tag += tempname[ii];
-                ii++;
-            } // upper cases first letter of other words unless it's "of" which is lowercased
-            else 
-                tempname[ii] = tolower(tempname[ii]); // lower cases the rest
-            ii++;
-        }
-        screenclear();
-        cout << "Is " << tempname << " the name you wanted?   Y / N " << endl;
-        while (true) {  // forces only yes or no replies. if no, resets the whole loop
-            cin >> user_exit;
-            if (user_exit == 'n' || user_exit == 'N' || user_exit == 'y' || user_exit == 'Y')
-                break;
-            else
-                cout << "That was not a valid input. Please try again." << endl;
-        } 
-        ii = 0;
-    }
-}
-void initilizeOffice(myVend *officeMac){
-    madeMac.name = tempname;
-    // preset drinks
-    madeMac.re_coke = 12;
-    madeMac.re_ale  = 12;
-    madeMac.bot_coke = madeMac.re_coke;
-    madeMac.bot_ale  = madeMac.re_ale;
-    // preset food 
-    madeMac.re_choc = 12;
-    madeMac.re_gumy = 12;
-    madeMac.re_chip = 12;
-    madeMac.choco_bar = madeMac.re_choc;
-    madeMac.gummy_bag = madeMac.re_gumy;
-    madeMac.chips     = madeMac.re_chip;
-    // preset money
-    madeMac.ini_val    = 12;
-    madeMac.usable_bal = madeMac.ini_val;
-    madeMac.gain_val   = 0;
-}
-void initilizeSchool(myVend *schoolMac){
-    madeMac.name = tempname;
-    // drinks
-    madeMac.re_coke   = 6;
-    madeMac.re_ale    = 6;
-    madeMac.re_sprite = 6;
-    madeMac.bot_coke   = madeMac.re_coke;
-    madeMac.bot_ale    = madeMac.re_ale;
-    madeMac.bot_sprite = madeMac.re_sprite;
-    // food
-    madeMac.re_choc  = 12;
-    madeMac.re_gumy  =  6;
-    madeMac.re_fruit = 12;
-    madeMac.choco_bar = madeMac.re_choc;
-    madeMac.gummy_bag = madeMac.re_gumy;
-    madeMac.fruit_bag = madeMac.re_fruit;
-    // money
-    madeMac.ini_val  = 8;
-    madeMac.usable_bal = madeMac.ini_val;
-    madeMac.gain_val = 0;
-}
-*/
 void simulatedelay(){
     std::cin.ignore();
     std::cin.clear();
@@ -766,6 +723,10 @@ void naughtyUser(){
     std::cin.clear();
     //std::cin.ignore(256,'\n');
     std::cin.get();
+}
+void query(){
+    std::cout << "Please enter your decision: \n";
+    uselessfun1();
 }
 void testArray(VendPtr& head){
     uselessfun1();
@@ -781,7 +742,7 @@ bool toDel(){
     char ans;
     std::cout << "Confirm your selection: Y / N\n";
     std::cin >> ans;
-    while (std::cin.fail()||!((ans == 'Y')||(ans == 'y')||(ans=='N')||(ans=='n'))){ // I'll try out this type of condition later
+    while (!((ans == 'Y')||(ans == 'y')||(ans=='N')||(ans=='n'))){ // I'll try out this type of condition later
         std::cout << "Invalid Input" << std::endl;
         std::cin.clear();
         std::cin.ignore(256,'\n');
@@ -801,16 +762,18 @@ void delArr(VendPtr& here, int pic){
     while(ii != pic){
         //iter = iter->f_ptr;
         here = here->f_ptr;
+        ii++;
+        std::cout <<"Should be skipped\n";
     }
     //VendPtr back = iter, fwd = iter;
     VendPtr back = here, fwd = here;
+    std::cout << "Does this crash?\n";
 //    if ((iter->b_ptr != NULL)&&(iter->f_ptr != NULL)){
-    if ((here->b_ptr != NULL)&&(here->f_ptr != NULL)){ // best case ; not at end or start
-        back = back->b_ptr;
-        fwd  =  fwd->f_ptr;
+    if ((here->b_ptr != NULL) && (here->f_ptr != NULL)){ // best case ; not at end or start
+        back = here->b_ptr;
+        fwd  =  here->f_ptr;
         back->f_ptr =  fwd;
         fwd->b_ptr  = back;
-        delete here;
     }/*
     if (iter->b_ptr != NULL){
         back = back->b_ptr;
@@ -825,16 +788,16 @@ void delArr(VendPtr& here, int pic){
         //fwd->f_ptr = NULL;
     }*/
     else if (here->b_ptr == NULL){
-        fwd = fwd->f_ptr;
+        fwd = here->f_ptr;
         fwd->b_ptr = here->b_ptr;
-        delete here;
     }
     else if (here->f_ptr == NULL){
-        back = back->b_ptr;
+        back = here->b_ptr;
         back->f_ptr = here->f_ptr;
-        delete here;
     }
     else { // delete everything(?)
 
     }
+    here = NULL;
+    delete here;
 }
