@@ -6,7 +6,7 @@ Written by: Stas, Aug 21/22 2020 */
 Author: Stanislav Svichkar
 Personal Project
 Description:
-Last Changed Feb 9, 2021*/  // Working on remove machine
+Last Changed Feb 17, 2021*/  // Finished remove machine, starting edit
 
 #include <iostream>
 #include <string>
@@ -63,6 +63,7 @@ void delArr(VendPtr& head, int sel, int leng);
 void query();
 void moveArr(VendPtr& head, int leng, int dirr);
 void recount(VendPtr& head);
+void editMac(VendPtr& head);
 
 int main(int argc, char *argv[]){
     screenclear();
@@ -346,7 +347,7 @@ void manageMac(VendPtr& head){
             addMac(head);
             break;
         case 2:
-            //editMac(head);
+            editMac(head);
             break;
         case 3:
             removeMac(head);
@@ -510,6 +511,9 @@ void removeMac(VendPtr& head){
         }
         recount(head);
     }while(pic != 9);
+}
+void EditMac(VendPtr& head){
+
 }
 void arrParse(VendPtr& head,int leng, int maxarr){
     VendPtr here = head;
@@ -753,14 +757,11 @@ bool toDel(){
 void delArr(VendPtr& here, int pic,int leng){
     int ii = 1;
     while(ii != pic){
-        //iter = iter->f_ptr;
         here = here->f_ptr;
         ii++;
     }
     /////////////////////////////////////
-    //VendPtr back = iter, fwd = iter;
     VendPtr back = here, fwd = here;
-//    if ((iter->b_ptr != NULL)&&(iter->f_ptr != NULL)){
     if ((here->b_ptr != NULL) && (here->f_ptr != NULL)){ // best case ; not at end or start
         back = here->b_ptr;
         fwd  =  here->f_ptr;
@@ -778,6 +779,7 @@ void delArr(VendPtr& here, int pic,int leng){
     else { // delete everything(?)
 
     }
+    //////////////////////////////
     if (pic == 1 && here->f_ptr != NULL){
         VendPtr del = here;
         here = here->f_ptr;
