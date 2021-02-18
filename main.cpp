@@ -41,7 +41,7 @@ void removeMac(VendPtr& head);
 void newOffice(VendPtr& iter);
 void newSchool(VendPtr& head);
 void processName(VendPtr& temp, int loc);
-void user_control(VendPtr& head);                    // Entering User Input Mode
+void user_control(VendPtr& head);                              // Entering User Input Mode
 void initializescale();                                       // Limits the decimal values
 void initilizesystem();                                       // place holder for creating 
 void screenclear();                                           // clear screen for easier UI
@@ -59,8 +59,10 @@ void testArray(VendPtr& head);
 void arrParse(VendPtr& head);
 void arrParse(VendPtr& head, int leng, int maxarr);
 bool toDel();
-void delArr(VendPtr& head, int sel);
+void delArr(VendPtr& head, int sel, int leng);
 void query();
+void moveArr(VendPtr& head, int leng, int dirr);
+void recount(VendPtr& head);
 
 int main(int argc, char *argv[]){
     screenclear();
@@ -332,6 +334,7 @@ void manageMac(VendPtr& head){
     screenclear();
     do{
         uselessfun1();
+        uselessfun2();
         std::cout << "What do you want to do:\n";
         uselessfun1();
         std::cout << "1. Create New Machine\n2. Edit Machines\n3. Remove Machines\n4. Cancel\n";
@@ -457,19 +460,19 @@ void removeMac(VendPtr& head){
         case 1:
             del = toDel();
             if (del == true){
-                delArr(here,pic);
+                delArr(here,pic,leng);
             }
             break;
         case 2:
             del = toDel();
             if (del == true){
-                delArr(here,pic);
+                delArr(here,pic,leng);
             }
             break;
         case 3:
             del = toDel();
             if (del == true){
-                delArr(here,pic);
+                delArr(here,pic,leng);
             }
             break;
         case 4:
@@ -478,7 +481,7 @@ void removeMac(VendPtr& head){
             else{
                 del = toDel();
                 if (del == true){
-                    delArr(here,pic);
+                    delArr(here,pic,leng);
                 }
             }
             break;
@@ -488,21 +491,15 @@ void removeMac(VendPtr& head){
             else{
                 del = toDel();
                 if (del == true){
-                    delArr(here,pic);
+                    delArr(here,pic,leng);
                 }
             }
             break;
         case 6:
-            for(int ii = 0; ii < leng; ii++){
-                if(here->f_ptr != NULL)
-                    here = here->f_ptr;
-            }
+            moveArr(here,leng,1);
             break;
         case 7:
-            for(int ii = 0; ii < leng; ii++){
-                if(here->b_ptr != NULL)
-                    here = here->b_ptr;
-            }
+            moveArr(here,leng,0);
             break;
         case 9: 
             std::cout << "Leaving.";
@@ -511,6 +508,7 @@ void removeMac(VendPtr& head){
             std::cout << "That was not a valid Input. Please try again\n";
             break;
         }
+        recount(head);
     }while(pic != 9);
 }
 void arrParse(VendPtr& head,int leng, int maxarr){
@@ -531,17 +529,16 @@ void arrParse(VendPtr& head,int leng, int maxarr){
         else if (ii < leng - 1){
             here = here->f_ptr;
         }
-
     }
     if(here->f_ptr != NULL){
         uselessfun2();
         std::cout << "6. Move to next " << leng << "\n";
     }
-    if(here->b_ptr != NULL) {
+    if(head->b_ptr != NULL) {
         uselessfun2();
         std::cout << "7. Move to previous " << leng << "\n";
     }
-    uselessfun2;
+    uselessfun2();
     std::cout << "9. Cancel\n";
     query();
 }
@@ -753,40 +750,23 @@ bool toDel(){
     else
         return false;
 }
-void delArr(VendPtr& here, int pic){
-    //VendPtr iter = here;
+void delArr(VendPtr& here, int pic,int leng){
     int ii = 1;
-    /*if(pic == 1){
-
-    }*/
     while(ii != pic){
         //iter = iter->f_ptr;
         here = here->f_ptr;
         ii++;
-        std::cout <<"Should be skipped\n";
     }
+    /////////////////////////////////////
     //VendPtr back = iter, fwd = iter;
     VendPtr back = here, fwd = here;
-    std::cout << "Does this crash?\n";
 //    if ((iter->b_ptr != NULL)&&(iter->f_ptr != NULL)){
     if ((here->b_ptr != NULL) && (here->f_ptr != NULL)){ // best case ; not at end or start
         back = here->b_ptr;
         fwd  =  here->f_ptr;
         back->f_ptr =  fwd;
         fwd->b_ptr  = back;
-    }/*
-    if (iter->b_ptr != NULL){
-        back = back->b_ptr;
     }
-    else{
-        //back->b_ptr = NULL;
-    }
-    if (iter->f_ptr != NULL){
-        fwd = fwd->f_ptr;
-    }
-    else{
-        //fwd->f_ptr = NULL;
-    }*/
     else if (here->b_ptr == NULL){
         fwd = here->f_ptr;
         fwd->b_ptr = here->b_ptr;
@@ -798,6 +778,49 @@ void delArr(VendPtr& here, int pic){
     else { // delete everything(?)
 
     }
-    here = NULL;
-    delete here;
+    if (pic == 1 && here->f_ptr != NULL){
+        VendPtr del = here;
+        here = here->f_ptr;
+        del = NULL;
+    }
+    else if (pic == 1 && here->f_ptr == NULL){
+        VendPtr del = here;
+        moveArr(here,leng,0);
+        del = NULL;
+    }
+    else if (pic != 1 && here->b_ptr != NULL){
+        VendPtr del = here;
+        here = here->b_ptr;
+        del = NULL;
+    }
+    else if (pic != 1 && here->b_ptr == NULL){
+        VendPtr del = here;
+        here = here->f_ptr;
+        del = NULL;
+    }
+    else
+        here = NULL;
+}
+void moveArr(VendPtr& here, int leng, int dirr){
+    if (dirr == 0){
+        for(int ii = 0; ii < leng; ii++){
+            if(here->b_ptr != NULL)
+                here = here->b_ptr;
+        }
+    }
+    else{
+        for(int ii = 0; ii < leng; ii++){
+            if(here->f_ptr != NULL)
+                here = here->f_ptr;
+        }
+    }
+}
+void recount(VendPtr& head){
+    VendPtr here = head;
+    int ii = 0;
+    while(here != NULL){
+        here = here->f_ptr;
+        ii++;
+    }
+    head->macMax = ii;
 }
