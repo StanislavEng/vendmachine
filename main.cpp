@@ -63,6 +63,7 @@ void delArr(VendPtr& head, int sel, int leng);
 void query();
 void moveArr(VendPtr& head, int leng, int dirr);
 void recount(VendPtr& head);
+void editMenu(VendPtr& head);
 void editMac(VendPtr& head);
 
 int main(int argc, char *argv[]){
@@ -347,7 +348,7 @@ void manageMac(VendPtr& head){
             addMac(head);
             break;
         case 2:
-            editMac(head);
+            editMenu(head);
             break;
         case 3:
             removeMac(head);
@@ -432,12 +433,12 @@ void addMac(VendPtr& head){
 void removeMac(VendPtr& head){
     uselessfun1();
     uselessfun2();
-    bool del, sel = false;
+    bool del = false;
     int pic = 0, leng, maxarr;
-    if(head->macMax < 10)
+    /*if(head->macMax < 10)
         leng = 3;
     else
-        leng = 5;
+        leng = 5;*/
     maxarr = head->macMax;
     std::cout << "Opening Machine Removal Features\n";
     VendPtr here = head;
@@ -512,8 +513,82 @@ void removeMac(VendPtr& head){
         recount(head);
     }while(pic != 9);
 }
-void EditMac(VendPtr& head){
-
+void editMenu(VendPtr& head){
+    std::cout << "Which machine do you want to edit?\n";
+    VendPtr here = head;
+    int pic = 0, leng, maxarr;
+    maxarr = head->macMax;
+    do {
+        if(head->macMax < 10)
+            leng = 3;
+        else
+            leng = 5;
+        maxarr = head->macMax;
+        arrParse(here,leng,maxarr);
+        std::cin >> pic;
+        switch (pic) {
+        case 0:
+            break;
+        case 1:
+            delArr(here,pic,leng);
+            break;
+        case 2:
+            delArr(here,pic,leng);
+            break;
+        case 3:
+            delArr(here,pic,leng);
+            break;
+        case 4:
+            if (head->macMax < 10)
+                std::cout << "Invalid Choice";
+            else
+                delArr(here,pic,leng);
+            break;
+        case 5:
+            if (head->macMax < 10)
+                std::cout << "Invalid Choice";
+            else
+                delArr(here,pic,leng);
+            break;
+        case 6:
+            moveArr(here,leng,1);
+            break;
+        case 7:
+            moveArr(here,leng,0);
+            break;
+        case 9: 
+            std::cout << "Leaving.";
+            break;
+        default:
+            std::cout << "That was not a valid Input. Please try again\n";
+            break;
+        }
+    }while(pic != 5);
+}
+void editMac(VendPtr& here, int pic){
+    int ii = 1;
+    VendPtr iter = here;
+    while(ii != pic){
+        iter = iter->f_ptr;
+        ii++;
+    }
+    uselessfun1();
+    std::cout << "What do you want to modify?\n1. Food\n2. Drink\n3. Snack\n4. Change Machine\n5. Cancel";
+    uselessfun1();
+    uselessfun2();
+    query();
+    std::cin >> ii;
+    switch (ii)
+    {
+    case 1:
+        break;
+    case 2: 
+        break;
+    case 3:
+        break;
+    default:
+        break;
+    }
 }
 void arrParse(VendPtr& head,int leng, int maxarr){
     VendPtr here = head;
