@@ -64,7 +64,7 @@ void query();
 void moveArr(VendPtr& head, int leng, int dirr);
 void recount(VendPtr& head);
 void editMenu(VendPtr& head);
-void editMac(VendPtr& head);
+bool editMac(VendPtr& head, int pic);
 void modDrink(VendPtr& here);
 void modSnack(VendPtr& here);
 
