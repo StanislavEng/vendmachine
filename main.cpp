@@ -24,6 +24,7 @@ struct myVend{
     int macMax = 0;
     myVend *f_ptr = NULL;
     myVend *b_ptr = NULL;
+    int mactyp;
     std::string type;
     //myVend *link;
 };
@@ -56,17 +57,18 @@ void uselessfun3(std::string sen);
 void enterDebug(VendPtr& ptr);
 void manualOveride(VendPtr& ptr,VendPtr& head);
 void testArray(VendPtr& head);
-void arrParse(VendPtr& head);
-void arrParse(VendPtr& head, int leng, int maxarr);
+int arrParse(VendPtr& head);
+int arrParse(VendPtr& head, int leng, int maxarr);
 bool toDel();
 void delArr(VendPtr& head, int sel, int leng);
 void query();
 void moveArr(VendPtr& head, int leng, int dirr);
 void recount(VendPtr& head);
 void editMenu(VendPtr& head);
-void editMac(VendPtr& head);
+bool editMac(VendPtr& head, int pic);
 void modDrink(VendPtr& here);
 void modSnack(VendPtr& here);
+void invalidInp();
 
 int main(int argc, char *argv[]){
     screenclear();
@@ -402,7 +404,6 @@ void addMac(VendPtr& head){
             break;
         default:
             screenclear();
-            std::cin >> test;
             std::cout << "That was not a valid input. Please try again.\n";
             naughtyUser();
             break;
@@ -436,7 +437,7 @@ void removeMac(VendPtr& head){
     uselessfun1();
     uselessfun2();
     bool del = false;
-    int pic = 0, leng, maxarr;
+    int pic = 0, leng, maxarr, useArr;
     /*if(head->macMax < 10)
         leng = 3;
     else
@@ -450,7 +451,8 @@ void removeMac(VendPtr& head){
         else
             leng = 5;
         maxarr = head->macMax;
-        arrParse(here,leng,maxarr);
+        useArr = arrParse(here,leng,maxarr);
+        std::cout << useArr;
         std::cin >> pic;
         /*while (std::cin.fail()){ // I'll try out this type of condition later
             std::cout << "Invalid Input" << std::endl;
@@ -463,40 +465,47 @@ void removeMac(VendPtr& head){
             break;
         case 1:
             del = toDel();
-            if (del == true){
+            if (del == true)
                 delArr(here,pic,leng);
-            }
             break;
         case 2:
-            del = toDel();
-            if (del == true){
-                delArr(here,pic,leng);
+            if (useArr < 2)
+                invalidInp();
+            else {
+                del = toDel();
+                if (del == true)
+                    delArr(here,pic,leng);
             }
             break;
         case 3:
-            del = toDel();
-            if (del == true){
-                delArr(here,pic,leng);
+            if (useArr < 3)
+                invalidInp();
+            else {
+                del = toDel();
+                if (del == true)
+                    delArr(here,pic,leng);
             }
             break;
         case 4:
             if (head->macMax < 10)
-                std::cout << "Invalid Choice";
+                invalidInp();
+            else if (useArr < 4)
+                invalidInp();
             else{
                 del = toDel();
-                if (del == true){
+                if (del == true)
                     delArr(here,pic,leng);
-                }
             }
             break;
         case 5:
             if (head->macMax < 10)
-                std::cout << "Invalid Choice";
+                invalidInp();
+            else if (useArr < 5)
+                invalidInp();
             else{
                 del = toDel();
-                if (del == true){
+                if (del == true)
                     delArr(here,pic,leng);
-                }
             }
             break;
         case 6:
@@ -509,16 +518,17 @@ void removeMac(VendPtr& head){
             std::cout << "Leaving.";
             break;
         default:
-            std::cout << "That was not a valid Input. Please try again\n";
+            invalidInp();
             break;
         }
         recount(head);
+        screenclear();
     }while(pic != 9);
 }
 void editMenu(VendPtr& head){
     std::cout << "Which machine do you want to edit?\n";
     VendPtr here = head;
-    int pic = 0, leng, maxarr;
+    int pic = 0, leng, maxarr, useArr;
     maxarr = head->macMax;
     do {
         if(head->macMax < 10)
@@ -526,7 +536,7 @@ void editMenu(VendPtr& head){
         else
             leng = 5;
         maxarr = head->macMax;
-        arrParse(here,leng,maxarr);
+        useArr = arrParse(here,leng,maxarr);
         std::cin >> pic;
         switch (pic) {
         case 0:
@@ -535,20 +545,30 @@ void editMenu(VendPtr& head){
             editMac(here,pic);
             break;
         case 2:
-            editMac(here,pic);
+            if (useArr < 2)
+                invalidInp();
+            else
+                editMac(here,pic);
             break;
         case 3:
-            editMac(here,pic);
+            if (useArr < 3)
+                invalidInp();
+            else
+                editMac(here,pic);
             break;
         case 4:
             if (head->macMax < 10)
-                std::cout << "Invalid Choice";
+                invalidInp();
+            else if (useArr < 4)
+                invalidInp();
             else
                 editMac(here,pic);
             break;
         case 5:
             if (head->macMax < 10)
-                std::cout << "Invalid Choice";
+                invalidInp();
+            else if (useArr < 5)
+                invalidInp();
             else
                 editMac(here,pic);
             break;
@@ -562,10 +582,10 @@ void editMenu(VendPtr& head){
             std::cout << "Leaving.";
             break;
         default:
-            std::cout << "That was not a valid Input. Please try again\n";
+            invalidInp();
             break;
         }
-    }while(pic != 5);
+    }while(pic != 9);
 }
 bool editMac(VendPtr& here, int pic){
     int ii = 1;
@@ -574,9 +594,12 @@ bool editMac(VendPtr& here, int pic){
         iter = iter->f_ptr;
         ii++;
     }
+    screenclear();
     uselessfun1();
     uselessfun2();
-    std::cout << "What do you want to modify?\n1. Snacks\n2. Drink\n3. Change Machine\n5. Cancel";
+    std::cout << "What do you want to modify for " << iter->name << "?\n";
+    uselessfun1();
+    std::cout << "1. Snacks\n2. Drink\n3. Name\n5. Cancel\n";
     uselessfun1();
     uselessfun2();
     query();
@@ -585,19 +608,17 @@ bool editMac(VendPtr& here, int pic){
     {
     case 1:
         modSnack(here);
-        return true;
         break;
     case 2: 
         modDrink(here);
-        return true;
         break;
     case 3:
-        return true;
+        processName(iter,iter->mactyp);
         break;
     case 5: 
-        return false;
+        break;
     default:
-        std::cout << "That was not a valid input. Please try again.\n";
+        invalidInp();
         break;
     }
 }
@@ -609,33 +630,37 @@ void modSnack(VendPtr& here){
         uselessfun2();
         std::cout << "Please enter an amount for chocolate bars: ";
         std::cin >> here->re_choc;
-        std::cout << "\nPlease enter an amount for fruit bags : ";
+        uselessfun2();
+        std::cout << "Please enter an amount for fruit bags : ";
         std::cin >> here->re_fruit;
-        std::cout << "\nPlease enter an amount for gummy bags: ";
+        uselessfun2();
+        std::cout << "Please enter an amount for gummy bags: ";
         std::cin >> here->re_gumy;
-        std::cout << "\nRefill stock now? Y/N\n";
-        std::cin >> cnfm;
-        while (!(cnfm == 'Y') || !(cnfm == 'y') || !(cnfm == 'N') || !(cnfm == 'n')){
+        uselessfun1();
+        std::cout << "Refill stock now? Y/N\n";
+        do {
+            std::cin >> cnfm;
             if (cnfm == 'Y' || cnfm == 'y'){
-                std::cout << "\nRestocking";
+                std::cout << "Restocking";
                 here->choco_bar = here->re_choc;
-                here->fruit_bag = here->re_fruit;
                 here->gummy_bag = here->re_gumy;
+                here->fruit_bag = here->re_fruit;
             }
             else if (cnfm == 'N' || cnfm == 'n')
-                std::cout << "\nMaintaining current stock. Exiting.";
+                std::cout << "Maintaining current stock. Exiting.";
             else 
-                std::cout << "\nThat was not a valid input. Please try again.\n";
-        }
-        std::cout << "Are you satifised with your decision?";
-        while (!(cnfm == 'Y') || !(cnfm == 'y') || !(cnfm == 'N') || !(cnfm == 'n')){
+                invalidInp();
+        }while (!(cnfm == 'Y') && !(cnfm == 'y') && !(cnfm == 'N') && !(cnfm == 'n'));
+        std::cout << "Are you satifised with your decision?\n";
+        do {
+            std::cin >> cnfm;
             if (cnfm == 'Y' || cnfm == 'y')
                 sel = true;
             else if (cnfm == 'N' || cnfm == 'n')
                 sel = false;
             else 
-                std::cout << "\nThat was not a valid input. Please try again.\n";
-        }
+                invalidInp();
+        } while (!(cnfm == 'Y') && !(cnfm == 'y') && !(cnfm == 'N') && !(cnfm == 'n'));
         screenclear();
     }while (sel == false);
 }
@@ -647,53 +672,58 @@ void modDrink(VendPtr& here){
         uselessfun2();
         std::cout << "Please enter an amount for Cola: ";
         std::cin >> here->re_coke;
-        std::cout << "\nPlease enter an amount for ginger ale: ";
+        uselessfun2();
+        std::cout << "Please enter an amount for ginger ale: ";
         std::cin >> here->re_ale;
-        std::cout << "\nPlease enter an amount for Sprite: ";
+        uselessfun2();
+        std::cout << "Please enter an amount for Sprite: ";
         std::cin >> here->re_sprite;
-        std::cout << "\nRefill stock now? Y/N\n";
-        std::cin >> cnfm;
-        while (!(cnfm == 'Y') || !(cnfm == 'y') || !(cnfm == 'N') || !(cnfm == 'n')){
+        uselessfun1();
+        std::cout << "Refill stock now? Y/N\n";
+        do{
+            std::cin >> cnfm;
             if (cnfm == 'Y' || cnfm == 'y'){
-                std::cout << "\nRestocking";
+                std::cout << "Restocking";
                 here->bot_coke = here->re_coke;
                 here->bot_ale = here->re_ale;
                 here->bot_sprite = here->re_sprite;
             }
             else if (cnfm == 'N' || cnfm == 'n')
-                std::cout << "\nMaintaining current stock. Exiting.";
+                std::cout << "Maintaining current stock. Exiting.";
             else 
-                std::cout << "\nThat was not a valid input. Please try again.\n";
-        }
-        std::cout << "Are you satifised with your decision?";
-        while (!(cnfm == 'Y') || !(cnfm == 'y') || !(cnfm == 'N') || !(cnfm == 'n')){
+                invalidInp();
+        }while (!(cnfm == 'Y') && !(cnfm == 'y') && !(cnfm == 'N') && !(cnfm == 'n'));
+        std::cout << "Are you satifised with your decision?\n";
+        do {
+            std::cin >> cnfm;
             if (cnfm == 'Y' || cnfm == 'y')
                 sel = true;
             else if (cnfm == 'N' || cnfm == 'n')
                 sel = false;
             else 
-                std::cout << "\nThat was not a valid input. Please try again.\n";
-        }
+                invalidInp();
+        } while (!(cnfm == 'Y') && !(cnfm == 'y') && !(cnfm == 'N') && !(cnfm == 'n'));
         screenclear();
     }while (sel == false);
 }
-void arrParse(VendPtr& head,int leng, int maxarr){
+int arrParse(VendPtr& head,int leng, int maxarr){
     VendPtr here = head;
-    int sel = 0;
+    int sel = 0, ii = 1;
     std::string tmparr[maxarr];
     uselessfun1();
     uselessfun2();
-    std::cout << "What machine do you want to delete?\n";
-    for(int ii = 0; ii < leng; ii++){
+    std::cout << "What machine do you want to deal with?\n";
+    for(int jj = 0; jj < leng; jj++){
         uselessfun2();
         //std::cout << "Machine #" <<here->macNum << " " << here->name << " (" << here->tag << ")\n";
-        std::cout << ii+1 << ". " << here->name << " (" << here->tag << ")\n";
+        std::cout << ii << ". " << here->name << " (" << here->tag << ")\n";
         if (here->f_ptr == NULL){
-            ii = leng;
+            jj = leng;
             break;
         }
-        else if (ii < leng - 1){
+        else if (jj < leng - 1){
             here = here->f_ptr;
+            ii++;
         }
     }
     if(here->f_ptr != NULL){
@@ -707,6 +737,7 @@ void arrParse(VendPtr& head,int leng, int maxarr){
     uselessfun2();
     std::cout << "9. Cancel\n";
     query();
+    return ii;
 }
 void newOffice(VendPtr& iter){
     VendPtr tempPtr = new myVend;
@@ -752,10 +783,12 @@ void processName(VendPtr& tempP, int loc){
         if (loc == 1){
             std::cout << "\nWhat is the name of your company?\n";
             tempP->type = "Office";
+            tempP->mactyp = 1;
         }
         else if (loc == 2){
             std::cout << "\nWhat is the name of your school? \n";
             tempP->type = "School";
+            tempP->mactyp = 2;
         }
         //std::cin.ignore();
         do{
@@ -792,7 +825,7 @@ void processName(VendPtr& tempP, int loc){
             if(confirm == 'n' || confirm == 'N' || confirm == 'y' || confirm == 'Y')
                 break;
             else{
-                std::cout << "That was not a valid input. Please try again:\n"; 
+                invalidInp(); 
                 counter++;
             }       
         }
@@ -987,4 +1020,8 @@ void recount(VendPtr& head){
         ii++;
     }
     head->macMax = ii;
+}
+void invalidInp(){
+    screenclear();
+    std::cout << "That was not a valid Input. Please try again\n";
 }
