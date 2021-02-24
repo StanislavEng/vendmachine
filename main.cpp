@@ -60,15 +60,17 @@ void testArray(VendPtr& head);
 int arrParse(VendPtr& head);
 int arrParse(VendPtr& head, int leng, int maxarr);
 bool toDel();
+void delArr(VendPtr& here,VendPtr& iter);
 void delArr(VendPtr& head, int sel, int leng);
 void query();
 void moveArr(VendPtr& head, int leng, int dirr);
 void recount(VendPtr& head);
 void editMenu(VendPtr& head);
-bool editMac(VendPtr& head, int pic);
+bool editMac(VendPtr& head,VendPtr& here, int pic);
 void modDrink(VendPtr& here);
 void modSnack(VendPtr& here);
 void invalidInp();
+bool checkName(VendPtr& here,VendPtr& iter,int where);
 
 int main(int argc, char *argv[]){
     screenclear();
@@ -361,7 +363,7 @@ void manageMac(VendPtr& head){
             break;
         default:
             screenclear();
-            std::cout << "That was not a valid input. Please try again.\n";
+            invalidInp();
             naughtyUser();
             break;
         }
@@ -408,6 +410,7 @@ void addMac(VendPtr& head){
             naughtyUser();
             break;
         }
+        checkName(head,iter,0);
         if (pickLoc == 1 || pickLoc == 2){
             std::cout << "Do you want to add another machine? Y / N" << std::endl;
             while(true){
@@ -438,10 +441,6 @@ void removeMac(VendPtr& head){
     uselessfun2();
     bool del = false;
     int pic = 0, leng, maxarr, useArr;
-    /*if(head->macMax < 10)
-        leng = 3;
-    else
-        leng = 5;*/
     maxarr = head->macMax;
     std::cout << "Opening Machine Removal Features\n";
     VendPtr here = head;
@@ -454,12 +453,6 @@ void removeMac(VendPtr& head){
         useArr = arrParse(here,leng,maxarr);
         std::cout << useArr;
         std::cin >> pic;
-        /*while (std::cin.fail()){ // I'll try out this type of condition later
-            std::cout << "Invalid Input" << std::endl;
-            std::cin.clear();
-            std::cin.ignore(256,'\n');
-            std::cin >> pic;
-        }*/
         switch (pic) {
         case 0:
             break;
@@ -542,19 +535,19 @@ void editMenu(VendPtr& head){
         case 0:
             break;
         case 1:
-            editMac(here,pic);
+            editMac(head, here,pic);
             break;
         case 2:
             if (useArr < 2)
                 invalidInp();
             else
-                editMac(here,pic);
+                editMac(head, here,pic);
             break;
         case 3:
             if (useArr < 3)
                 invalidInp();
             else
-                editMac(here,pic);
+                editMac(head, here,pic);
             break;
         case 4:
             if (head->macMax < 10)
@@ -562,7 +555,7 @@ void editMenu(VendPtr& head){
             else if (useArr < 4)
                 invalidInp();
             else
-                editMac(here,pic);
+                editMac(head,here,pic);
             break;
         case 5:
             if (head->macMax < 10)
@@ -570,7 +563,7 @@ void editMenu(VendPtr& head){
             else if (useArr < 5)
                 invalidInp();
             else
-                editMac(here,pic);
+                editMac(head,here,pic);
             break;
         case 6:
             moveArr(here,leng,1);
@@ -587,8 +580,9 @@ void editMenu(VendPtr& head){
         }
     }while(pic != 9);
 }
-bool editMac(VendPtr& here, int pic){
+bool editMac(VendPtr& head, VendPtr& here, int pic){
     int ii = 1;
+    bool rep = false;
     VendPtr iter = here;
     while(ii != pic){
         iter = iter->f_ptr;
@@ -613,7 +607,10 @@ bool editMac(VendPtr& here, int pic){
         modDrink(here);
         break;
     case 3:
-        processName(iter,iter->mactyp);
+        while(rep == false){
+            processName(iter,iter->mactyp);
+            rep = checkName(head,iter,1);
+        }
         break;
     case 5: 
         break;
@@ -949,6 +946,12 @@ bool toDel(){
     else
         return false;
 }
+void delArr(VendPtr& here,VendPtr& iter){
+    if(here->b_ptr != NULL)
+        here = here->b_ptr;
+    here->f_ptr = NULL;
+    iter = NULL;
+}
 void delArr(VendPtr& here, int pic,int leng){
     int ii = 1;
     while(ii != pic){
@@ -1024,4 +1027,18 @@ void recount(VendPtr& head){
 void invalidInp(){
     screenclear();
     std::cout << "That was not a valid Input. Please try again\n";
+}
+bool checkName(VendPtr& head, VendPtr& iter,int whr){
+    VendPtr here = head;
+    while(here->f_ptr != NULL ){//|| here->name != iter->name){
+        here = here->f_ptr;
+        if (here->name == iter->name){
+            std::cout << "That location has already been added\n";
+            if (whr == 0)
+                delArr(here, iter);
+            break;
+            return false;
+        }
+    }
+    return true;
 }
