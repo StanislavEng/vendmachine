@@ -71,6 +71,8 @@ void modDrink(VendPtr& here);
 void modSnack(VendPtr& here);
 void invalidInp();
 bool checkName(VendPtr& here,VendPtr& iter,int where);
+void refill(VendPtr& iter, int sel);
+void refillMac(VendPtr& head);
 
 int main(int argc, char *argv[]){
     screenclear();
@@ -307,7 +309,7 @@ void admin_control(VendPtr& head){
         //uselessfun1();
         arrayLength = head->macMax;
         std::cout << "What would you like to do?\n"; uselessfun1();
-        std::cout << "1. Manage Machines\n2. # of Machines?\n3. Exit\n";
+        std::cout << "1. Manage Machines\n2. # of Machines?\n3. Refill Machines\n5. Exit\n";
         query();
         std:: cin >> admin_input;
         switch(admin_input){
@@ -315,12 +317,15 @@ void admin_control(VendPtr& head){
                 manageMac(head);
                 break;
             case 2: { // Repeats amount of machines PS. need curly braces because of weird goto protocol
-                screenclear();
+                screenclear(); 
                 std::string arlen = "There are " + std::to_string(arrayLength) + " machines in service.\n";
                 uselessfun3(arlen);
                 break;
-            }
+            }  // I forget why I did it this way, trying new stuff out
             case 3:
+                refillMac(head);
+                break;
+            case 5:
                 std::cout << "Leaving the Control Hub\n";
                 break;
             default:
@@ -342,6 +347,8 @@ void manageMac(VendPtr& head){
     screenclear();
     do{
         uselessfun1();
+        uselessfun2();
+        std::cout << "Entering Vending Machine Management Systems\n";
         uselessfun2();
         std::cout << "What do you want to do:\n";
         uselessfun1();
@@ -367,7 +374,7 @@ void manageMac(VendPtr& head){
             naughtyUser();
             break;
         }
-        std::cout <<"oh no\n";
+        //std::cout <<"oh no\n";
     }while(decision != 4);
     screenclear();
     uselessfun1();
@@ -376,9 +383,11 @@ void addMac(VendPtr& head){
     screenclear();
     int test;
     bool exitcond = false;
-    VendPtr iter = head;
+    bool testy;
+    VendPtr iter= head;
 
     do{
+        //iter = head;
         while(iter->f_ptr != NULL)
             iter = iter->f_ptr;
         if (head->macMax == 1)
@@ -406,11 +415,11 @@ void addMac(VendPtr& head){
             break;
         default:
             screenclear();
-            std::cout << "That was not a valid input. Please try again.\n";
+            invalidInp();
             naughtyUser();
             break;
         }
-        checkName(head,iter,0);
+        testy = checkName(head,iter,0);
         if (pickLoc == 1 || pickLoc == 2){
             std::cout << "Do you want to add another machine? Y / N" << std::endl;
             while(true){
@@ -425,7 +434,7 @@ void addMac(VendPtr& head){
                     std::cout << "That was not a valid input. Please try again:\n";
             }
         }
-        std::cout <<"\nThere are" <<head->macMax;/*
+        /*std::cout <<"\nThere are" <<head->macMax;/*
         if(/*(head->name == "blank") && (head->macMax == 1)){
             head = iter;
             std::cout << "\n" <<head->macMax << " should be " << iter->macMax;
@@ -946,11 +955,14 @@ bool toDel(){
     else
         return false;
 }
-void delArr(VendPtr& here,VendPtr& iter){
-    if(here->b_ptr != NULL)
-        here = here->b_ptr;
-    here->f_ptr = NULL;
-    iter = NULL;
+void delArr(VendPtr& iter){
+    VendPtr todel = iter;
+    iter = iter->b_ptr;
+    if(todel->f_ptr != NULL)
+        iter->f_ptr = todel->f_ptr;
+    else
+        iter->f_ptr = NULL;
+    todel = NULL;
 }
 void delArr(VendPtr& here, int pic,int leng){
     int ii = 1;
@@ -1031,14 +1043,65 @@ void invalidInp(){
 bool checkName(VendPtr& head, VendPtr& iter,int whr){
     VendPtr here = head;
     while(here->f_ptr != NULL ){//|| here->name != iter->name){
-        here = here->f_ptr;
-        if (here->name == iter->name){
+        //std::cout << here->macNum << ". " << here->name << "\n";
+        //std::cout << iter->macNum << ". " << iter->name << "\n";
+        if ((here->name == iter->name)){// && (here->macNum != iter->macNum)){
+            screenclear();
+            uselessfun1();
             std::cout << "That location has already been added\n";
-            if (whr == 0)
-                delArr(here, iter);
-            break;
+            uselessfun1();
+            if (whr == 0){
+                delArr(iter);
+                recount(head);
+            }
+            //break;
             return false;
         }
+        else
+            here = here->f_ptr;
     }
     return true;
+}
+void refillMac(VendPtr& head){
+    char ref; // refill check
+    char fur; // further inquiry 
+    screenclear();
+    uselessfun1();
+    uselessfun2();
+    std::cout << "Entering Refill Menu\n";
+    uselessfun1();
+    uselessfun2();
+    std::cout << "Do you want to refill all machines?\nYes / No \n";
+    uselessfun1();
+    std::cin >> ref;
+    screenclear();
+    switch (ref){
+        case 'Y':
+        case 'y':
+            std::cout << "Refilling\n";
+            uselessfun1();
+            VendPtr iter = head;    
+            refill(iter,0);
+            break;
+        case 'N':
+        case 'n':
+            uselessfun1();
+            uselessfun2();
+            std::cout << "Do you want to refill office or school separetly?\n Yes / No\n";
+            uselessfun1();
+            std::cin >> fur;
+            if (fur == 'y' || fur == 'Y')
+                refill(iter,1);
+            else if (fur == 'N' || fur == 'n')
+
+        break;
+        default:
+
+    }
+}
+void refill(VendPtr& here,int sel){
+    
+}
+void refill2(VendPtr& head){
+
 }
