@@ -14,7 +14,7 @@ The original program, using one .cpp file with structures only.
 Converting to Classes and maybe vectors.
 
 ### Stage 3: 
-File I/O to save the machines so I don't have to keep adding
+File I/O to save the machines so I don't have to keep adding and QT GUI
 
 ### Stage 4:
 TBD
