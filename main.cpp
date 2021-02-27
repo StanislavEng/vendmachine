@@ -73,6 +73,7 @@ void invalidInp();
 bool checkName(VendPtr& here,VendPtr& iter,int where);
 void refill(VendPtr& iter, int sel);
 void refillMac(VendPtr& head);
+void doRefill(VendPtr& iter);
 
 int main(int argc, char *argv[]){
     screenclear();
@@ -338,7 +339,7 @@ void admin_control(VendPtr& head){
         }
         //head->macNum = arrayLength+1;
         //check_static(num_of_mac);
-    } while (admin_input != 3);
+    } while (admin_input != 5);
     //admin_input = 0;
 
 }
@@ -395,7 +396,9 @@ void addMac(VendPtr& head){
         int pickLoc = 0;   
         char morecpic = 'k'; 
         uselessfun1();
+        uselessfun2();
         std::cout << "Is this for a school or an office?\n";
+        uselessfun1();
         std::cout << "1. Office\n2. School\n3. Cancel\n";
         uselessfun1();
         query();
@@ -832,6 +835,7 @@ void processName(VendPtr& tempP, int loc){
                 break;
             else{
                 invalidInp(); 
+                std::cout << "Is " << tempname << " the name you wanted? Y / N\n";
                 counter++;
             }       
         }
@@ -1065,43 +1069,115 @@ bool checkName(VendPtr& head, VendPtr& iter,int whr){
 void refillMac(VendPtr& head){
     char ref; // refill check
     char fur; // further inquiry 
-    screenclear();
-    uselessfun1();
-    uselessfun2();
-    std::cout << "Entering Refill Menu\n";
-    uselessfun1();
-    uselessfun2();
-    std::cout << "Do you want to refill all machines?\nYes / No \n";
-    uselessfun1();
-    std::cin >> ref;
-    screenclear();
-    switch (ref){
-        case 'Y':
-        case 'y':
-            std::cout << "Refilling\n";
-            uselessfun1();
-            VendPtr iter = head;    
-            refill(iter,0);
+    do {
+        VendPtr iter = head;    
+        screenclear();
+        uselessfun1();
+        uselessfun2();
+        std::cout << "Entering Refill Menu\n";
+        uselessfun1();
+        uselessfun2();
+        std::cout << "Do you want to refill all machines? Y / N \n";
+        uselessfun1();
+        std::cin >> ref;
+        screenclear();
+        switch (ref){
+            case 'Y': case 'y':
+                std::cout << "Refilling\n";
+                uselessfun1();
+                refill(iter,0);
+                break;
+            case 'N': case 'n':
+                uselessfun1();
+                uselessfun2();
+                std::cout << "Do you want to refill office or school separetly? Y / N\n";
+                uselessfun1();
+                std::cin >> fur;
+                if (fur == 'y' || fur == 'Y')
+                    refill(iter,1);
+                else if (fur == 'N' || fur == 'n')
+                    std::cout << "You can refill individual machines in the edit menu\n";
+                break;
+            default:
+                invalidInp();
+                break;
+    }
+    }while(!((ref == 'Y')||(ref == 'y')||(ref=='N')||(ref=='n')));
+}
+void refill(VendPtr& iter,int sel){
+    ///////////////////////////// Refill All /////////////////////////////
+    VendPtr here = iter;
+    if (sel == 0){
+        std::cout << "...\n";
+        //while (iter->f_ptr != NULL){
+        //while(iter->f_ptr){
+        do{
+            std::cout << "Testing\n";
+            doRefill(iter);
+            if (here == NULL)
+                break;
+            else
+                here = here->f_ptr;
+        }while(here != NULL);
+        //} // annoying requirment to do one more after
+        doRefill(here);
+        std::cout <<"Refilling complete.\n";
+    }
+    ///////////////////////////// Refill Minor /////////////////////////////
+    else if (sel == 1){
+        std::string cmpword; 
+        int pic;
+        uselessfun1();
+        uselessfun2();
+        std::cout << "Do you want to refill:\n1. All Offices\n2. All Schools\n3. Cancel\n";
+        uselessfun1();
+        std::cin >> pic;
+        switch (pic){
+        case 1: /////////////// Office Refill //////////////
+            std::cout << "Refilling all offices\n";
+            while (iter->f_ptr != NULL){
+                if(iter->type == "Office"){
+                    std::cout <<"Testing\n";
+                    doRefill(iter);
+                }
+                iter = iter->f_ptr;
+            }
+            if(iter->type == "Office"){
+                    std::cout <<"Testing\n";
+                    doRefill(iter);
+            }
             break;
-        case 'N':
-        case 'n':
-            uselessfun1();
-            uselessfun2();
-            std::cout << "Do you want to refill office or school separetly?\n Yes / No\n";
-            uselessfun1();
-            std::cin >> fur;
-            if (fur == 'y' || fur == 'Y')
-                refill(iter,1);
-            else if (fur == 'N' || fur == 'n')
-
-        break;
+        case 2: /////////////// School Refill //////////////
+            std::cout << "Refilling all schools\n";
+            while (iter->f_ptr != NULL){
+                if(iter->type == "School"){
+                    std::cout <<"Testing\n";
+                doRefill(iter);
+                }
+                iter = iter->f_ptr;
+            } 
+            if(iter->type == "Office"){ 
+                std::cout <<"Testing\n";
+                doRefill(iter);
+            }
+            break; 
+        case 3:
+            std::cout << "You can refill individual machines in the edit menu\n";
+            break;
         default:
-
+            invalidInp();
+            break;
+        }
     }
 }
-void refill(VendPtr& here,int sel){
-    
-}
-void refill2(VendPtr& head){
-
+void doRefill(VendPtr& iter){
+    iter->bot_coke = iter->re_coke;
+    iter->bot_ale = iter->re_ale;
+    iter->bot_sprite = iter->re_sprite;
+    iter->choco_bar = iter->re_choc;
+    iter->gummy_bag = iter->re_gumy;
+    iter->chips = iter->re_chip;
+    iter->fruit_bag = iter->re_fruit;
+    iter->gain_val = iter->usable_bal - iter->ini_val;
+    iter->usable_bal = iter->ini_val;
 }
