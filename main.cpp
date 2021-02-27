@@ -1106,15 +1106,22 @@ void refillMac(VendPtr& head){
 }
 void refill(VendPtr& iter,int sel){
     ///////////////////////////// Refill All /////////////////////////////
+    VendPtr here = iter;
     if (sel == 0){
         std::cout << "...\n";
-        while (iter->f_ptr != NULL){
-            //std::cout << "Testing\n";
+        //while (iter->f_ptr != NULL){
+        //while(iter->f_ptr){
+        do{
+            std::cout << "Testing\n";
             doRefill(iter);
-            iter = iter->f_ptr;
-        } // annoying requirment to do one more after
-        doRefill(iter);
-        //std::cout <<"Refilling complete.\n";
+            if (here == NULL)
+                break;
+            else
+                here = here->f_ptr;
+        }while(here != NULL);
+        //} // annoying requirment to do one more after
+        doRefill(here);
+        std::cout <<"Refilling complete.\n";
     }
     ///////////////////////////// Refill Minor /////////////////////////////
     else if (sel == 1){
