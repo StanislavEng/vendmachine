@@ -433,8 +433,11 @@ void addMac(VendPtr& head){
                 }
                 else if ( morecpic == 'y' || morecpic == 'Y')
                     break;
-                else
-                    std::cout << "That was not a valid input. Please try again:\n";
+                else{
+                    naughtyUser();
+                    invalidInp();
+                    std::cout << "Do you want to add another machine? Y / N" << std::endl;
+                }
             }
         }
         /*std::cout <<"\nThere are" <<head->macMax;/*
@@ -462,7 +465,7 @@ void removeMac(VendPtr& head){
         else
             leng = 5;
         maxarr = head->macMax;
-        useArr = arrParse(here,leng,maxarr);
+        useArr = arrParse(here,leng,maxarr,1);
         std::cout << useArr;
         std::cin >> pic;
         switch (pic) {
@@ -541,11 +544,11 @@ void editMenu(VendPtr& head){
         else
             leng = 5;
         maxarr = head->macMax;
-        useArr = arrParse(here,leng,maxarr);
+        useArr = arrParse(here,leng,maxarr,1);
         std::cin >> pic;
         switch (pic) {
-        case 0:
-            break;
+        //case 0:
+        //    break;
         case 1:
             editMac(head, here,pic);
             break;
@@ -715,13 +718,16 @@ void modDrink(VendPtr& here){
         screenclear();
     }while (sel == false);
 }
-int arrParse(VendPtr& head,int leng, int maxarr){
+int arrParse(VendPtr& head,int leng, int maxarr,int typ){
     VendPtr here = head;
     int sel = 0, ii = 1;
     std::string tmparr[maxarr];
     uselessfun1();
     uselessfun2();
-    std::cout << "What machine do you want to deal with?\n";
+    if (typ == 1)
+        std::cout << "What machine do you want to deal with?\n";
+    else 
+        std::cout << "Where are you based?\n";
     for(int jj = 0; jj < leng; jj++){
         uselessfun2();
         //std::cout << "Machine #" <<here->macNum << " " << here->name << " (" << here->tag << ")\n";
@@ -744,7 +750,10 @@ int arrParse(VendPtr& head,int leng, int maxarr){
         std::cout << "7. Move to previous " << leng << "\n";
     }
     uselessfun2();
-    std::cout << "9. Cancel\n";
+    if (typ == 1)
+        std::cout << "9. Cancel\n";
+    else 
+        std::cout << "9. Walk away from the machine.\n";
     query();
     return ii;
 }
@@ -803,16 +812,15 @@ void processName(VendPtr& tempP, int loc){
         do{
             std::getline(std::cin, tempname);
         }while(tempname.empty());
-        while (ii <= tempname.length() && tempname.length() != 0){ // loops through the provided name
+        while (ii < tempname.length() && tempname.length() != 0){ // loops through the provided name
             if (ii == 0){
                 while (tempname[ii] == ' '){ // removes extra spaces in front
                     tempname.erase(ii,1);
                 }
                 tempname[ii] = toupper(tempname[ii]); // upper case the first word
                 temptag += tempname[ii];
-                ii++;
             }
-            else if ((tempname[ii] == ' ' && tempname[ii+1] == ' ')){
+            else if (((tempname[ii] == ' ' && tempname[ii+1] == ' '))){
                 while (tempname[ii+1] == ' ')
                     tempname.erase(ii+1,1);
             }
@@ -820,13 +828,17 @@ void processName(VendPtr& tempP, int loc){
                 tempname[ii] = toupper(tempname[ii]);
                 temptag += tempname[ii];
             } // upper case the first letter of a word excluding "of"
-            else 
+            else if (((tempname[ii] == ' ' && ii == tempname.length()))){
+                tempname.erase(ii,1);
+                ii--;
+            }
+            else
                 tempname[ii] = tolower(tempname[ii]); // lower case the rest
             ii++;
         }
         while(confirm != 'y' || confirm != 'Y'){
             if (counter == 0 || counter == 5){
-                    std::cout << "Is " << tempname << " the name you wanted? Y / N\n";
+                    std::cout << "Is " << tempname << " the name you wanted?\nY / N\n";
                     //std::cout <<  temptag << '\n';
                     counter = 1;
             }
@@ -834,8 +846,9 @@ void processName(VendPtr& tempP, int loc){
             if(confirm == 'n' || confirm == 'N' || confirm == 'y' || confirm == 'Y')
                 break;
             else{
+                naughtyUser();
                 invalidInp(); 
-                std::cout << "Is " << tempname << " the name you wanted? Y / N\n";
+                std::cout << "Is " << tempname << " the name you wanted?\nY / N\n";
                 counter++;
             }       
         }
@@ -889,10 +902,11 @@ void uselessfun1(){
     std::cout << "////////////////////////////////////////////////////////////////////\n";
 }
 void uselessfun1(int num){
-    for (int ii = 0; ii < num; ii++){
+    //for (int ii = 0; ii < num; ii++){
         std::cout << "////////////////////////////////////////////////////////////////////\n";
-    }
-    std::cout << "\n";
+    //}
+    for (int ii = 0; ii < num; ii++)
+        std::cout << "\n";
 }
 void uselessfun2(){
     std::cout << "//     ";
@@ -932,7 +946,7 @@ void naughtyUser(){
 }
 void query(){
     std::cout << "Please enter your decision: \n";
-    uselessfun1();
+    uselessfun1(8);
 }
 void testArray(VendPtr& head){
     uselessfun1();
@@ -1049,7 +1063,7 @@ bool checkName(VendPtr& head, VendPtr& iter,int whr){
     while(here->f_ptr != NULL ){//|| here->name != iter->name){
         //std::cout << here->macNum << ". " << here->name << "\n";
         //std::cout << iter->macNum << ". " << iter->name << "\n";
-        if ((here->name == iter->name)){// && (here->macNum != iter->macNum)){
+        if ((here->name == iter->name && (here->macNum != iter->macNum))){
             screenclear();
             uselessfun1();
             std::cout << "That location has already been added\n";
@@ -1106,21 +1120,18 @@ void refillMac(VendPtr& head){
 }
 void refill(VendPtr& iter,int sel){
     ///////////////////////////// Refill All /////////////////////////////
-    VendPtr here = iter;
+    //VendPtr here = iter;
     if (sel == 0){
         std::cout << "...\n";
-        //while (iter->f_ptr != NULL){
+        while (iter->f_ptr != NULL){
         //while(iter->f_ptr){
-        do{
-            std::cout << "Testing\n";
+        //do{
+            //std::cout << "Testing\n";
             doRefill(iter);
-            if (here == NULL)
-                break;
-            else
-                here = here->f_ptr;
-        }while(here != NULL);
+            iter = iter->f_ptr;
+        }//while(here->f_ptr != NULL);
         //} // annoying requirment to do one more after
-        doRefill(here);
+        doRefill(iter);
         std::cout <<"Refilling complete.\n";
     }
     ///////////////////////////// Refill Minor /////////////////////////////
@@ -1137,13 +1148,13 @@ void refill(VendPtr& iter,int sel){
             std::cout << "Refilling all offices\n";
             while (iter->f_ptr != NULL){
                 if(iter->type == "Office"){
-                    std::cout <<"Testing\n";
+                    //std::cout <<"Testing\n";
                     doRefill(iter);
                 }
                 iter = iter->f_ptr;
             }
             if(iter->type == "Office"){
-                    std::cout <<"Testing\n";
+                    //std::cout <<"Testing\n";
                     doRefill(iter);
             }
             break;
@@ -1151,13 +1162,13 @@ void refill(VendPtr& iter,int sel){
             std::cout << "Refilling all schools\n";
             while (iter->f_ptr != NULL){
                 if(iter->type == "School"){
-                    std::cout <<"Testing\n";
-                doRefill(iter);
+                    //std::cout <<"Testing\n";
+                    doRefill(iter);
                 }
                 iter = iter->f_ptr;
             } 
             if(iter->type == "Office"){ 
-                std::cout <<"Testing\n";
+                //std::cout <<"Testing\n";
                 doRefill(iter);
             }
             break; 
@@ -1180,4 +1191,74 @@ void doRefill(VendPtr& iter){
     iter->fruit_bag = iter->re_fruit;
     iter->gain_val = iter->usable_bal - iter->ini_val;
     iter->usable_bal = iter->ini_val;
+    std::cout << iter->name << " made $" << iter->gain_val << " in profit.\n";
+}
+void userMain(VendPtr& head){
+    int leng, maxarr,pic;
+    if(head->macMax < 10)
+            leng = 3;
+        else
+            leng = 5;
+    maxarr = head->macMax;
+    uselessfun1();
+    uselessfun2();
+    std::cout << "Hello.\nI see you're hungry.\nLet's try to satiate you.\n";
+    VendPtr here = head;
+    do {
+        pic = arrParse(here,leng,maxarr,0);
+        switch (pic) {
+        case 1:
+            useMac(here,pic);
+            break;
+        case 2:
+            if (pic < 2)
+                invalidInp();
+            else
+                useMac(here,pic);
+            break;
+        case 3:
+            if (pic < 3)
+                invalidInp();
+            else
+                useMac(here,pic);
+            break;
+        case 4:
+            if (head->macMax < 10)
+                invalidInp();
+            else if (pic < 4)
+                invalidInp();
+            else
+                useMac(here,pic);
+            break;
+        case 5:
+            if (head->macMax < 10)
+                invalidInp();
+            else if (pic < 5)
+                invalidInp();
+            else
+                useMac(here,pic);
+            break;
+        case 6:
+            moveArr(here,leng,1);
+            break;
+        case 7:
+            moveArr(here,leng,0);
+            break;
+        case 9: 
+            std::cout << "Leaving.";
+            break;
+        default:
+            invalidInp();
+            break;
+        }
+    }while(pic != 9);
+}
+void useMac(VendPtr& here, int mac){
+    int ii = 1;
+    VendPtr iter = here;
+    while(ii != mac){
+        iter = iter->f_ptr;
+        ii++;
+    }
+    
 }
