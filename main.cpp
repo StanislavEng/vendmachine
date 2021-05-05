@@ -19,6 +19,7 @@ struct myVend{
     int choco_bar = 0, gummy_bag = 0, chips = 0, fruit_bag = 0;       // food items 
     int re_choc = 0, re_gumy = 0, re_chip = 0, re_fruit = 0;          // restock value for food 
     double usable_bal = 0, gain_val = 0, ini_val = 0;                 // usable balance, how much money earned, initial value
+    double price = 2.25; 
     std::string tag;                                                  // classification tag
     int macNum = 0;                                                   // For use in array only
     int macMax = 0;
@@ -616,10 +617,10 @@ bool editMac(VendPtr& head, VendPtr& here, int pic){
     switch (ii)
     {
     case 1:
-        modSnack(here);
+        modSnack(iter);
         break;
     case 2: 
-        modDrink(here);
+        modDrink(iter);
         break;
     case 3:
         while(rep == false){
@@ -627,6 +628,8 @@ bool editMac(VendPtr& head, VendPtr& here, int pic){
             rep = checkName(head,iter,1);
         }
         break;
+    case 4: 
+        refillMac(iter);
     case 5: 
         break;
     default:
@@ -948,6 +951,11 @@ void query(){
     std::cout << "Please enter your decision: \n";
     uselessfun1(8);
 }
+void query1(){
+    std::cout << "Press #9 to cancel, otherwise\n";
+    std::cout << "Please enter your decision\n";
+    std::cout << "And insert your coins: \n";
+}
 void testArray(VendPtr& head){
     uselessfun1();
     VendPtr here = head;
@@ -1254,11 +1262,45 @@ void userMain(VendPtr& head){
     }while(pic != 9);
 }
 void useMac(VendPtr& here, int mac){
-    int ii = 1;
+    int money, sel, ii = 1;
+    bool cancom = false; // cancel or complete
     VendPtr iter = here;
     while(ii != mac){
         iter = iter->f_ptr;
         ii++;
     }
+    do{
+    screenclear();
+    uselessfun1();
+    std::cout << "////////////// " << iter->name << " //////////////\n";
+    uselessfun1();
+    std::cout << "////////////// Sugar treats //////////////\n";
+    std::cout << "1. Chocolate Bars. Qty: " << iter->choco_bar << " || 2. Gummy Candy Bag. Qty: " << iter->gummy_bag << "\n";
+    std::cout << "////////////// " << iter->price << " || " << iter->price << " //////////////\n";
+    uselessfun1();
+    std::cout << "////////////// Bagged treats //////////////\n";
+    std::cout << "3. Chip bags. Qty: " << iter->chips << " || 4. Fruit bags. Qty: " << iter->fruit_bag << "\n";
+    std::cout << "////////////// " << iter->price << " || " << iter->price << " //////////////\n";
+    uselessfun1();
+    std::cout << "////////////// Drinks and Pop //////////////\n";
+    std::cout << "5. Coca Cola. Qty: " << iter->bot_coke << " || 6. Ginger Ale. Qty: " << iter->bot_ale << " || 7. Sprite. Qty: " << iter->bot_sprite << "\n";
+    std::cout << "////////////// " << iter->price << " || " << iter->price << " || " << iter->price << " //////////////\n";
+    uselessfun1();
+    query1();
+    std::cin >> sel;
+    if (sel > 0 && sel < 9)
+        money = insertMoney();
+    }while (cancom == true);
     
+}
+int insertMoney(){
+    int pic;
+    int quart = 0, dime = 0,nick = 0;
+    do {
+        std::cout << "1. Quarters: " << quart;
+        std::cout << "\n2. Dimes: " << dime;
+        std::cout << "\n3. Nickels: " << nick;
+        std::cout << "4. Done\n";
+        std::cin >> pic;
+    }while (pic != 4);
 }
