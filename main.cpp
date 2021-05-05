@@ -466,7 +466,7 @@ void removeMac(VendPtr& head){
         else
             leng = 5;
         maxarr = head->macMax;
-        useArr = arrParse(here,leng,maxarr,1);
+        useArr = arrParse(here,leng,maxarr);
         std::cout << useArr;
         std::cin >> pic;
         switch (pic) {
@@ -545,7 +545,7 @@ void editMenu(VendPtr& head){
         else
             leng = 5;
         maxarr = head->macMax;
-        useArr = arrParse(here,leng,maxarr,1);
+        useArr = arrParse(here,leng,maxarr);
         std::cin >> pic;
         switch (pic) {
         //case 0:
@@ -721,16 +721,16 @@ void modDrink(VendPtr& here){
         screenclear();
     }while (sel == false);
 }
-int arrParse(VendPtr& head,int leng, int maxarr,int typ){
+int arrParse(VendPtr& head,int leng, int maxarr){//},int typ){
     VendPtr here = head;
     int sel = 0, ii = 1;
     std::string tmparr[maxarr];
     uselessfun1();
     uselessfun2();
-    if (typ == 1)
+    //if (typ == 1)
         std::cout << "What machine do you want to deal with?\n";
-    else 
-        std::cout << "Where are you based?\n";
+    //else 
+    //    std::cout << "Where are you based?\n";
     for(int jj = 0; jj < leng; jj++){
         uselessfun2();
         //std::cout << "Machine #" <<here->macNum << " " << here->name << " (" << here->tag << ")\n";
@@ -753,10 +753,10 @@ int arrParse(VendPtr& head,int leng, int maxarr,int typ){
         std::cout << "7. Move to previous " << leng << "\n";
     }
     uselessfun2();
-    if (typ == 1)
+    /*if (typ == 1)
         std::cout << "9. Cancel\n";
     else 
-        std::cout << "9. Walk away from the machine.\n";
+        std::cout << "9. Walk away from the machine.\n";*/
     query();
     return ii;
 }
@@ -949,7 +949,7 @@ void naughtyUser(){
 }
 void query(){
     std::cout << "Please enter your decision: \n";
-    uselessfun1(8);
+    uselessfun1(4);
 }
 void query1(){
     std::cout << "Press #9 to cancel, otherwise\n";
@@ -1091,6 +1091,12 @@ bool checkName(VendPtr& head, VendPtr& iter,int whr){
 void refillMac(VendPtr& head){
     char ref; // refill check
     char fur; // further inquiry 
+    if (head->macMax == 0){
+        screenclear();
+        uselessfun1();
+        std::cout << "No machines to refill!\n";
+        return;
+    }
     do {
         VendPtr iter = head;    
         screenclear();
@@ -1200,7 +1206,7 @@ void doRefill(VendPtr& iter){
     iter->gain_val = iter->usable_bal - iter->ini_val;
     iter->usable_bal = iter->ini_val;
     std::cout << iter->name << " made $" << iter->gain_val << " in profit.\n";
-}
+}/*
 void userMain(VendPtr& head){
     int leng, maxarr,pic;
     if(head->macMax < 10)
@@ -1303,4 +1309,4 @@ int insertMoney(){
         std::cout << "4. Done\n";
         std::cin >> pic;
     }while (pic != 4);
-}
+}*/
