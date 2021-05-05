@@ -467,7 +467,7 @@ void removeMac(VendPtr& head){
             leng = 5;
         maxarr = head->macMax;
         useArr = arrParse(here,leng,maxarr);
-        std::cout << useArr;
+        //std::cout << useArr;
         std::cin >> pic;
         switch (pic) {
         case 0:
@@ -535,6 +535,7 @@ void removeMac(VendPtr& head){
     }while(pic != 9);
 }
 void editMenu(VendPtr& head){
+    screenclear();
     std::cout << "Which machine do you want to edit?\n";
     VendPtr here = head;
     int pic = 0, leng, maxarr, useArr;
@@ -589,6 +590,8 @@ void editMenu(VendPtr& head){
             break;
         case 9: 
             std::cout << "Leaving.";
+            simulatedelay();
+            screenclear();
             break;
         default:
             invalidInp();
@@ -655,6 +658,7 @@ void modSnack(VendPtr& here){
         std::cout << "Refill stock now? Y/N\n";
         do {
             std::cin >> cnfm;
+            screenclear();
             if (cnfm == 'Y' || cnfm == 'y'){
                 std::cout << "Restocking";
                 here->choco_bar = here->re_choc;
@@ -666,7 +670,7 @@ void modSnack(VendPtr& here){
             else 
                 invalidInp();
         }while (!(cnfm == 'Y') && !(cnfm == 'y') && !(cnfm == 'N') && !(cnfm == 'n'));
-        std::cout << "Are you satifised with your decision?\n";
+        std::cout << "\nAre you satifised with your decision?\n";
         do {
             std::cin >> cnfm;
             if (cnfm == 'Y' || cnfm == 'y')
@@ -725,6 +729,7 @@ int arrParse(VendPtr& head,int leng, int maxarr){//},int typ){
     VendPtr here = head;
     int sel = 0, ii = 1;
     std::string tmparr[maxarr];
+    screenclear();
     uselessfun1();
     uselessfun2();
     //if (typ == 1)
@@ -757,6 +762,7 @@ int arrParse(VendPtr& head,int leng, int maxarr){//},int typ){
         std::cout << "9. Cancel\n";
     else 
         std::cout << "9. Walk away from the machine.\n";*/
+    std::cout << "9. Cancel\n";
     query();
     return ii;
 }
