@@ -35,46 +35,46 @@ void school_vend(VendPtr& tempPtr);                             // create a vend
 void office_vend(VendPtr& tempPtr);                             // create a vending machine for use in a work office
 //void admin_control(struct myVend macArray, int admin_choice); // Entering Admin Control 
 //void admin_control(struct myVend macArray[100]);
-void admin_control(VendPtr& head);
-void manageMac(VendPtr& head);
-void addMac(VendPtr& head);
-void editMac(VendPtr& head);
-void removeMac(VendPtr& head);
-void newOffice(VendPtr& iter);
-void newSchool(VendPtr& head);
-void processName(VendPtr& temp, int loc);
-void user_control(VendPtr& head);                              // Entering User Input Mode
-void initializescale();                                       // Limits the decimal values
-void initilizesystem();                                       // place holder for creating 
-void screenclear();                                           // clear screen for easier UI
-void simulatedelay();                                         // allow user to see response before clearing screen
-int  check_static(int test);
-void naughtyUser();
-bool myDebug(VendPtr& head,VendPtr& itr);
-void uselessfun1();
-void uselessfun1(int num);
-void uselessfun2();
-void uselessfun3(std::string sen);
-void enterDebug(VendPtr& ptr);
-void manualOveride(VendPtr& ptr,VendPtr& head);
-void testArray(VendPtr& head);
-int arrParse(VendPtr& head);
-int arrParse(VendPtr& head, int leng, int maxarr);
-bool toDel();
-void delArr(VendPtr& here,VendPtr& iter);
-void delArr(VendPtr& head, int sel, int leng);
-void query();
-void moveArr(VendPtr& head, int leng, int dirr);
-void recount(VendPtr& head);
-void editMenu(VendPtr& head);
-bool editMac(VendPtr& head,VendPtr& here, int pic);
-void modDrink(VendPtr& here);
-void modSnack(VendPtr& here);
-void invalidInp();
-bool checkName(VendPtr& here,VendPtr& iter,int where);
-void refill(VendPtr& iter, int sel);
-void refillMac(VendPtr& head);
-void doRefill(VendPtr& iter);
+void admin_control(VendPtr& head);                              // Administrative Controls and logistic menu
+void manageMac(VendPtr& head);                                  // Managing the vending machines including creation and removing
+void addMac(VendPtr& head);                                     // Menu for adding a new machine
+void editMac(VendPtr& head);                                    // Menu for editing machines 
+void removeMac(VendPtr& head);                                  // Menu for removing one or more machines 
+void newOffice(VendPtr& iter);                                  // Creates a new vending machine for the office
+void newSchool(VendPtr& head);                                  // Creates a new vending machine for a school 
+void processName(VendPtr& temp, int loc);                       // Menu used for adding a location name 
+void user_control(VendPtr& head);                               // Entering User Input Mode
+void initializescale();                                         // Limits the decimal values
+// void initilizesystem();                                      // I think this has been long gone   // place holder for creating 
+void screenclear();                                             // clear screen for easier UI
+void simulatedelay();                                           // allow user to see response before clearing screen
+//int  check_static(int test);                                  // forgotten debug function  // 
+void naughtyUser();                                             // Prevents / ignores invalid inputs to ignore errors
+bool myDebug(VendPtr& head,VendPtr& itr);                       // My debugging menu (to remove after done)
+void uselessfun1();                                             // For CLI Menu organization , wide bar
+void uselessfun1(int num);                                      // Adds new lines equal to num amount
+void uselessfun2();                                             // For CLI menu organization, adds bars in front of menu
+void uselessfun3(std::string sen);                              // Creates bars around a string 
+void enterDebug(VendPtr& ptr);                                  // Enters manual control / debugging of machines 
+void manualOveride(VendPtr& ptr,VendPtr& head);                 // Manually creates machines and stuff inside of debug purchases
+//void testArray(VendPtr& head);                                // obsolete testing function  // 
+int arrParse(VendPtr& head);                                    // parses through the array of machines (original function) [obsolete]
+int arrParse(VendPtr& head, int leng, int maxarr);              // parses through the array of functions to some amount (for listing)
+bool toDel();                                                   // Confirms if you want to delete the machine 
+void delArr(VendPtr& here,VendPtr& iter);                       // [obsolete?] 
+void delArr(VendPtr& head, int sel, int leng);                  // deletes the machine in the array based on the selected machine 
+void query();                                                   // 
+void moveArr(VendPtr& head, int leng, int dirr);                //
+void recount(VendPtr& head);                                    // 
+void editMenu(VendPtr& head);                                   //
+bool editMac(VendPtr& head,VendPtr& here, int pic);             //
+void modDrink(VendPtr& here);                                   //
+void modSnack(VendPtr& here);                                   //
+void invalidInp();                                              //
+bool checkName(VendPtr& here,VendPtr& iter,int where);          //
+void refill(VendPtr& iter, int sel);                            //
+void refillMac(VendPtr& head);                                  //
+void doRefill(VendPtr& iter);                                   //
 
 int main(int argc, char *argv[]){
     screenclear();
@@ -268,7 +268,7 @@ void manualOveride(VendPtr& ptr,VendPtr& head){
 
     //}while(mypick != 5);
 }
-void enterDebug(VendPtr& ptr){ // will not be made optimized because it's just meant for ease
+void enterDebug(VendPtr& ptr){      // will not be made optimized because it's just meant for ease
     int picker;
     do {
         screenclear();
@@ -934,7 +934,7 @@ int check_static(int test){
 }*/
 //////////////////// my debugger ////////////////////
 // std::cout << "I am in []" << std::endl; simulatedelay();
-void initializescale(){ // Sets the cout of dollars to 2 decimal points. 
+void initializescale(){             // Sets the cout of dollars to 2 decimal points. 
     std::cout.setf(std::ios::fixed);
     std::cout.setf(std::ios::showpoint);
     std::cout.precision(2);
@@ -948,7 +948,7 @@ void simulatedelay(){
     std::cout << "\nPress enter key to continue..." << std::endl;
     std::cin.get();
 }
-void naughtyUser(){
+void naughtyUser(){     // ignores extra words/spaces or invalid inputs 
     std::cin.clear();
     //std::cin.ignore(256,'\n');
     std::cin.get();
@@ -962,7 +962,7 @@ void query1(){
     std::cout << "Please enter your decision\n";
     std::cout << "And insert your coins: \n";
 }
-void testArray(VendPtr& head){
+/*void testArray(VendPtr& head){
     uselessfun1();
     VendPtr here = head;
     while (here != NULL){
@@ -971,7 +971,7 @@ void testArray(VendPtr& head){
         here = here->f_ptr;
     }
     simulatedelay();
-}
+}*/
 bool toDel(){
     char ans;
     std::cout << "Confirm your selection: Y / N\n";
