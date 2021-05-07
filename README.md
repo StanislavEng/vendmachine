@@ -33,8 +33,18 @@ Just need the user side vending machine usage code.
 ### Stage 2:
 Converting to Classes and maybe vectors.
 
+### **Thought process:**
+Since I am making a new class I need to understand exactly what I want it to do and the goal with it.  
+Right now I have to decide if I want it to replace the struct, which was the original idea, since  
+struct and class don't differ much but I can put this all in a new header file to clean up the main.  
+However, I'm not fully sure how well it will integrate over as a replacement (yet).
+
+I think I'll slow down and restart, making purely a front end vending machine class/code (as a stand in for  
+the user control side) to test how I can use the class in a main, as well as potentially start doing some  
+Qt GUI controls . 
+
 ### Stage 3: 
-File I/O to save the machines so I don't have to keep adding and QT GUI
+File I/O to save the machines so I don't have to keep adding, and QT GUI
 
 ### Stage 4:
 TBD
