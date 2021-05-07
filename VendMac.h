@@ -14,6 +14,7 @@ Created by: Stanislav Svichkar
 First creation: May 4, 2021
 Last edited on : May 5, 2021
 */
+#include <string>
 
 #ifndef VEND_MAC_H
 #define VEND_MAC_H
@@ -25,13 +26,18 @@ public: // stuff I believe should be visible in a machine
     void addMac();                 // adds a new machine 
     void removeMac();              // removes machine
     double printPrice();           // prints the price of selected item
+    void restock();
+    void defineName();
+    void refillMenu();
 private: // stuff I believe belongs behind the scenes
     int bot_coke, bot_ale, bot_sprite;                // bottles of pop (Cola, Ginger Ale, Sprite)
     int choco_bar, gummy_bag, chips, fruit_bag;       // quantity of snacks (chocolate bar, gummy bags, chips and fruit bags) 
     int re_coke, re_ale, re_sprite;                   // how many bottles of pop to restock to
     int re_choc, re_gummy, re_chip, re_fruit;         // how much of the snacks to restock
     double usable_bal = 0, gain_val = 0, ini_val = 0; // dealing with money (change in machine, profit, initial amount)
-    double calculateLifetimeProfit();                 // Profit of the machine since inception
+    std::string name;
+    //double calculateLifetimeProfit();                 // Profit of the machine since inception
+    void calculateLifetimeProfit(double profit);
     double calculateRestockProfit();                  // Profit since last restock
     double setPrice();                                // sets prices of items (initilization?)
 };
