@@ -41,7 +41,9 @@ However, I'm not fully sure how well it will integrate over as a replacement (ye
 
 I think I'll slow down and restart, making purely a front end vending machine class/code (as a stand in for  
 the user control side) to test how I can use the class in a main, as well as potentially start doing some  
-Qt GUI controls . 
+Qt GUI controls.  
+
+Learning some new stuff. Headers for classes in C++ are .hpp files; needing to compile the class's .cpp file with the main.cpp file to make it work (by reading them together); starting to implement some vectors to learn more about them. So much reading, it's crazy
 
 ### Stage 3: 
 File I/O to save the machines so I don't have to keep adding, and QT GUI
