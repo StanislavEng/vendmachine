@@ -6,7 +6,7 @@ Having to remember how to create classes outside of the main file
 TODO:
 
 Created by: Stanislav Svichkar
-First creation: May 4, 2021
+First created: May 4, 2021
 Last edited on : May 4, 2021
 */
 

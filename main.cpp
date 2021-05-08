@@ -10,7 +10,9 @@ Last Changed Feb 17, 2021*/  // Finished remove machine, starting edit
 
 #include <iostream>
 #include <string>
+#include "VendUser.hpp"
 
+/*
 // Structue for a vending machine 
 struct myVend{
     std::string name = "blank";                                       // name of the location 
@@ -63,18 +65,18 @@ int arrParse(VendPtr& head, int leng, int maxarr);              // parses throug
 bool toDel();                                                   // Confirms if you want to delete the machine 
 void delArr(VendPtr& here,VendPtr& iter);                       // [obsolete?] 
 void delArr(VendPtr& head, int sel, int leng);                  // deletes the machine in the array based on the selected machine 
-void query();                                                   // 
-void moveArr(VendPtr& head, int leng, int dirr);                //
-void recount(VendPtr& head);                                    // 
-void editMenu(VendPtr& head);                                   //
-bool editMac(VendPtr& head,VendPtr& here, int pic);             //
-void modDrink(VendPtr& here);                                   //
-void modSnack(VendPtr& here);                                   //
-void invalidInp();                                              //
-bool checkName(VendPtr& here,VendPtr& iter,int where);          //
-void refill(VendPtr& iter, int sel);                            //
-void refillMac(VendPtr& head);                                  //
-void doRefill(VendPtr& iter);                                   //
+void query();                                                   // prompt to wait for user input 
+void moveArr(VendPtr& head, int leng, int dirr);                // moves array to next set of machines for managing
+void recount(VendPtr& head);                                    // recounts all machines to fix the count
+void editMenu(VendPtr& head);                                   // Enters the menu to edit machines
+bool editMac(VendPtr& head,VendPtr& here, int pic);             // edits the machines for how many of each item is stocked
+void modDrink(VendPtr& here);                                   // modifies how many drinks are in the machine
+void modSnack(VendPtr& here);                                   // mdoifies how many snacks are in the machine
+void invalidInp();                                              // States an invalid input 
+bool checkName(VendPtr& here,VendPtr& iter,int where);          // checks if the name has been used before
+void refill(VendPtr& iter, int sel);                            // refill prompt for all or one machine 
+void refillMac(VendPtr& head);                                  // refill menu
+void doRefill(VendPtr& iter);                                   // performs the refilling
 
 int main(int argc, char *argv[]){
     screenclear();
@@ -115,7 +117,7 @@ int main(int argc, char *argv[]){
         }
         std::cin.clear();
         std::cin.ignore(128,'\n');
-    }*/
+    }*
     while(exte==true){
         std::cout << "Checking something";
         simulatedelay();
@@ -446,7 +448,7 @@ void addMac(VendPtr& head){
             head = iter;
             std::cout << "\n" <<head->macMax << " should be " << iter->macMax;
             std::cout << "\nLet's compare " << iter->macNum; 
-        }*/
+        }*
         naughtyUser();
         screenclear();
         //testArray(head);
@@ -761,7 +763,7 @@ int arrParse(VendPtr& head,int leng, int maxarr){//},int typ){
     /*if (typ == 1)
         std::cout << "9. Cancel\n";
     else 
-        std::cout << "9. Walk away from the machine.\n";*/
+        std::cout << "9. Walk away from the machine.\n";*
     std::cout << "9. Cancel\n";
     query();
     return ii;
@@ -931,7 +933,7 @@ int check_static(int test){
     test++;
     std::cout << "The number is now " << test << ".\n";
     return test;
-}*/
+}*
 //////////////////// my debugger ////////////////////
 // std::cout << "I am in []" << std::endl; simulatedelay();
 void initializescale(){             // Sets the cout of dollars to 2 decimal points. 
@@ -971,7 +973,7 @@ void query1(){
         here = here->f_ptr;
     }
     simulatedelay();
-}*/
+}*
 bool toDel(){
     char ans;
     std::cout << "Confirm your selection: Y / N\n";
@@ -1316,3 +1318,9 @@ int insertMoney(){
         std::cin >> pic;
     }while (pic != 4);
 }*/
+
+int main (int args, char *argv[]){
+    VendUser Vending;
+    //VendUser Vending("school", "Burnett Secondary");
+    
+}
