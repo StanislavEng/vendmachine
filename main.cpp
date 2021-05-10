@@ -1320,7 +1320,9 @@ int insertMoney(){
 }*/
 
 int main (int args, char *argv[]){
-    VendUser Vending;
-    //VendUser Vending("school", "Burnett Secondary");
-    
+    //VendUser Vending;
+    int wait;
+    std::cin >> wait; 
+    VendUser Vending("school", "Burnett Secondary");
+    std::cin >> wait;
 }

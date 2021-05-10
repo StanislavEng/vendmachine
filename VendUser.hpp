@@ -36,7 +36,8 @@ private:
     int gumy_ref, frut_ref, worms_ref;
     ///////////////////////////////////
     std::vector<std::string> items;
-     
+    std::vector<double> prices; 
+    std::vector<std::string> keycode;
     ///////////////////////////////////
     std::string name;    
 };
